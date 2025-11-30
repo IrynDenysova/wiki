@@ -1,0 +1,223 @@
+{
+  "main": {
+    "id": "62419e48d2f6891f",
+    "type": "split",
+    "children": [
+      {
+        "id": "f6afed333936c9fe",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8f38f42b86fe03af",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "notes/git/new_git_repository.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "new_git_repository"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "e47e441d2aa11fea",
+    "type": "split",
+    "children": [
+      {
+        "id": "21f925b9ad215c6b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fc993898698480f2",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Файловый менеджер"
+            }
+          },
+          {
+            "id": "804a69decd7283dc",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "подсчет",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Поиск"
+            }
+          },
+          {
+            "id": "65507a269b297f61",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Закладки"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "59a4822905b0d7c9",
+    "type": "split",
+    "children": [
+      {
+        "id": "f96e9854775e7e71",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b7b2ef8b3c20f13a",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Обратные ссылки"
+            }
+          },
+          {
+            "id": "1c8935c2d8d3199a",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Исходящие ссылки"
+            }
+          },
+          {
+            "id": "908e868117b7dc5f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Теги"
+            }
+          },
+          {
+            "id": "fcf894c9e8ffd566",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Все свойства"
+            }
+          },
+          {
+            "id": "53b7e722c2fdd02a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Структура"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": false,
+      "daily-notes:Сегодняшняя заметка": false,
+      "templates:Вставить шаблон": false,
+      "command-palette:Открыть палитру команд": false,
+      "bases:Создать новую базу": false
+    }
+  },
+  "active": "8f38f42b86fe03af",
+  "lastOpenFiles": [
+    "notes/linux/git_delete_file_igrore_github.md",
+    "notes/git/new_git_repository.md",
+    "notes/git",
+    "notes/linux/git_history_rewrite.md",
+    "at/Pasted image 20251130223645.png",
+    "lesson/python/PythonFund_L19_dicts_fromkeys_get_setdefault_keys_values_items_nested_dicts_copy_deepcopy_dict_comprehension_comparison_practice_homework.md",
+    "lesson/python/PythonFund_L21_time_collections_OrderedDict_defaultdict_Counter_LRU_cache_practice_homework.md",
+    "lesson/python/PythonFund_L20_functions_scopes_LEGB_args_kwargs_return_global_practice_homework.md",
+    "lesson/python/PythonFund_L09_for_loop_iterables_range_nested_loops_break_continue_else_practice_homework.md",
+    "lesson/python/PythonFund_L06_math_modules_float_precision_decimal_rounding_bits_bytes.md",
+    "lesson/python/PythonFund_L18_dicts_frozenset_set_comprehension_dict_conversion_in_operator_practice_homework.md",
+    "lesson/python/PythonFund_L17_sets_hash_set_operations_relations_methods_practice_homework.md",
+    "lesson/python/PythonFund_L16_list_comprehension_zip_stack_queue_sort_stability_practice_homework.md",
+    "lesson/python/PythonFund_L15_lists_memory_references_nested_collections_del_shallow_deep_copy_practice_homework.md",
+    "lesson/python/PythonFund_L14_list_methods_add_remove_search_count_sort_reverse_sorted_reversed_min_max_sum_practice_homework.md",
+    "lesson/python/PythonFund_L13_tuples_packing_unpacking_starred_unpacking_enumerate_tuple_methods_practice_homework.md",
+    "lesson/python/PythonFund_L12_string_formatting_percent_format_fstrings_number_formatting_alignment_padding.md",
+    "lesson/python/PythonFund_L11_string_methods_predicates_search_case_replace_split_join_strip_practice_homework.md",
+    "lesson/python/PythonFund_L10_lists_intro_creation_indexing_slicing_mutation_ops_conversion_comparison_for.md",
+    "lesson/python/PythonFund_L07_while_loop_break_continue_whileelse_random_practice_homework.md",
+    "lesson/python/PythonFund_L08_strings_encoding_methods_ord_chr_comparison_len_indexing_slices_in.md",
+    "lesson/python/PythonFund_L05_branching_if_elif_else_nested_ternary_match_case.md",
+    "lesson/python/PythonFund_L04_bool_comparisons_logical_ops_truth_table_chained_inequalities.md",
+    "lesson/python/PythonFund_L02_data_types_objects_strings_type_print_sep_end.md",
+    "lesson/python/PythonFund_L03_arithmetic_operators_precedence_type_casting_errors.md",
+    "lesson/python/PythonFund_L01_basics_vars_input_print_pep8.md",
+    "notes/linux/2025-11-24.md",
+    "notes/linux/django_python_debian_ubuntu.md",
+    "lesson/python/tools/summarize_pdfs.py",
+    "lesson/python/tools",
+    "lesson/python/43/PD_Python Fund_43.pdf",
+    "lesson/python/43/Не подтвержден 706612.crdownload",
+    "lesson/python/43/PD_Python Fund_LfS43.pdf",
+    "lesson/python/43/Не подтвержден 751670.crdownload",
+    "lesson/python/43",
+    "lesson/python/Новая папка",
+    "lesson/python/42/PD_Python Fund_42.pdf"
+  ]
+}
