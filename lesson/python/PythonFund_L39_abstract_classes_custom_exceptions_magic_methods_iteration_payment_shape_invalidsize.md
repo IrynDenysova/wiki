@@ -1,0 +1,378 @@
+# Python Fundamentals — Урок 39: абстрактные классы, документация классов, пользовательские исключения, магические методы, итерация
+
+## План занятия
+- Абстрактные классы (`abc`, `ABC`, `@abstractmethod`)
+- Документация классов (docstring, `help()`, `__doc__`)
+- Пользовательские исключения (custom exceptions)
+- Магические методы (dunder methods)
+- Магические методы итерации (`__iter__`, `__next__`, `StopIteration`)
+
+---
+
+## 1) Абстрактные классы (Abstract Base Classes)
+**Абстрактный класс** — класс-шаблон, который не предназначен для создания объектов напрямую. Он задаёт структуру (интерфейс) для наследников и заставляет реализовывать обязательные методы.
+
+Зачем:
+- заставить наследников реализовать нужные методы;
+- определить единый интерфейс для группы классов;
+- запретить создание “незаконченных” объектов.
+
+### Отличие от обычного класса
+- Обычный класс: можно создавать объекты напрямую.
+- Абстрактный класс: создавать объекты нельзя, пока не реализованы все `@abstractmethod`.
+
+### Как создать абстрактный класс
+Нужно:
+- наследоваться от `ABC` (модуль `abc`);
+- пометить обязательные методы декоратором `@abstractmethod`.
+
+```py
+from abc import ABC, abstractmethod
+
+class Employee(ABC):
+    @abstractmethod
+    def work(self):
+        pass
+
+# e = Employee()  # TypeError: нельзя создать объект, пока не реализован work()
+```
+
+Наследник обязан реализовать абстрактный метод:
+```py
+class Programmer(Employee):
+    def work(self):
+        print("Write code")
+
+p = Programmer()
+p.work()
+```
+
+---
+
+## 2) Документация классов (docstring)
+Документация класса пишется многострочной строкой сразу под объявлением класса. Она:
+- помогает читать код;
+- видна в `help()`;
+- доступна через `ClassName.__doc__`.
+
+Пример:
+```py
+class Book:
+    """
+    Represents a book.
+
+    Attributes:
+        title (str): The title of the book.
+        author (str): The author of the book.
+
+    Methods:
+        get_info(): Returns a brief description of the book.
+    """
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+
+    def get_info(self):
+        return f"{self.title} by {self.author}"
+
+print(Book.__doc__)
+# help(Book)
+```
+
+Рекомендации:
+- коротко описывать назначение;
+- перечислять основные атрибуты и методы;
+- придерживаться единого стиля во всём проекте.
+
+---
+
+## 3) Пользовательские исключения (custom exceptions)
+Пользовательские исключения нужны, чтобы:
+- точно указывать причину ошибки (контекст);
+- отделять ошибки бизнес-логики от стандартных;
+- перехватывать конкретные ошибки отдельно через `try/except`.
+
+### Как создать
+Пользовательское исключение — это класс, который наследуется от `Exception` (или его подкласса):
+```py
+class CustomError(Exception):
+    pass
+
+raise CustomError("Error message")
+```
+
+По соглашению имена заканчиваются на `Error`.
+
+### Пример: ограничение доступа по возрасту
+```py
+class AccessDeniedError(Exception):
+    """Вызывается, если пользователь слишком молод для доступа."""
+    pass
+
+def check_age(age):
+    if age < 18:
+        raise AccessDeniedError("Access denied: age must be at least 18")
+    print("Access granted")
+
+try:
+    check_age(16)
+except AccessDeniedError as e:
+    print("Ошибка:", e)
+```
+
+### Исключение с дополнительными данными
+```py
+class AccessDeniedError(Exception):
+    """Вызывается, если пользователь слишком молод для доступа."""
+    def __init__(self, age):
+        self.age = age
+        super().__init__(f"Access denied: age {age} is too low")
+
+def check_age(age):
+    if age < 18:
+        raise AccessDeniedError(age)
+    print("Access granted")
+
+try:
+    check_age(15)
+except AccessDeniedError as e:
+    print("Error:", e)
+    print("Age:", e.age)
+```
+
+### Лучше наследоваться от подходящего встроенного исключения
+Если ошибка относится к конкретной категории, наследуйтесь от подходящего класса (например `ValueError`):
+```py
+class TemperatureTooLowError(ValueError):
+    pass
+
+def set_temperature(value):
+    if value < -273.15:
+        raise TemperatureTooLowError("Temperature cannot be below absolute zero")
+    print(f"Temperature set to {value}°C")
+```
+
+---
+
+## 4) Магические методы (dunder methods)
+Магические методы помогают классам “встраиваться” в поведение Python: сравнение, арифметика, коллекции, приведение к строке, вызов как функции и т.д.
+
+Примеры ситуаций:
+| Выражение | Вызывается |
+|---|---|
+| `str(obj)` / `print(obj)` | `__str__()` |
+| `len(obj)` | `__len__()` |
+| `obj1 == obj2` | `__eq__()` |
+| `obj1 + obj2` | `__add__()` |
+| `item in obj` | `__contains__()` |
+| `obj()` | `__call__()` |
+| `bool(obj)` | `__bool__()` |
+
+---
+
+## 5) Итерация: `__iter__()` и `__next__()`
+Чтобы объект работал в `for`, `in`, `list()`, `sum()` и т.д., он должен поддерживать протокол итерации.
+
+- `__iter__()` возвращает итератор — объект с `__next__()`
+- `__next__()` возвращает следующее значение или выбрасывает `StopIteration`
+
+Пример: итератор с нарастающей суммой
+```py
+class CumulativeSum:
+    def __init__(self, numbers):
+        self.numbers = numbers
+        self.index = 0
+        self.total = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index >= len(self.numbers):
+            raise StopIteration
+        self.total += self.numbers[self.index]
+        self.index += 1
+        return self.total
+
+data = [3, 5, 2, 4]
+acc = CumulativeSum(data)
+for value in acc:
+    print(value)
+```
+
+---
+
+# Ответы на задания для закрепления
+
+## Задания 1 (абстрактные классы)
+1) Верные утверждения: **b, c**  
+2) Код с `Dog(Animal)` без реализации `speak()`:
+- **ошибка при попытке создать объект `Dog`** (абстрактный метод не реализован)
+
+## Задания 2 (пользовательские исключения)
+Имеет смысл создавать пользовательские исключения:
+- **b — чтобы явно разделить ошибки бизнес-логики от стандартных ошибок**
+
+## Задания 3 (итерация)
+Определять `__iter__()` нужно:
+- **a — когда объект должен поддерживать итерацию через `for`**
+
+---
+
+# Практическая работа — решения
+
+## 1) Онлайн-платёжные системы: `PaymentProcessor`
+```py
+from abc import ABC, abstractmethod
+
+class PaymentProcessor(ABC):
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+class PaypalPayment(PaymentProcessor):
+    def pay(self, amount):
+        print(f"Paid {amount} via PayPal.")
+
+class CreditCardPayment(PaymentProcessor):
+    def pay(self, amount):
+        print(f"Paid {amount} via Credit Card.")
+
+payment1 = PaypalPayment()
+payment2 = CreditCardPayment()
+payment1.pay(100)
+payment2.pay(200)
+```
+
+## 2) Проверка платежей: `InvalidPaymentError`
+```py
+from abc import ABC, abstractmethod
+
+class InvalidPaymentError(Exception):
+    """Raised when the payment amount is invalid."""
+    pass
+
+class PaymentProcessor(ABC):
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+    @staticmethod
+    def _validate_amount(amount):
+        if amount <= 0:
+            raise InvalidPaymentError("Payment amount must be positive.")
+
+class PaypalPayment(PaymentProcessor):
+    def pay(self, amount):
+        self._validate_amount(amount)
+        print(f"Paid {amount} via PayPal.")
+
+class CreditCardPayment(PaymentProcessor):
+    def pay(self, amount):
+        self._validate_amount(amount)
+        print(f"Paid {amount} via Credit Card.")
+
+payments = [PaypalPayment(), CreditCardPayment()]
+for payment in payments:
+    try:
+        payment.pay(100)
+        payment.pay(-50)  # Ошибка
+    except InvalidPaymentError as e:
+        print("Error:", e)
+```
+
+---
+
+# Домашнее задание — решения
+
+## ДЗ 1) Фигуры и площади: `Shape`, `Circle`, `Rectangle`
+```py
+from abc import ABC, abstractmethod
+import math
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return math.pi * self.radius ** 2
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+print(Circle(3).area())
+print(Rectangle(4, 5).area())
+```
+
+## ДЗ 2) Проверка размеров: `InvalidSizeError`
+Требование: параметры должны быть положительными, иначе выбрасываем пользовательское исключение.
+
+```py
+from abc import ABC, abstractmethod
+import math
+
+class InvalidSizeError(ValueError):
+    pass
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+class Circle(Shape):
+    def __init__(self, radius):
+        if radius <= 0:
+            raise InvalidSizeError("Radius must be positive")
+        self.radius = radius
+
+    def area(self):
+        return math.pi * self.radius ** 2
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        if width <= 0 or height <= 0:
+            raise InvalidSizeError("Width and height must be positive")
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+try:
+    c = Circle(-1)
+except InvalidSizeError as e:
+    print("Error:", e)
+```
+
+---
+
+## Мини-шпаргалка урока
+```text
+Абстрактные классы:
+- from abc import ABC, abstractmethod
+- class X(ABC): ...
+- @abstractmethod -> метод обязателен в наследниках
+- нельзя создать объект абстрактного класса
+
+Docstring:
+- сразу под class ...
+- Class.__doc__ и help(Class)
+
+Custom exceptions:
+- class MyError(Exception): pass
+- лучше наследоваться от подходящего встроенного (ValueError/TypeError/...)
+
+Итерация:
+- __iter__() -> возвращает итератор
+- __next__() -> следующее значение или StopIteration
+```

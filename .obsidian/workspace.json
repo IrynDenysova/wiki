@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "notes/git/new_git_repository.md",
+                "file": "notes/git/2025-11-24.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "new_git_repository"
+              "title": "2025-11-24"
             }
           }
         ]
@@ -180,10 +180,19 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "8f38f42b86fe03af",
+  "active": "fc993898698480f2",
   "lastOpenFiles": [
-    "notes/linux/git_delete_file_igrore_github.md",
+    "lesson/python/PythonFund_L43_MongoDB_pymongo_CRUD_Modules_Packages_pycache_homework.md",
+    "lesson/python/PythonFund_L42_mysql_transactions_use_dictcursor_commit_executemany_rollback_market_notes_app.md",
+    "lesson/python/PythonFund_L41_MySQL_Python_connect_cursor_fetch_params_errors_with.md",
+    "lesson/python/PythonFund_L40_magic_methods_comparison_total_ordering_indexing_arithmetic_bool_call_homework.md",
+    "lesson/python/PythonFund_L39_abstract_classes_custom_exceptions_magic_methods_iteration_payment_shape_invalidsize.md",
+    "lesson/python/PythonFund_L38_encapsulation_access_levels_name_mangling_getters_setters_property_secureusb_bankaccount.md",
+    "lesson/python/PythonFund_L37_multiple_inheritance_hasattr_mixins_MRO_super_composition_aggregation_practice_homework.md",
+    "lesson/python/PythonFund_L36_inheritance_polymorphism_super_object_isinstance_issubclass_practice_homework.md",
+    "lesson/python/PythonFund_L35_class_and_instance_attributes_classmethod_staticmethod_str_repr_dict.md",
     "notes/git/new_git_repository.md",
+    "notes/git/git_delete_file_igrore_github.md",
     "notes/git",
     "notes/linux/git_history_rewrite.md",
     "at/Pasted image 20251130223645.png",
@@ -201,15 +210,6 @@
     "lesson/python/PythonFund_L12_string_formatting_percent_format_fstrings_number_formatting_alignment_padding.md",
     "lesson/python/PythonFund_L11_string_methods_predicates_search_case_replace_split_join_strip_practice_homework.md",
     "lesson/python/PythonFund_L10_lists_intro_creation_indexing_slicing_mutation_ops_conversion_comparison_for.md",
-    "lesson/python/PythonFund_L07_while_loop_break_continue_whileelse_random_practice_homework.md",
-    "lesson/python/PythonFund_L08_strings_encoding_methods_ord_chr_comparison_len_indexing_slices_in.md",
-    "lesson/python/PythonFund_L05_branching_if_elif_else_nested_ternary_match_case.md",
-    "lesson/python/PythonFund_L04_bool_comparisons_logical_ops_truth_table_chained_inequalities.md",
-    "lesson/python/PythonFund_L02_data_types_objects_strings_type_print_sep_end.md",
-    "lesson/python/PythonFund_L03_arithmetic_operators_precedence_type_casting_errors.md",
-    "lesson/python/PythonFund_L01_basics_vars_input_print_pep8.md",
-    "notes/linux/2025-11-24.md",
-    "notes/linux/django_python_debian_ubuntu.md",
     "lesson/python/tools/summarize_pdfs.py",
     "lesson/python/tools",
     "lesson/python/43/PD_Python Fund_43.pdf",
