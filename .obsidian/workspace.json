@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "notes/git/2025-11-24.md",
-                "mode": "source",
+                "file": "notes/linux/Без названия.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-11-24"
+              "title": "Без названия"
             }
           }
         ]
@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "подсчет",
+                "query": "s1.viktorplus.com",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "59a4822905b0d7c9",
@@ -180,44 +180,46 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "fc993898698480f2",
+  "active": "8f38f42b86fe03af",
   "lastOpenFiles": [
+    "gpt/linux/df_Без названия.md",
+    "notes/linux/Без названия.md",
+    "gpt/linux/ps.md",
+    "notes/vpn_wire_guard/wg-add-client.sh_s1.md",
+    "notes/vpn_wire_guard/s2_vpn_wire_guard.md",
+    "notes/vpn_wire_guard/vpn-install.sh.md",
+    "notes/vpn_wire_guard",
+    "notes/vpn_wire_guard/wire_guad_s1.md",
+    "at/Pasted image 20251201230058.png",
+    "at/Pasted image 20251201225721.png",
+    "notes/linux/django_python_debian_ubuntu_s1.md",
+    "notes/linux/dns_nets_command_ip_host_dig.md",
+    "notes/linux/s1_base_server.md",
+    "notes/linux/2025-12-1_scripts.md",
+    "notes/ec2-user_linux.itcareerhub.de.md",
+    "lesson/linux/11_scripts_practice_2.md",
+    "lesson/python/PythonFund_L12_string_formatting_percent_format_fstrings_number_formatting_alignment_padding.md",
+    "lesson/python/PythonFund_L13_tuples_packing_unpacking_starred_unpacking_enumerate_tuple_methods_practice_homework.md",
+    "notes/git/2025-11-24.md",
+    "notes/git/git_delete_file_igrore_github.md",
+    "notes/git/new_git_repository.md",
+    "notes/formatting_markdown.md",
+    "lesson/python/PythonFund_L11_string_methods_predicates_search_case_replace_split_join_strip_practice_homework.md",
+    "lesson/python/lesson_python_pdf/43/PD_Python Fund_LfS43.pdf",
+    "lesson/python/lesson_python_pdf/43/PD_Python Fund_43.pdf",
+    "lesson/python/lesson_python_pdf/43",
+    "lesson/python/lesson_python_pdf/42/PD_Python Fund_LfS42.pdf",
+    "lesson/python/lesson_python_pdf/42/PD_Python Fund_42.pdf",
+    "lesson/python/lesson_python_pdf/42",
+    "lesson/python/lesson_python_pdf/41/PD_Python Fund_LfS41.pdf",
+    "lesson/python/lesson_python_pdf/41/PD_Python Fund_41.pdf",
+    "lesson/python/lesson_python_pdf/41",
     "lesson/python/PythonFund_L43_MongoDB_pymongo_CRUD_Modules_Packages_pycache_homework.md",
     "lesson/python/PythonFund_L42_mysql_transactions_use_dictcursor_commit_executemany_rollback_market_notes_app.md",
     "lesson/python/PythonFund_L41_MySQL_Python_connect_cursor_fetch_params_errors_with.md",
     "lesson/python/PythonFund_L40_magic_methods_comparison_total_ordering_indexing_arithmetic_bool_call_homework.md",
     "lesson/python/PythonFund_L39_abstract_classes_custom_exceptions_magic_methods_iteration_payment_shape_invalidsize.md",
     "lesson/python/PythonFund_L38_encapsulation_access_levels_name_mangling_getters_setters_property_secureusb_bankaccount.md",
-    "lesson/python/PythonFund_L37_multiple_inheritance_hasattr_mixins_MRO_super_composition_aggregation_practice_homework.md",
-    "lesson/python/PythonFund_L36_inheritance_polymorphism_super_object_isinstance_issubclass_practice_homework.md",
-    "lesson/python/PythonFund_L35_class_and_instance_attributes_classmethod_staticmethod_str_repr_dict.md",
-    "notes/git/new_git_repository.md",
-    "notes/git/git_delete_file_igrore_github.md",
-    "notes/git",
-    "notes/linux/git_history_rewrite.md",
-    "at/Pasted image 20251130223645.png",
-    "lesson/python/PythonFund_L19_dicts_fromkeys_get_setdefault_keys_values_items_nested_dicts_copy_deepcopy_dict_comprehension_comparison_practice_homework.md",
-    "lesson/python/PythonFund_L21_time_collections_OrderedDict_defaultdict_Counter_LRU_cache_practice_homework.md",
-    "lesson/python/PythonFund_L20_functions_scopes_LEGB_args_kwargs_return_global_practice_homework.md",
-    "lesson/python/PythonFund_L09_for_loop_iterables_range_nested_loops_break_continue_else_practice_homework.md",
-    "lesson/python/PythonFund_L06_math_modules_float_precision_decimal_rounding_bits_bytes.md",
-    "lesson/python/PythonFund_L18_dicts_frozenset_set_comprehension_dict_conversion_in_operator_practice_homework.md",
-    "lesson/python/PythonFund_L17_sets_hash_set_operations_relations_methods_practice_homework.md",
-    "lesson/python/PythonFund_L16_list_comprehension_zip_stack_queue_sort_stability_practice_homework.md",
-    "lesson/python/PythonFund_L15_lists_memory_references_nested_collections_del_shallow_deep_copy_practice_homework.md",
-    "lesson/python/PythonFund_L14_list_methods_add_remove_search_count_sort_reverse_sorted_reversed_min_max_sum_practice_homework.md",
-    "lesson/python/PythonFund_L13_tuples_packing_unpacking_starred_unpacking_enumerate_tuple_methods_practice_homework.md",
-    "lesson/python/PythonFund_L12_string_formatting_percent_format_fstrings_number_formatting_alignment_padding.md",
-    "lesson/python/PythonFund_L11_string_methods_predicates_search_case_replace_split_join_strip_practice_homework.md",
-    "lesson/python/PythonFund_L10_lists_intro_creation_indexing_slicing_mutation_ops_conversion_comparison_for.md",
-    "lesson/python/tools/summarize_pdfs.py",
-    "lesson/python/tools",
-    "lesson/python/43/PD_Python Fund_43.pdf",
-    "lesson/python/43/Не подтвержден 706612.crdownload",
-    "lesson/python/43/PD_Python Fund_LfS43.pdf",
-    "lesson/python/43/Не подтвержден 751670.crdownload",
-    "lesson/python/43",
-    "lesson/python/Новая папка",
-    "lesson/python/42/PD_Python Fund_42.pdf"
+    "at/Pasted image 20251130223645.png"
   ]
 }

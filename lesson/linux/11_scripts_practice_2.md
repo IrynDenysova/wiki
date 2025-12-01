@@ -40,8 +40,8 @@ ps -ef
 echo "Текущая дата и время:"
 date
 
-echo "Файлы/строки, содержащие ключевое слово 'error' в /var/log/:"
-grep -rn "error" /var/log/ 2>/dev/null
+echo "Файлы/строки, содержащие ключевое слово 'error' без регистра без бинарников в /var/log/:"
+grep -ri "error" /var/log/ 2>/dev/null | grep -v "Binary"
 
 echo "Содержимое файла /etc/os-release:"
 cat /etc/os-release

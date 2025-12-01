@@ -275,6 +275,25 @@ for row in data_list:
     print(f"Имя: {name:<10} | Возраст: {age:>3} | Баланс: {balance:>10.2f}")
 ```
 
+
+```
+data_list = [
+    "John 23 12345.678",
+    "Alice 30 200.50",
+    "Bob 35 15000.3",
+    "Charlie 40 500.75"
+]
+
+for row in data_list:
+    parts = row.split()
+    name = parts[0]
+    age = int(parts[1])
+    balance = float(parts[2])
+
+    print(f"Имя: {name:<10} | Возраст: {age:>3} | Баланс: {balance:>10.2f}")
+```
+
+```
 ---
 
 ## 10) Мини-шпаргалка формат-спеки
