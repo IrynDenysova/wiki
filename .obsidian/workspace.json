@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "notes/linux/Без названия.md",
-                "mode": "preview",
+                "file": "notes/internet/CodePen.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Без названия"
+              "title": "CodePen"
             }
           }
         ]
@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "s1.viktorplus.com",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -182,14 +182,16 @@
   },
   "active": "8f38f42b86fe03af",
   "lastOpenFiles": [
-    "gpt/linux/df_Без названия.md",
-    "notes/linux/Без названия.md",
-    "gpt/linux/ps.md",
-    "notes/vpn_wire_guard/wg-add-client.sh_s1.md",
     "notes/vpn_wire_guard/s2_vpn_wire_guard.md",
+    "notes/internet/CodePen.md",
+    "notes/vpn_wire_guard/wg-add-client.sh_s1.md",
+    "notes/vpn_wire_guard/wire_guad_s1.md",
+    "lesson/linux/6_variables_system_variables_process_management.md",
+    "gpt/linux/ps.md",
+    "notes/linux/Без названия.md",
+    "gpt/linux/df_Без названия.md",
     "notes/vpn_wire_guard/vpn-install.sh.md",
     "notes/vpn_wire_guard",
-    "notes/vpn_wire_guard/wire_guad_s1.md",
     "at/Pasted image 20251201230058.png",
     "at/Pasted image 20251201225721.png",
     "notes/linux/django_python_debian_ubuntu_s1.md",
@@ -218,8 +220,6 @@
     "lesson/python/PythonFund_L42_mysql_transactions_use_dictcursor_commit_executemany_rollback_market_notes_app.md",
     "lesson/python/PythonFund_L41_MySQL_Python_connect_cursor_fetch_params_errors_with.md",
     "lesson/python/PythonFund_L40_magic_methods_comparison_total_ordering_indexing_arithmetic_bool_call_homework.md",
-    "lesson/python/PythonFund_L39_abstract_classes_custom_exceptions_magic_methods_iteration_payment_shape_invalidsize.md",
-    "lesson/python/PythonFund_L38_encapsulation_access_levels_name_mangling_getters_setters_property_secureusb_bankaccount.md",
     "at/Pasted image 20251130223645.png"
   ]
 }

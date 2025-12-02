@@ -202,6 +202,7 @@ systemctl restart wg-quick@wg0
 ## 8. Конфиг клиента (Windows) `client1.conf`
 
 Этот файл ты у себя и сделал:
+ls -l /etc/wireguard/
 
 ```ini
 [Interface]

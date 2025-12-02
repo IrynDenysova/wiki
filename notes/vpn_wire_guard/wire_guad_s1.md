@@ -27,3 +27,8 @@ IC6NuM8ktfyOtGZlXr8kn9emSJ78VqROsqT5YCJz7Eg=
 ![[Pasted image 20251201230058.png]]
 sudo ufw allow 51820/udp 
 |открыть порт|
+
+
+
+```
+
