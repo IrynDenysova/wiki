@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "notes/internet/CodePen.md",
+                "file": "lesson/linux/01-Linux-Git-Basics.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "CodePen"
+              "title": "01-Linux-Git-Basics"
             }
           }
         ]
@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "git clone",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -74,11 +74,12 @@
               "title": "Закладки"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 438.5
   },
   "right": {
     "id": "59a4822905b0d7c9",
@@ -182,31 +183,36 @@
   },
   "active": "8f38f42b86fe03af",
   "lastOpenFiles": [
-    "notes/vpn_wire_guard/s2_vpn_wire_guard.md",
+    "notes/git/pull_error.md",
+    "notes/составление резюме.md",
+    "notes/git/new_git_repository.md",
+    "notes/git/Есть незакоммиченные изменения (pull не проходит).md",
+    "notes/git/git_delete_file_igrore_github.md",
+    "notes/git/2025-11-24.md",
+    "notes/git/Без названия.md",
+    "lesson/linux/01-Linux-Git-Basics.md",
     "notes/internet/CodePen.md",
-    "notes/vpn_wire_guard/wg-add-client.sh_s1.md",
-    "notes/vpn_wire_guard/wire_guad_s1.md",
-    "lesson/linux/6_variables_system_variables_process_management.md",
-    "gpt/linux/ps.md",
+    "notes/Без названия.md",
     "notes/linux/Без названия.md",
-    "gpt/linux/df_Без названия.md",
-    "notes/vpn_wire_guard/vpn-install.sh.md",
+    "notes/linux/django_python_debian_ubuntu_s1.md",
+    "notes/linux/dns_nets_command_ip_host_dig.md",
+    "notes/linux/2025-12-1_scripts.md",
+    "lesson/python/PythonFund_L14_list_methods_add_remove_search_count_sort_reverse_sorted_reversed_min_max_sum_practice_homework.md",
+    "lesson/python/PythonFund_L11_string_methods_predicates_search_case_replace_split_join_strip_practice_homework.md",
+    "lesson/python/PythonFund_L12_string_formatting_percent_format_fstrings_number_formatting_alignment_padding.md",
+    "lesson/python/PythonFund_L10_lists_intro_creation_indexing_slicing_mutation_ops_conversion_comparison_for.md",
+    "lesson/python/PythonFund_L09_for_loop_iterables_range_nested_loops_break_continue_else_practice_homework.md",
+    "lesson/python/PythonFund_L08_strings_encoding_methods_ord_chr_comparison_len_indexing_slices_in.md",
+    "lesson/mysql/MySQL_7.1_subqueries.md",
+    "gpt/traider/Без названия 5.md",
+    "gpt/traider/Без названия 4.md",
+    "notes/ec2-user_linux.itcareerhub.de.md",
+    "lesson/mysql/MySQL_5.2_having_filter_aggregates.md",
+    "lesson/mysql/MySQL_4.1_create_alter_tables_constraints_update.md",
+    "gpt/traider",
     "notes/vpn_wire_guard",
     "at/Pasted image 20251201230058.png",
     "at/Pasted image 20251201225721.png",
-    "notes/linux/django_python_debian_ubuntu_s1.md",
-    "notes/linux/dns_nets_command_ip_host_dig.md",
-    "notes/linux/s1_base_server.md",
-    "notes/linux/2025-12-1_scripts.md",
-    "notes/ec2-user_linux.itcareerhub.de.md",
-    "lesson/linux/11_scripts_practice_2.md",
-    "lesson/python/PythonFund_L12_string_formatting_percent_format_fstrings_number_formatting_alignment_padding.md",
-    "lesson/python/PythonFund_L13_tuples_packing_unpacking_starred_unpacking_enumerate_tuple_methods_practice_homework.md",
-    "notes/git/2025-11-24.md",
-    "notes/git/git_delete_file_igrore_github.md",
-    "notes/git/new_git_repository.md",
-    "notes/formatting_markdown.md",
-    "lesson/python/PythonFund_L11_string_methods_predicates_search_case_replace_split_join_strip_practice_homework.md",
     "lesson/python/lesson_python_pdf/43/PD_Python Fund_LfS43.pdf",
     "lesson/python/lesson_python_pdf/43/PD_Python Fund_43.pdf",
     "lesson/python/lesson_python_pdf/43",
@@ -215,11 +221,6 @@
     "lesson/python/lesson_python_pdf/42",
     "lesson/python/lesson_python_pdf/41/PD_Python Fund_LfS41.pdf",
     "lesson/python/lesson_python_pdf/41/PD_Python Fund_41.pdf",
-    "lesson/python/lesson_python_pdf/41",
-    "lesson/python/PythonFund_L43_MongoDB_pymongo_CRUD_Modules_Packages_pycache_homework.md",
-    "lesson/python/PythonFund_L42_mysql_transactions_use_dictcursor_commit_executemany_rollback_market_notes_app.md",
-    "lesson/python/PythonFund_L41_MySQL_Python_connect_cursor_fetch_params_errors_with.md",
-    "lesson/python/PythonFund_L40_magic_methods_comparison_total_ordering_indexing_arithmetic_bool_call_homework.md",
     "at/Pasted image 20251130223645.png"
   ]
 }

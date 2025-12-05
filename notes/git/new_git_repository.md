@@ -14,3 +14,36 @@ git push -u origin main
 git remote add origin git@github.com:viktorplus/wiki.git
 git branch -M main
 git push -u origin main
+
+
+Отлично, идём **пошагово**, как ты попросил.  
+У тебя классическая ситуация: **локальная история и удалённая история не связаны**, Git пишет:
+
+```
+fatal: refusing to merge unrelated histories
+```
+
+Это значит, что Git считает, что твой локальный репозиторий и удалённый — **две разные истории**, и он по умолчанию не хочет их объединять.
+
+---
+
+## ✅ **Шаг 1 — попробовать стянуть удалённые изменения с разрешением “несвязанных историй”**
+
+Выполни:
+
+```bash
+git pull origin main --allow-unrelated-histories
+```
+
+Это скажет Git: _«Я знаю, что истории отличаются, всё равно объединяй»._
+
+## **Шаг 2 — отправляем локальные изменения обратно на GitHub**
+
+Выполни:
+
+`git push origin main`
+
+Это зафиксирует синхронизацию и завершит цикл работы.
+
+(use "git restore <file>..." to discard changes in working directory
+---
