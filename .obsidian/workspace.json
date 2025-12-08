@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "f6afed333936c9fe",
+        "id": "6fcdb2fca9b32687",
         "type": "tabs",
         "children": [
           {
-            "id": "8f38f42b86fe03af",
+            "id": "02ccc4d0025ba1b5",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "lesson/linux/01-Linux-Git-Basics.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "01-Linux-Git-Basics"
+              "title": "Новая вкладка"
             }
           }
         ]
@@ -53,7 +49,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "git clone",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -74,12 +70,11 @@
               "title": "Закладки"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 438.5
+    "width": 756.5
   },
   "right": {
     "id": "59a4822905b0d7c9",
@@ -181,46 +176,46 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "8f38f42b86fe03af",
+  "active": "02ccc4d0025ba1b5",
   "lastOpenFiles": [
-    "notes/git/pull_error.md",
-    "notes/составление резюме.md",
-    "notes/git/new_git_repository.md",
-    "notes/git/Есть незакоммиченные изменения (pull не проходит).md",
-    "notes/git/git_delete_file_igrore_github.md",
-    "notes/git/2025-11-24.md",
-    "notes/git/Без названия.md",
-    "lesson/linux/01-Linux-Git-Basics.md",
-    "notes/internet/CodePen.md",
-    "notes/Без названия.md",
-    "notes/linux/Без названия.md",
-    "notes/linux/django_python_debian_ubuntu_s1.md",
-    "notes/linux/dns_nets_command_ip_host_dig.md",
-    "notes/linux/2025-12-1_scripts.md",
-    "lesson/python/PythonFund_L14_list_methods_add_remove_search_count_sort_reverse_sorted_reversed_min_max_sum_practice_homework.md",
-    "lesson/python/PythonFund_L11_string_methods_predicates_search_case_replace_split_join_strip_practice_homework.md",
-    "lesson/python/PythonFund_L12_string_formatting_percent_format_fstrings_number_formatting_alignment_padding.md",
-    "lesson/python/PythonFund_L10_lists_intro_creation_indexing_slicing_mutation_ops_conversion_comparison_for.md",
-    "lesson/python/PythonFund_L09_for_loop_iterables_range_nested_loops_break_continue_else_practice_homework.md",
-    "lesson/python/PythonFund_L08_strings_encoding_methods_ord_chr_comparison_len_indexing_slices_in.md",
-    "lesson/mysql/MySQL_7.1_subqueries.md",
-    "gpt/traider/Без названия 5.md",
-    "gpt/traider/Без названия 4.md",
-    "notes/ec2-user_linux.itcareerhub.de.md",
-    "lesson/mysql/MySQL_5.2_having_filter_aggregates.md",
-    "lesson/mysql/MySQL_4.1_create_alter_tables_constraints_update.md",
-    "gpt/traider",
-    "notes/vpn_wire_guard",
+    "lesson/python/29-lesson 29.md",
+    "lesson/python/PythonFund_L28_iterators_iter_next_stopiteration_for_loop_itertools_generator_expressions_memory_practice_homework.md",
+    "lesson/python/PythonFund_L27_file_io_open_modes_encoding_with_read_write_practice_homework.md",
+    "lesson/python/PythonFund_L26_filesystem_os_ospath_oswalk_sys_argv_practice_homework.md",
+    "lesson/python/PythonFund_L25_exceptions_error_handling_try_except_else_finally_raise_logging_best_practices_practice_homework.md",
+    "lesson/python/PythonFund_L24_recursion_tail_recursion_isinstance_copy_vs_deepcopy_practice_homework.md",
+    "lesson/python/PythonFund_L23_documentation_docstrings_help_type_annotations_typing_any_union_optional_callable_mutable_immutable.md",
+    "lesson/python/PythonFund_L22_lambda_higher_order_functions_map_filter_reduce_any_all_sorted_key_practice_homework.md",
+    "lesson/python/PythonFund_L21_time_collections_OrderedDict_defaultdict_Counter_LRU_cache_practice_homework.md",
+    "lesson/python/PythonFund_L20_functions_scopes_LEGB_args_kwargs_return_global_practice_homework.md",
+    "lesson/python/PythonFund_L19_dicts_fromkeys_get_setdefault_keys_values_items_nested_dicts_copy_deepcopy_dict_comprehension_comparison_practice_homework.md",
+    "lesson/python/PythonFund_L07_while_loop_break_continue_whileelse_random_practice_homework.md",
+    "lesson/python/PythonFund_L06_math_modules_float_precision_decimal_rounding_bits_bytes.md",
+    "lesson/python/PythonFund_L05_branching_if_elif_else_nested_ternary_match_case.md",
+    "lesson/python/PythonFund_L04_bool_comparisons_logical_ops_truth_table_chained_inequalities.md",
+    "lesson/python/PythonFund_L03_arithmetic_operators_precedence_type_casting_errors.md",
+    "lesson/python/PythonFund_L02_data_types_objects_strings_type_print_sep_end.md",
+    "lesson/python/PythonFund_L01_basics_vars_input_print_pep8.md",
+    "lesson/python/43-lesson 43.md",
+    "lesson/python/42-lesson 42.md",
+    "lesson/python/41-lesson 41.md",
+    "lesson/python/40-lesson 40.md",
+    "lesson/python/39-lesson 39.md",
+    "lesson/python/37-lesson 37.md",
+    "lesson/python/36-lesson 36.md",
+    "lesson/python/35-lesson 35.md",
+    "lesson/python/04-Урок 4",
+    "lesson/python/03-Урок 3",
+    "lesson/python/02-Урок 2",
+    "lesson/python/01-Урок 1",
+    "lesson/lesson_python_pdf.rar",
+    "lesson/python/lesson_python_pdf.rar",
+    "lesson/python/43-Python Fundamentals — Урок 43",
+    "lesson/python/37-Python Fundamentals — Урок 37",
+    "lesson/python/36-Python Fundamentals — Урок 36",
+    "lesson/python/35-Python Fundamentals — Урок 35",
     "at/Pasted image 20251201230058.png",
     "at/Pasted image 20251201225721.png",
-    "lesson/python/lesson_python_pdf/43/PD_Python Fund_LfS43.pdf",
-    "lesson/python/lesson_python_pdf/43/PD_Python Fund_43.pdf",
-    "lesson/python/lesson_python_pdf/43",
-    "lesson/python/lesson_python_pdf/42/PD_Python Fund_LfS42.pdf",
-    "lesson/python/lesson_python_pdf/42/PD_Python Fund_42.pdf",
-    "lesson/python/lesson_python_pdf/42",
-    "lesson/python/lesson_python_pdf/41/PD_Python Fund_LfS41.pdf",
-    "lesson/python/lesson_python_pdf/41/PD_Python Fund_41.pdf",
     "at/Pasted image 20251130223645.png"
   ]
 }

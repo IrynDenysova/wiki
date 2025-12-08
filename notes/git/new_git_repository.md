@@ -6,18 +6,17 @@ git init
 git add README.md
 git commit -m "first commit"
 git branch -M main
-git remote add origin git@github.com:viktorplus/wiki.git
+git remote add origin git@github.com:viktorplus/name.git
 git push -u origin main
 
 ### …or push an existing repository from the command line
 
-git remote add origin git@github.com:viktorplus/wiki.git
+git remote add origin git@github.com:viktorplus/namegit
 git branch -M main
 git push -u origin main
 
 
-Отлично, идём **пошагово**, как ты попросил.  
-У тебя классическая ситуация: **локальная история и удалённая история не связаны**, Git пишет:
+Классическая ситуация: **локальная история и удалённая история не связаны**, Git пишет:
 
 ```
 fatal: refusing to merge unrelated histories
@@ -27,7 +26,7 @@ fatal: refusing to merge unrelated histories
 
 ---
 
-## ✅ **Шаг 1 — попробовать стянуть удалённые изменения с разрешением “несвязанных историй”**
+# ✅ **Шаг 1 — попробовать стянуть удалённые изменения с разрешением “несвязанных историй”**
 
 Выполни:
 
@@ -37,7 +36,7 @@ git pull origin main --allow-unrelated-histories
 
 Это скажет Git: _«Я знаю, что истории отличаются, всё равно объединяй»._
 
-## **Шаг 2 — отправляем локальные изменения обратно на GitHub**
+# **Шаг 2 — отправляем локальные изменения обратно на GitHub**
 
 Выполни:
 
@@ -46,4 +45,15 @@ git pull origin main --allow-unrelated-histories
 Это зафиксирует синхронизацию и завершит цикл работы.
 
 (use "git restore <file>..." to discard changes in working directory
+
+git rm -r --cached .
+
+# Что делает `--force-with-lease`
+
+```bash
+git push --force-with-lease
+```
+Git говорит:
+> «Я перезапишу историю **только если удалённая ветка выглядит так, как я ожидаю**. 
+> Если кто-то успел внести изменения — я остановлюсь».
 ---

@@ -4,6 +4,14 @@
 #bash, #while, #loops
 ---
 
+|Оператор|Значение|
+|---|---|
+|`-eq`|равно (equal)|
+|`-ne`|не равно (not equal)|
+|`-lt`|меньше (less than)|
+|`-le`|меньше или равно (less or equal)|
+|`-gt`|больше (greater than)|
+|`-ge`|больше или равно (greater or equal)|
 ## Синтаксис
 
 ```bash
