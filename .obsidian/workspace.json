@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "6fcdb2fca9b32687",
+        "id": "dfdb12ee8f9cd3d8",
         "type": "tabs",
         "children": [
           {
-            "id": "02ccc4d0025ba1b5",
+            "id": "391b057737ee5b52",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "lesson/python/12 Форматирование строк % format() f-строки.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "Новая вкладка"
+              "title": "12 Форматирование строк % format() f-строки"
             }
           }
         ]
@@ -176,44 +180,44 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "02ccc4d0025ba1b5",
+  "active": "391b057737ee5b52",
   "lastOpenFiles": [
+    "lesson/python/14 Методы списков добавление поиск сортировка.md",
+    "lesson/python/11 методы строк (str).md",
+    "lesson/python/10 коллекции и списки (list).md",
+    "lesson/python/9 Цикл for range вложенные break continue.md",
+    "lesson/python/8 Строки кодировки индексы срезы.md",
+    "lesson/python/7 Цикл while break continue random.md",
+    "lesson/python/6 Математика модули точность Decimal округление.md",
+    "lesson/python/6 Math modules float precision Decimal rounding bits bytes.md",
+    "lesson/python/5 Ветвление if-elif-else тернарный match-case.md",
+    "lesson/python/__pycache__/apply_nav_hybrid.cpython-313.pyc",
+    "lesson/python/__pycache__",
+    "lesson/python/1 Основы работы с Python.md",
+    "lesson/python/2 Типы данных объекты строки type() print().md",
+    "lesson/python/3 Арифметические операторы приоритет типы.md",
+    "lesson/python/4 Bool, сравнения и логические операторы.md",
+    "📚 Дополнительная информация и примеры.md",
+    "lesson/python/apply_nav_hybrid.py",
+    "lesson/python/19-9 dicts fromkeys.md",
+    "Без названия.md",
+    "Без названия 1.md",
+    "lesson/python/PythonFund_L03_arithmetic_operators_precedence_type_casting_errors.md",
     "lesson/python/ОТЧЁТ_ПО_ПРОВЕРКЕ.md",
     "lesson/python/remove_templates.py",
     "lesson/python/check_result.txt",
     "lesson/python/check_lessons.py",
     "lesson/python/24 Рекурсия base case isinstance copy deepcopy.md",
-    "lesson/python/11 методы строк (str).md",
-    "lesson/python/10 коллекции и списки (list).md",
     "lesson/python/33 Декораторы args kwargs return wraps фабрика.md",
     "lesson/python/27 Работа с файлами open режимы encoding with.md",
     "lesson/python/enhance_lessons.py",
     "lesson/python/34 Основы ООП классы объекты методы.md",
     "lesson/python/PythonFund_L34_OOP_basics_classes_objects_init_self_attributes_methods_practice_homework.md",
     "lesson/python/Не подтвержден 672889.crdownload",
-    "lesson/python/8 Строки кодировки индексы срезы.md",
     "lesson/python/40 Магические методы сравнение __call__.md",
     "lesson/python/39 Абстрактные классы исключения магия.md",
-    "lesson/python/25 Исключения обработка raise logging.md",
-    "lesson/python/7 Цикл while break continue random.md",
-    "lesson/python/3 Арифметические операторы приоритет типы.md",
-    "lesson/python/43 MongoDB pymongo CRUD модули пакеты.md",
-    "lesson/python/42 MySQL транзакции commit executemany rollback.md",
-    "lesson/python/41 MySQL Python подключение курсор with.md",
-    "lesson/python/40 Магические методы сравнение арифметика __call__.md",
-    "lesson/python/39 Абстрактные классы исключения магические методы.md",
-    "lesson/python/37 Множественное наследование миксины MRO.md",
-    "lesson/python/36 Наследование полиморфизм super() isinstance.md",
-    "lesson/python/35 Атрибуты класса @classmethod @staticmethod.md",
-    "lesson/python/32 Вложенные функции nonlocal замыкания.md",
-    "lesson/python/30 JSON datetime сериализация форматирование.md",
-    "lesson/python/29 Генераторы yield бесконечные yield from.md",
-    "lesson/python/26 Файловая система os os.path sys.argv.md",
     "lesson/python/04-Урок 4",
     "lesson/python/03-Урок 3",
-    "lesson/python/02-Урок 2",
-    "lesson/python/01-Урок 1",
-    "lesson/lesson_python_pdf.rar",
     "at/Pasted image 20251201230058.png",
     "at/Pasted image 20251201225721.png",
     "at/Pasted image 20251130223645.png"
