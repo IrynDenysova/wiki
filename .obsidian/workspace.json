@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "lesson/python/13 Кортежи упаковка enumerate методы.md",
+                "file": "lesson/linux/12 - Merge и Rebase в Git.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "13 Кортежи упаковка enumerate методы"
+              "title": "12 - Merge и Rebase в Git"
             }
           }
         ]
@@ -185,8 +185,41 @@
   },
   "active": "b016bee0e1848c80",
   "lastOpenFiles": [
-    "lesson/python/12 Форматирование строк % format() f-строки.md",
-    "lesson/python/17 Множества set hash() операции отношения.md",
-    "lesson/python/ОТЧЁТ_ПО_ПРОВЕРКЕ.md"
+    "lesson/linux/15 - Merge конфликты и Monorepo.md",
+    "lesson/linux/14 - Git Fork и Pull Requests.md",
+    "lesson/linux/13 - Cron и Tar.md",
+    "lesson/linux/extracted_lesson_15.txt",
+    "lesson/linux/extracted_lesson_14.txt",
+    "lesson/linux/extracted_lesson_13.txt",
+    "lesson/linux/extract_pdf.py",
+    "lesson/linux/Lesson_linux_pdf/15/Linux_LfS18.pdf",
+    "lesson/linux/Lesson_linux_pdf/15/Не подтвержден 932100.crdownload",
+    "lesson/linux/Lesson_linux_pdf/15/LinuxGit_18_M.pptx.pdf",
+    "lesson/linux/Lesson_linux_pdf/15/Не подтвержден 440283.crdownload",
+    "lesson/linux/Lesson_linux_pdf/15",
+    "lesson/linux/Lesson_linux_pdf/Новая папка",
+    "lesson/python/1 Основы работы с Python.md",
+    "lesson/linux/10 - Ветви Git и gitignore.md",
+    "lesson/linux/08 - Введение в Git.md",
+    "lesson/linux/07 - Права на файлы и bash-скрипты.md",
+    "lesson/linux/06 - Переменные и управление процессами.md",
+    "lesson/linux/01-02 - Основы Linux и Git.md",
+    "lesson/linux/01 - Основы Linux.md",
+    "lesson/linux/12 - Merge и Rebase в Git.md",
+    "lesson/linux/11 - Скрипты - практика.md",
+    "lesson/linux/10 - етви Git и gitignore.md",
+    "lesson/linux/09 - Find, locate и циклы bash.md",
+    "lesson/linux/08 - ведение в Git.md",
+    "lesson/linux/07 - рава на файлы и bash-скрипты.md",
+    "lesson/linux/06 - еременные и управление процессами.md",
+    "lesson/linux/05 - SSH и SCP.md",
+    "lesson/linux/04 - Текстовые редакторы и piping.md",
+    "lesson/linux/03 - Piping и обработка текста.md",
+    "lesson/linux/03 - Piping и перенаправление.md",
+    "lesson/linux/01-02 - сновы Linux и Git.md",
+    "lesson/linux/01 - сновы Linux.md",
+    "lesson/linux/9_find_locate_bash_loops_cycles.md",
+    "lesson/linux/8_introduction_to_git.md",
+    "lesson/linux/7_file_permissions_and_bash_scripts.md"
   ]
 }
