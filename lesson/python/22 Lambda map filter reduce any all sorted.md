@@ -24,9 +24,8 @@
 - [[#ДЗ 1) Выбор заказов: дороже 500 → имена по алфавиту]](#дз-1-выбор-заказов-дороже-500-→-имена-по-алфавиту)
 - [[#ДЗ 2) Статистика продаж: выручка по товару, сортировка по убыванию]](#дз-2-статистика-продаж-выручка-по-товару-сортировка-по-убыванию)
 - [[#Мини-шпаргалка]](#мини-шпаргалка)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
 ---
 
@@ -425,6 +424,240 @@ min(it, key=f) / max(it, key=f)
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
-_Этот раздел будет дополнен практическими примерами и дополнительной информацией._
+### Важные концепции для изучения
+
+#### 1. Детальный разбор lambda-функций
+```python
+# Lambda с одним аргументом
+square = lambda x: x ** 2
+print(square(5))  # 25
+
+# Lambda с несколькими аргументами
+add = lambda x, y, z: x + y + z
+print(add(1, 2, 3))  # 6
+
+# Lambda с условным выражением
+max_of_two = lambda a, b: a if a > b else b
+print(max_of_two(10, 20))  # 20
+
+# Lambda в списке
+operations = [
+    lambda x: x + 1,
+    lambda x: x * 2,
+    lambda x: x ** 2
+]
+result = [op(5) for op in operations]
+print(result)  # [6, 10, 25]
+```
+
+#### 2. Комбинирование map, filter, reduce
+```python
+from functools import reduce
+
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# Цепочка операций:
+# 1. Отфильтровать четные числа
+# 2. Возвести их в квадрат
+# 3. Найти сумму
+result = reduce(
+    lambda x, y: x + y,
+    map(lambda x: x ** 2, filter(lambda x: x % 2 == 0, numbers))
+)
+print(result)  # 220 (4 + 16 + 36 + 64 + 100)
+
+# Более читаемый вариант с промежуточными переменными
+evens = filter(lambda x: x % 2 == 0, numbers)
+squared = map(lambda x: x ** 2, evens)
+total = reduce(lambda x, y: x + y, squared)
+print(total)  # 220
+```
+
+#### 3. Продвинутое использование sorted с key
+```python
+# Сортировка словарей по нескольким критериям
+students = [
+    {"name": "Alice", "age": 25, "grade": 85},
+    {"name": "Bob", "age": 23, "grade": 90},
+    {"name": "Charlie", "age": 25, "grade": 80},
+    {"name": "David", "age": 23, "grade": 95}
+]
+
+# Сортировка по возрасту (убывание), затем по оценке (убывание)
+sorted_students = sorted(students, key=lambda s: (-s["age"], -s["grade"]))
+for s in sorted_students:
+    print(f"{s['name']}: возраст {s['age']}, оценка {s['grade']}")
+
+# Сортировка строк без учета регистра
+words = ["apple", "Banana", "cherry", "Date"]
+sorted_words = sorted(words, key=str.lower)
+print(sorted_words)  # ['apple', 'Banana', 'cherry', 'Date']
+```
+
+#### 4. Использование функций высшего порядка
+```python
+# Создание функции, возвращающей функцию
+def create_multiplier(n):
+    return lambda x: x * n
+
+double = create_multiplier(2)
+triple = create_multiplier(3)
+
+print(double(5))  # 10
+print(triple(5))  # 15
+
+# Декоратор как функция высшего порядка
+def repeat(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                result = func(*args, **kwargs)
+            return result
+        return wrapper
+    return decorator
+
+@repeat(3)
+def greet(name):
+    print(f"Hello, {name}!")
+
+greet("Alice")  # Выведет 3 раза
+```
+
+### 💡 Практические примеры
+
+#### Пример 1: Обработка данных с помощью map и filter
+```python
+# Данные о продажах
+sales = [
+    {"product": "Laptop", "price": 1200, "quantity": 5},
+    {"product": "Mouse", "price": 25, "quantity": 50},
+    {"product": "Keyboard", "price": 75, "quantity": 30},
+    {"product": "Monitor", "price": 300, "quantity": 10}
+]
+
+# Получить общую стоимость для каждого товара
+total_values = list(map(lambda s: s["price"] * s["quantity"], sales))
+print("Общие стоимости:", total_values)  # [6000, 1250, 2250, 3000]
+
+# Найти дорогие товары (стоимость > 2000)
+expensive = list(filter(
+    lambda s: s["price"] * s["quantity"] > 2000,
+    sales
+))
+for item in expensive:
+    print(f"{item['product']}: {item['price'] * item['quantity']}")
+```
+
+#### Пример 2: Работа с текстом
+```python
+text = "Hello World From Python Programming"
+words = text.split()
+
+# Получить длины всех слов
+lengths = list(map(len, words))
+print(lengths)  # [5, 5, 4, 6, 11]
+
+# Оставить только длинные слова (больше 5 букв)
+long_words = list(filter(lambda w: len(w) > 5, words))
+print(long_words)  # ['Python', 'Programming']
+
+# Все слова в нижнем регистре
+lowercase = list(map(str.lower, words))
+print(lowercase)  # ['hello', 'world', 'from', 'python', 'programming']
+```
+
+#### Пример 3: Анализ данных с any и all
+```python
+# Проверка условий в списке чисел
+numbers = [2, 4, 6, 8, 10]
+
+# Все ли числа четные?
+all_even = all(map(lambda x: x % 2 == 0, numbers))
+print("Все четные:", all_even)  # True
+
+# Есть ли хотя бы одно число > 5?
+any_greater_5 = any(map(lambda x: x > 5, numbers))
+print("Есть больше 5:", any_greater_5)  # True
+
+# Проверка данных о пользователях
+users = [
+    {"name": "Alice", "age": 25, "verified": True},
+    {"name": "Bob", "age": 17, "verified": False},
+    {"name": "Charlie", "age": 30, "verified": True}
+]
+
+# Все ли пользователи совершеннолетние?
+all_adults = all(map(lambda u: u["age"] >= 18, users))
+print("Все совершеннолетние:", all_adults)  # False
+
+# Есть ли хотя бы один верифицированный?
+any_verified = any(map(lambda u: u["verified"], users))
+print("Есть верифицированные:", any_verified)  # True
+```
+
+### 🚨 Частые ошибки
+
+**Ошибка 1: Забыли преобразовать результат map/filter в список**
+```python
+# ❌ НЕПРАВИЛЬНО - map возвращает итератор
+numbers = [1, 2, 3, 4, 5]
+squared = map(lambda x: x ** 2, numbers)
+print(squared)  # <map object at 0x...>
+
+# ✅ ПРАВИЛЬНО
+squared = list(map(lambda x: x ** 2, numbers))
+print(squared)  # [1, 4, 9, 16, 25]
+```
+
+**Ошибка 2: Слишком сложная lambda**
+```python
+# ❌ НЕПРАВИЛЬНО - lambda слишком сложная, лучше обычная функция
+process = lambda x: x * 2 if x > 0 else x / 2 if x < 0 else 0
+
+# ✅ ПРАВИЛЬНО
+def process(x):
+    if x > 0:
+        return x * 2
+    elif x < 0:
+        return x / 2
+    else:
+        return 0
+```
+
+**Ошибка 3: Неправильное использование reduce без начального значения**
+```python
+from functools import reduce
+
+# ❌ ОПАСНО - для пустого списка будет ошибка
+# result = reduce(lambda x, y: x + y, [])  # TypeError!
+
+# ✅ ПРАВИЛЬНО - указываем начальное значение
+result = reduce(lambda x, y: x + y, [], 0)
+print(result)  # 0
+```
+
+**Ошибка 4: Передача функции с круглыми скобками**
+```python
+def square(x):
+    return x ** 2
+
+numbers = [1, 2, 3, 4, 5]
+
+# ❌ НЕПРАВИЛЬНО - вызываем функцию вместо передачи
+# result = map(square(), numbers)  # TypeError!
+
+# ✅ ПРАВИЛЬНО - передаем ссылку на функцию
+result = map(square, numbers)
+print(list(result))  # [1, 4, 9, 16, 25]
+```
+
+### 📌 Полезные ресурсы
+- [Документация: Lambda expressions](https://docs.python.org/3/reference/expressions.html#lambda)
+- [Документация: map()](https://docs.python.org/3/library/functions.html#map)
+- [Документация: filter()](https://docs.python.org/3/library/functions.html#filter)
+- [Документация: functools.reduce()](https://docs.python.org/3/library/functools.html#functools.reduce)
+- [Документация: sorted()](https://docs.python.org/3/library/functions.html#sorted)
+- [PEP 3113: Removal of Tuple Parameter Unpacking](https://www.python.org/dev/peps/pep-3113/)
+- [Functional Programming HOWTO](https://docs.python.org/3/howto/functional.html)

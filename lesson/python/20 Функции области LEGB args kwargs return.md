@@ -20,9 +20,8 @@
 - [[#ДЗ 2) Фильтрация чисел (“even” / “odd”)]](#дз-2-фильтрация-чисел-“even”-“odd”)
 - [[#ДЗ 3) Объединение словарей (`**kwargs`-идея на практике)]](#дз-3-объединение-словарей-kwargs-идея-на-практике)
 - [[#Мини-шпаргалка]](#мини-шпаргалка)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
 ---
 
@@ -484,6 +483,574 @@ global x                     -> позволяет менять глобальн
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
-_Этот раздел будет дополнен практическими примерами и дополнительной информацией._
+### Важные концепции для изучения
+
+#### 1. Углубленное изучение области видимости LEGB
+```python
+# L - Local (локальная область функции)
+# E - Enclosing (охватывающая область вложенных функций)
+# G - Global (глобальная область модуля)
+# B - Built-in (встроенная область Python)
+
+x = "global"
+
+def outer():
+    x = "enclosing"
+    
+    def inner():
+        x = "local"
+        print(x)  # Ищет в порядке: L -> E -> G -> B
+    
+    inner()
+    print(x)
+
+outer()
+print(x)
+# Вывод:
+# local (L - локальная переменная inner)
+# enclosing (E - переменная outer)
+# global (G - глобальная переменная)
+
+# Демонстрация порядка поиска
+print(len)  # <built-in function len> - B (Built-in)
+
+def demo():
+    print(len)  # Находит из B
+    
+demo()
+
+# Использование globals() и locals()
+global_var = "глобальная"
+
+def show_scopes():
+    local_var = "локальная"
+    print("Глобальные:", list(globals().keys())[:3], "...")
+    print("Локальные:", list(locals().keys()))
+
+show_scopes()
+
+# Практический пример: замыкание с доступом к разным областям
+def create_multiplier(multiplier):
+    """Создает функцию-множитель, использующую область enclosing"""
+    def multiply(x):
+        return x * multiplier  # multiplier из области E (enclosing)
+    return multiply
+
+times_3 = create_multiplier(3)
+times_5 = create_multiplier(5)
+
+print(times_3(10))  # 30
+print(times_5(10))  # 50
+```
+
+#### 2. *args - переменное количество позиционных аргументов
+```python
+# *args собирает дополнительные позиционные аргументы в кортеж
+
+def print_args(*args):
+    print(f"Получено {len(args)} аргументов")
+    for i, arg in enumerate(args, 1):
+        print(f"  Аргумент {i}: {arg}")
+
+print_args(1)
+print_args(1, 2, 3)
+print_args('a', 'b', 'c', 'd')
+
+# Практический пример: функция с переменным числом аргументов
+def sum_all(*numbers):
+    """Суммирует все переданные числа"""
+    total = 0
+    for num in numbers:
+        total += num
+    return total
+
+print(sum_all(1, 2, 3))        # 6
+print(sum_all(10, 20, 30, 40))  # 100
+
+# Или используя встроенную функцию
+def sum_all_v2(*numbers):
+    return sum(numbers)
+
+# Распаковка списков при передаче аргументов
+numbers = [1, 2, 3, 4, 5]
+print(sum_all(*numbers))  # 15
+
+# Комбинирование обычных аргументов с *args
+def greet(greeting, *names):
+    """Приветствует множество людей"""
+    for name in names:
+        print(f"{greeting}, {name}!")
+
+greet("Привет", "Алиса", "Боб", "Виктор")
+# Привет, Алиса!
+# Привет, Боб!
+# Привет, Виктор!
+
+# *args должен быть после обычных аргументов
+# ✅ ПРАВИЛЬНО
+def func(a, b, *args):
+    pass
+
+# ❌ НЕПРАВИЛЬНО
+# def func(*args, a, b):  # SyntaxError!
+#     pass
+```
+
+#### 3. **kwargs - переменное количество именованных аргументов
+```python
+# **kwargs собирает именованные аргументы в словарь
+
+def print_kwargs(**kwargs):
+    print(f"Получено {len(kwargs)} именованных аргументов")
+    for key, value in kwargs.items():
+        print(f"  {key}: {value}")
+
+print_kwargs(name="Алиса", age=30, city="Москва")
+# Получено 3 именованных аргументов
+#   name: Алиса
+#   age: 30
+#   city: Москва
+
+# Практический пример: конфигурация функции
+def create_profile(name, **options):
+    """Создает профиль с дополнительными опциями"""
+    profile = {'name': name}
+    profile.update(options)
+    return profile
+
+profile1 = create_profile("Алиса", age=30, city="Москва", language="Python")
+print(profile1)
+# {'name': 'Алиса', 'age': 30, 'city': 'Москва', 'language': 'Python'}
+
+# Работа с конфигурацией
+def connect_database(**config):
+    """Подключается к БД с переданными параметрами"""
+    defaults = {
+        'host': 'localhost',
+        'port': 5432,
+        'timeout': 30,
+        'retries': 3
+    }
+    defaults.update(config)
+    
+    connection_string = (
+        f"Host: {defaults['host']}, "
+        f"Port: {defaults['port']}, "
+        f"Timeout: {defaults['timeout']}"
+    )
+    return connection_string
+
+print(connect_database(host='example.com', port=3306))
+# Host: example.com, Port: 3306, Timeout: 30
+
+# Распаковка словаря при передаче аргументов
+config = {'host': 'db.example.com', 'port': 5432, 'timeout': 60}
+print(connect_database(**config))
+```
+
+#### 4. Комбинирование *args, **kwargs и обычных аргументов
+```python
+# Правильный порядок: обычные аргументы -> *args -> **kwargs
+
+def complex_function(a, b, *args, **kwargs):
+    """Демонстрирует использование всех типов аргументов"""
+    print(f"Обычные: a={a}, b={b}")
+    print(f"*args: {args}")
+    print(f"**kwargs: {kwargs}")
+
+complex_function(1, 2)
+# Обычные: a=1, b=2
+# *args: ()
+# **kwargs: {}
+
+complex_function(1, 2, 3, 4, 5)
+# Обычные: a=1, b=2
+# *args: (3, 4, 5)
+# **kwargs: {}
+
+complex_function(1, 2, 3, 4, name="Алиса", age=30)
+# Обычные: a=1, b=2
+# *args: (3, 4)
+# **kwargs: {'name': 'Алиса', 'age': 30}
+
+# Практический пример: логирование функции
+def log_function_call(func, *args, **kwargs):
+    """Логирует вызов функции и ее результат"""
+    print(f"Вызов функции: {func.__name__}")
+    print(f"  Аргументы: {args}")
+    print(f"  Параметры: {kwargs}")
+    
+    result = func(*args, **kwargs)
+    print(f"  Результат: {result}")
+    return result
+
+def add(a, b):
+    return a + b
+
+log_function_call(add, 5, 3)
+# Вызов функции: add
+#   Аргументы: (5, 3)
+#   Параметры: {}
+#   Результат: 8
+
+# Распаковка при вызове
+args = [10, 20]
+kwargs = {}
+result = log_function_call(add, *args, **kwargs)
+```
+
+#### 5. Различные типы return
+```python
+# Функция без return или return без значения возвращает None
+def no_return():
+    x = 5
+
+print(no_return())  # None
+
+# Возврат одного значения
+def get_single():
+    return 42
+
+print(get_single())  # 42
+
+# Возврат нескольких значений (как кортеж)
+def get_coordinates():
+    return 10, 20  # Неявно возвращает кортеж (10, 20)
+
+x, y = get_coordinates()
+print(f"x={x}, y={y}")  # x=10, y=20
+
+# Возврат словаря с несколькими значениями
+def get_user_info():
+    return {
+        'name': 'Алиса',
+        'age': 30,
+        'email': 'alice@example.com'
+    }
+
+user = get_user_info()
+print(user['name'])  # Алиса
+
+# Возврат None явно для ранного выхода
+def find_item(items, target):
+    """Ищет элемент и возвращает индекс или None"""
+    for i, item in enumerate(items):
+        if item == target:
+            return i
+    return None
+
+print(find_item([1, 2, 3, 4, 5], 3))  # 2
+print(find_item([1, 2, 3, 4, 5], 10))  # None
+
+# Практический пример: функция с несколькими путями return
+def divide(a, b):
+    """Делит a на b с обработкой ошибок"""
+    if b == 0:
+        return None, "Division by zero"
+    
+    if a % b == 0:
+        return a // b, None
+    else:
+        return a / b, None
+
+result, error = divide(10, 2)
+if error:
+    print(f"Ошибка: {error}")
+else:
+    print(f"Результат: {result}")  # Результат: 5
+
+result, error = divide(10, 0)
+if error:
+    print(f"Ошибка: {error}")  # Ошибка: Division by zero
+```
+
+### 💡 Практические примеры
+
+#### Пример 1: Декоратор с *args и **kwargs
+```python
+def timing_decorator(func):
+    """Декоратор, измеряющий время выполнения функции"""
+    import time
+    from functools import wraps
+    
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"Вызов функции: {func.__name__}")
+        start = time.time()
+        
+        result = func(*args, **kwargs)
+        
+        elapsed = time.time() - start
+        print(f"Время выполнения: {elapsed:.4f} сек")
+        return result
+    
+    return wrapper
+
+@timing_decorator
+def slow_function(n):
+    """Имитирует долгую операцию"""
+    import time
+    time.sleep(n)
+    return f"Завершено за {n} сек"
+
+slow_function(0.5)
+
+@timing_decorator
+def add(a, b, verbose=False):
+    if verbose:
+        print(f"Суммирование {a} + {b}")
+    return a + b
+
+add(5, 3, verbose=True)
+```
+
+#### Пример 2: Функция для обработки данных с гибкими аргументами
+```python
+def filter_data(*arrays, operation='all', **filters):
+    """
+    Фильтрует данные по условиям
+    
+    *arrays: переменное количество массивов данных
+    operation: 'all' (все условия) или 'any' (любое условие)
+    **filters: условия фильтрации {поле: значение}
+    """
+    if not arrays:
+        return None
+    
+    # Предполагаем, что это массивы словарей
+    data = arrays[0]
+    
+    result = []
+    for item in data:
+        if operation == 'all':
+            # Все условия должны быть выполнены
+            match = all(
+                item.get(key) == value
+                for key, value in filters.items()
+            )
+        else:  # 'any'
+            # Любое из условий должно быть выполнено
+            match = any(
+                item.get(key) == value
+                for key, value in filters.items()
+            )
+        
+        if match:
+            result.append(item)
+    
+    return result
+
+# Использование
+users = [
+    {'name': 'Алиса', 'age': 30, 'city': 'Москва'},
+    {'name': 'Боб', 'age': 25, 'city': 'СПб'},
+    {'name': 'Виктор', 'age': 30, 'city': 'СПб'},
+    {'name': 'Дарья', 'age': 25, 'city': 'Москва'},
+]
+
+# Все условия (AND)
+result = filter_data(users, operation='all', age=30, city='Москва')
+print(result)  # [{'name': 'Алиса', ...}]
+
+# Любое условие (OR)
+result = filter_data(users, operation='any', age=30, city='Москва')
+print(result)  # [{'name': 'Алиса', ...}, {'name': 'Боб', ...}, ...]
+```
+
+#### Пример 3: Функция-фабрика с замыканием
+```python
+def create_account(initial_balance=0):
+    """
+    Создает счет с методами для работы с деньгами
+    Демонстрирует область видимости E (enclosing)
+    """
+    balance = initial_balance
+    transactions = []
+    
+    def deposit(amount):
+        """Пополнить счет"""
+        nonlocal balance
+        if amount > 0:
+            balance += amount
+            transactions.append(('deposit', amount))
+            return True
+        return False
+    
+    def withdraw(amount):
+        """Снять деньги со счета"""
+        nonlocal balance
+        if 0 < amount <= balance:
+            balance -= amount
+            transactions.append(('withdraw', amount))
+            return True
+        return False
+    
+    def get_balance():
+        """Получить баланс"""
+        return balance
+    
+    def get_statement():
+        """Получить выписку"""
+        return {
+            'balance': balance,
+            'transactions': transactions.copy(),
+            'total_transactions': len(transactions)
+        }
+    
+    # Возвращаем словарь функций
+    return {
+        'deposit': deposit,
+        'withdraw': withdraw,
+        'balance': get_balance,
+        'statement': get_statement
+    }
+
+# Использование
+account = create_account(1000)
+
+account['deposit'](500)
+print(f"Баланс: {account['balance']()}")  # 1500
+
+account['withdraw'](200)
+print(f"Баланс: {account['balance']()}")  # 1300
+
+print(account['statement']())
+# {'balance': 1300, 'transactions': [('deposit', 500), ('withdraw', 200)], ...}
+```
+
+#### Пример 4: Построитель (Builder) с гибкими параметрами
+```python
+class QueryBuilder:
+    """Построитель SQL запросов с гибкими параметрами"""
+    def __init__(self, table):
+        self.table = table
+        self.conditions = []
+        self.selected_fields = ['*']
+        self.limit_value = None
+        self.offset_value = None
+    
+    def select(self, *fields):
+        """Выбрать поля"""
+        self.selected_fields = list(fields) if fields else ['*']
+        return self
+    
+    def where(self, **conditions):
+        """Добавить условия WHERE"""
+        for key, value in conditions.items():
+            if isinstance(value, str):
+                self.conditions.append(f"{key} = '{value}'")
+            else:
+                self.conditions.append(f"{key} = {value}")
+        return self
+    
+    def limit(self, limit, offset=0):
+        """Добавить LIMIT и OFFSET"""
+        self.limit_value = limit
+        self.offset_value = offset
+        return self
+    
+    def build(self):
+        """Построить SQL запрос"""
+        fields = ', '.join(self.selected_fields)
+        query = f"SELECT {fields} FROM {self.table}"
+        
+        if self.conditions:
+            query += " WHERE " + " AND ".join(self.conditions)
+        
+        if self.limit_value:
+            query += f" LIMIT {self.limit_value}"
+            if self.offset_value:
+                query += f" OFFSET {self.offset_value}"
+        
+        return query
+
+# Использование (method chaining)
+query = (QueryBuilder('users')
+         .select('id', 'name', 'email')
+         .where(age=30, city='Москва')
+         .limit(10, offset=0)
+         .build())
+
+print(query)
+# SELECT id, name, email FROM users WHERE age = 30 AND city = 'Москва' LIMIT 10
+```
+
+### 🚨 Частые ошибки
+
+**Ошибка 1: Неправильный порядок параметров**
+```python
+# ❌ НЕПРАВИЛЬНО - *args должны быть перед **kwargs
+# def func(*args, **kwargs, c):
+#     pass
+
+# ✅ ПРАВИЛЬНО
+def func(a, *args, **kwargs):
+    pass
+
+def func(a, b=2, *args, **kwargs):
+    pass
+```
+
+**Ошибка 2: Забыли распаковать аргументы**
+```python
+def add(a, b):
+    return a + b
+
+numbers = [5, 3]
+
+# ❌ НЕПРАВИЛЬНО
+result = add(numbers)  # TypeError: add() missing 1 required positional argument
+
+# ✅ ПРАВИЛЬНО
+result = add(*numbers)  # 8
+```
+
+**Ошибка 3: Использование nonlocal без необходимости**
+```python
+# ❌ НЕПРАВИЛЬНО - не нужен nonlocal для чтения
+def outer():
+    x = 10
+    
+    def inner():
+        # nonlocal x  # Не нужен здесь!
+        print(x)  # Можно просто прочитать
+    
+    inner()
+
+# ✅ ПРАВИЛЬНО - nonlocal нужен для изменения
+def outer():
+    x = 10
+    
+    def inner():
+        nonlocal x  # Нужен для изменения
+        x += 1
+    
+    inner()
+    print(x)  # 11
+```
+
+**Ошибка 4: Return в цикле прерывает функцию**
+```python
+# ❌ ПРОБЛЕМА - функция завершается при первом совпадении
+def find_all_matches(items, target):
+    for item in items:
+        if item == target:
+            return item  # Вернет только первый!
+
+# ✅ ПРАВИЛЬНО
+def find_all_matches(items, target):
+    matches = []
+    for item in items:
+        if item == target:
+            matches.append(item)
+    return matches
+```
+
+### 📌 Полезные ресурсы
+- [Документация: функции](https://docs.python.org/3/tutorial/controlflow.html#defining-functions)
+- [Документация: *args и **kwargs](https://docs.python.org/3/tutorial/controlflow.html#more-on-defining-functions)
+- [PEP 3102 - Keyword-Only Arguments](https://www.python.org/dev/peps/pep-3102/)
+- [functools.wraps](https://docs.python.org/3/library/functools.html#functools.wraps)
+- [globals() и locals()](https://docs.python.org/3/library/functions.html#globals)

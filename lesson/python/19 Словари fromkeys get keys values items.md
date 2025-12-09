@@ -18,9 +18,8 @@
 - [[#2) Счётчик букв в словах (слово → {буква: количество})]](#2-счётчик-букв-в-словах-слово-→-буква-количество)
 - [[#3) Распределение студентов по группам (вложенный словарь)]](#3-распределение-студентов-по-группам-вложенный-словарь)
 - [[#Мини-шпаргалка]](#мини-шпаргалка)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
 ---
 
@@ -480,6 +479,440 @@ dict comprehension:
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
-_Этот раздел будет дополнен практическими примерами и дополнительной информацией._
+### Важные концепции для изучения
+
+#### 1. dict.fromkeys() - создание словарей с одинаковыми значениями
+```python
+# Синтаксис: dict.fromkeys(keys, value=None)
+
+# Базовое использование
+keys = ['a', 'b', 'c']
+d = dict.fromkeys(keys)
+print(d)  # {'a': None, 'b': None, 'c': None}
+
+# С начальным значением
+d = dict.fromkeys(keys, 0)
+print(d)  # {'a': 0, 'b': 0, 'c': 0}
+
+# Создание счетчика для слов
+words = ['apple', 'banana', 'apple', 'cherry']
+word_count = dict.fromkeys(set(words), 0)
+for word in words:
+    word_count[word] += 1
+print(word_count)  # {'apple': 2, 'banana': 1, 'cherry': 1}
+
+# ВНИМАНИЕ: Изменяемые объекты как значения
+# ❌ НЕПРАВИЛЬНО
+d = dict.fromkeys(['a', 'b', 'c'], [])
+d['a'].append(1)
+print(d)  # {'a': [1], 'b': [1], 'c': [1]} - все ссылаются на один список!
+
+# ✅ ПРАВИЛЬНО - используем comprehension
+d = {k: [] for k in ['a', 'b', 'c']}
+d['a'].append(1)
+print(d)  # {'a': [1], 'b': [], 'c': []}
+```
+
+#### 2. Методы поиска и доступа: get(), pop(), setdefault()
+```python
+# dict.get(key, default=None)
+# Безопасное получение значения
+d = {'a': 1, 'b': 2}
+print(d.get('a'))          # 1
+print(d.get('c'))          # None
+print(d.get('c', 'absent')) # absent
+
+# Часто используется для конфигурации
+config = {'timeout': 30}
+timeout = config.get('timeout', 60)  # 30
+retries = config.get('retries', 3)   # 3
+
+# dict.pop(key, default=None)
+# Удаляет и возвращает значение
+d = {'a': 1, 'b': 2, 'c': 3}
+value = d.pop('b')
+print(value)  # 2
+print(d)      # {'a': 1, 'c': 3}
+
+# С значением по умолчанию
+value = d.pop('z', 'not found')
+print(value)  # not found
+print(d)      # {'a': 1, 'c': 3} - не изменился
+
+# dict.setdefault(key, default=None)
+# Возвращает значение, если есть, иначе устанавливает и возвращает default
+d = {'a': 1}
+result = d.setdefault('a', 0)
+print(result)  # 1
+print(d)       # {'a': 1} - не изменился
+
+result = d.setdefault('b', 0)
+print(result)  # 0
+print(d)       # {'a': 1, 'b': 0} - добавился новый ключ
+
+# Полезно для инициализации вложенных структур
+data = {}
+data.setdefault('users', []).append('Алиса')
+data.setdefault('users', []).append('Боб')
+print(data)  # {'users': ['Алиса', 'Боб']}
+```
+
+#### 3. Проверка наличия ключей и значений
+```python
+# Проверка ключей
+d = {'a': 1, 'b': 2, 'c': 3}
+print('a' in d)      # True - проверка по ключам (быстро, O(1))
+print('x' in d)      # False
+print('x' not in d)  # True
+
+# Проверка значений (медленнее, O(n))
+print(1 in d.values())  # True
+print(5 in d.values())  # False
+
+# Проверка пар
+print(('a', 1) in d.items())  # True
+print(('a', 2) in d.items())  # False
+
+# Практический пример: валидация данных
+def validate_user(user_dict):
+    required_fields = ['name', 'email', 'age']
+    missing = [field for field in required_fields if field not in user_dict]
+    
+    if missing:
+        return False, f"Missing fields: {', '.join(missing)}"
+    return True, "Valid"
+
+user1 = {'name': 'Алиса', 'email': 'alice@example.com', 'age': 30}
+user2 = {'name': 'Боб', 'email': 'bob@example.com'}
+
+print(validate_user(user1))  # (True, 'Valid')
+print(validate_user(user2))  # (False, 'Missing fields: age')
+```
+
+#### 4. Перебор словаря: keys(), values(), items()
+```python
+d = {'a': 1, 'b': 2, 'c': 3}
+
+# keys() - возвращает представление ключей (не список!)
+keys = d.keys()
+print(list(keys))  # ['a', 'b', 'c']
+print(type(keys))  # <class 'dict_keys'>
+
+# values() - возвращает представление значений
+values = d.values()
+print(list(values))  # [1, 2, 3]
+
+# items() - возвращает представление пар (ключ, значение)
+items = d.items()
+print(list(items))  # [('a', 1), ('b', 2), ('c', 3)]
+
+# Итерация по элементам (наиболее эффективно)
+for key in d:
+    print(f"{key}: {d[key]}")
+
+# То же самое
+for key, value in d.items():
+    print(f"{key}: {value}")
+
+# Слияние двух словарей в один список
+d1 = {'a': 1, 'b': 2}
+d2 = {'c': 3, 'd': 4}
+merged = list(d1.items()) + list(d2.items())
+print(merged)  # [('a', 1), ('b', 2), ('c', 3), ('d', 4)]
+
+# Сортировка словаря по ключам или значениям
+d = {'z': 3, 'a': 1, 'b': 2}
+sorted_by_key = dict(sorted(d.items()))
+print(sorted_by_key)  # {'a': 1, 'b': 2, 'z': 3}
+
+sorted_by_value = dict(sorted(d.items(), key=lambda x: x[1]))
+print(sorted_by_value)  # {'a': 1, 'b': 2, 'z': 3}
+
+# Сортировка в обратном порядке
+sorted_desc = dict(sorted(d.items(), reverse=True))
+print(sorted_desc)  # {'z': 3, 'b': 2, 'a': 1}
+```
+
+### 💡 Практические примеры
+
+#### Пример 1: Создание индекса для быстрого поиска
+```python
+class DataIndex:
+    """Индекс для быстрого поиска по значениям"""
+    def __init__(self):
+        self.index = {}
+    
+    def add_record(self, id, name, email, age):
+        """Добавляет запись"""
+        record = {'name': name, 'email': email, 'age': age}
+        self.index[id] = record
+    
+    def find_by_email(self, email):
+        """Находит запись по email"""
+        for id, record in self.index.items():
+            if record['email'] == email:
+                return id, record
+        return None, None
+    
+    def find_by_name(self, name):
+        """Находит все записи с именем"""
+        results = {}
+        for id, record in self.index.items():
+            if record['name'] == name:
+                results[id] = record
+        return results
+    
+    def find_by_age_range(self, min_age, max_age):
+        """Находит записи в диапазоне возраста"""
+        results = {}
+        for id, record in self.index.items():
+            if min_age <= record['age'] <= max_age:
+                results[id] = record
+        return results
+
+# Использование
+index = DataIndex()
+index.add_record('001', 'Алиса', 'alice@example.com', 30)
+index.add_record('002', 'Боб', 'bob@example.com', 25)
+index.add_record('003', 'Виктор', 'victor@example.com', 30)
+
+print(index.find_by_email('alice@example.com'))
+# ('001', {'name': 'Алиса', 'email': 'alice@example.com', 'age': 30})
+
+print(index.find_by_age_range(25, 30))
+# {'001': {...}, '002': {...}, '003': {...}}
+```
+
+#### Пример 2: Конфигурация с fallback значениями
+```python
+class Config:
+    """Конфигурация с поддержкой наследования и defaults"""
+    def __init__(self, default_config=None):
+        self.config = default_config or {}
+    
+    def get(self, path, default=None):
+        """Получить значение по пути 'section.key.subkey'"""
+        keys = path.split('.')
+        value = self.config
+        
+        for key in keys:
+            if isinstance(value, dict):
+                value = value.get(key)
+                if value is None:
+                    return default
+            else:
+                return default
+        
+        return value if value is not None else default
+    
+    def set(self, path, value):
+        """Установить значение по пути"""
+        keys = path.split('.')
+        current = self.config
+        
+        for key in keys[:-1]:
+            if key not in current:
+                current[key] = {}
+            current = current[key]
+        
+        current[keys[-1]] = value
+    
+    def update(self, other):
+        """Объединить с другой конфигурацией"""
+        for key, value in other.items():
+            if key in self.config and isinstance(self.config[key], dict):
+                if isinstance(value, dict):
+                    self.config[key].update(value)
+                else:
+                    self.config[key] = value
+            else:
+                self.config[key] = value
+
+# Использование
+defaults = {
+    'app': {
+        'name': 'MyApp',
+        'version': '1.0',
+        'debug': False
+    },
+    'db': {
+        'host': 'localhost',
+        'port': 5432,
+        'timeout': 30
+    }
+}
+
+config = Config(defaults)
+print(config.get('app.name'))  # MyApp
+print(config.get('db.port'))   # 5432
+print(config.get('cache.ttl', 3600))  # 3600 (default)
+
+# Переопределение
+config.set('app.debug', True)
+print(config.get('app.debug'))  # True
+```
+
+#### Пример 3: Группировка и агрегация данных
+```python
+def group_and_aggregate(items, group_key, aggregates):
+    """
+    Группирует элементы и вычисляет агрегаты
+    
+    group_key: функция для получения ключа группы
+    aggregates: {имя: функция_агрегации}
+    """
+    groups = {}
+    
+    for item in items:
+        key = group_key(item)
+        if key not in groups:
+            groups[key] = []
+        groups[key].append(item)
+    
+    result = {}
+    for key, group in groups.items():
+        result[key] = {}
+        for agg_name, agg_func in aggregates.items():
+            result[key][agg_name] = agg_func(group)
+    
+    return result
+
+# Пример: анализ продаж по регионам
+sales = [
+    {'region': 'North', 'amount': 1000},
+    {'region': 'South', 'amount': 1500},
+    {'region': 'North', 'amount': 800},
+    {'region': 'South', 'amount': 900},
+    {'region': 'East', 'amount': 1200},
+]
+
+aggregates = {
+    'total': lambda group: sum(s['amount'] for s in group),
+    'count': lambda group: len(group),
+    'average': lambda group: sum(s['amount'] for s in group) / len(group),
+    'max': lambda group: max(s['amount'] for s in group),
+}
+
+result = group_and_aggregate(sales, lambda x: x['region'], aggregates)
+
+for region, stats in result.items():
+    print(f"{region}: Total={stats['total']}, Count={stats['count']}, "
+          f"Avg={stats['average']:.0f}, Max={stats['max']}")
+```
+
+#### Пример 4: Многоуровневая кэширование с TTL
+```python
+import time
+
+class Cache:
+    """Простой кэш с поддержкой TTL (Time To Live)"""
+    def __init__(self):
+        self.cache = {}  # {key: (value, expire_time)}
+    
+    def set(self, key, value, ttl=None):
+        """Сохранить значение с опциональным TTL в секундах"""
+        expire_time = time.time() + ttl if ttl else None
+        self.cache[key] = (value, expire_time)
+    
+    def get(self, key, default=None):
+        """Получить значение, если оно не устарело"""
+        if key not in self.cache:
+            return default
+        
+        value, expire_time = self.cache[key]
+        
+        if expire_time and time.time() > expire_time:
+            del self.cache[key]
+            return default
+        
+        return value
+    
+    def clear(self):
+        """Очистить весь кэш"""
+        self.cache.clear()
+    
+    def cleanup_expired(self):
+        """Удалить истекшие значения"""
+        current_time = time.time()
+        expired = [k for k, (_, exp) in self.cache.items() 
+                   if exp and current_time > exp]
+        for k in expired:
+            del self.cache[k]
+        return len(expired)
+
+# Использование
+cache = Cache()
+cache.set('user:1', {'name': 'Алиса'}, ttl=5)
+cache.set('user:2', {'name': 'Боб'})  # Без TTL
+
+print(cache.get('user:1'))  # {'name': 'Алиса'}
+print(cache.get('user:2'))  # {'name': 'Боб'}
+print(cache.get('user:3'))  # None
+
+time.sleep(6)
+print(cache.get('user:1'))  # None - истекло
+print(cache.get('user:2'))  # {'name': 'Боб'} - остается
+```
+
+### 🚨 Частые ошибки
+
+**Ошибка 1: Использование изменяемого значения в fromkeys()**
+```python
+# ❌ НЕПРАВИЛЬНО
+d = dict.fromkeys(['a', 'b', 'c'], [])
+d['a'].append(1)
+print(d)  # {'a': [1], 'b': [1], 'c': [1]} - все связаны!
+
+# ✅ ПРАВИЛЬНО
+d = {k: [] for k in ['a', 'b', 'c']}
+d['a'].append(1)
+print(d)  # {'a': [1], 'b': [], 'c': []}
+```
+
+**Ошибка 2: KeyError вместо использования get()**
+```python
+# ❌ НЕПРАВИЛЬНО - может вызвать KeyError
+d = {'a': 1}
+value = d['b']  # KeyError: 'b'
+
+# ✅ ПРАВИЛЬНО
+d = {'a': 1}
+value = d.get('b')  # None
+value = d.get('b', 'default')  # 'default'
+```
+
+**Ошибка 3: Изменение словаря во время итерации**
+```python
+# ❌ НЕПРАВИЛЬНО - RuntimeError
+d = {'a': 1, 'b': 2, 'c': 3}
+# for key in d.keys():
+#     if d[key] > 1:
+#         del d[key]  # RuntimeError!
+
+# ✅ ПРАВИЛЬНО - создать список ключей
+d = {'a': 1, 'b': 2, 'c': 3}
+for key in list(d.keys()):
+    if d[key] > 1:
+        del d[key]
+```
+
+**Ошибка 4: pop() без значения по умолчанию**
+```python
+# ❌ НЕПРАВИЛЬНО - KeyError если ключа нет
+d = {'a': 1}
+value = d.pop('b')  # KeyError: 'b'
+
+# ✅ ПРАВИЛЬНО
+d = {'a': 1}
+value = d.pop('b', None)  # None
+value = d.pop('b', 'not found')  # 'not found'
+```
+
+### 📌 Полезные ресурсы
+- [Документация: dict методы](https://docs.python.org/3/library/stdtypes.html#dictionary-methods)
+- [Документация: dict.get()](https://docs.python.org/3/library/stdtypes.html#dict.get)
+- [Документация: dict.setdefault()](https://docs.python.org/3/library/stdtypes.html#dict.setdefault)
+- [Документация: dict.pop()](https://docs.python.org/3/library/stdtypes.html#dict.pop)
+- [Документация: dict.fromkeys()](https://docs.python.org/3/library/stdtypes.html#dict.fromkeys)

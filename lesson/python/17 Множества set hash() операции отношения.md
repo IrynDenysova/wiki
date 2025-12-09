@@ -16,9 +16,8 @@
 - [[#12) Практика (решения)]](#12-практика-решения)
 - [[#13) Домашнее задание (решения)]](#13-домашнее-задание-решения)
 - [[#14) Мини-шпаргалка]](#14-мини-шпаргалка)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
 ---
 
@@ -412,6 +411,345 @@ A.isdisjoint(B) -> True если нет общих элементов
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
-_Этот раздел будет дополнен практическими примерами и дополнительной информацией._
+### Важные концепции для изучения
+
+#### 1. Хеширование и производительность множеств
+```python
+# Множества используют хеш-таблицы - O(1) для поиска
+import time
+
+# Поиск в списке - O(n)
+large_list = list(range(1000000))
+start = time.time()
+999999 in large_list
+print(f"Список: {time.time() - start:.4f} сек")
+
+# Поиск в множестве - O(1)
+large_set = set(range(1000000))
+start = time.time()
+999999 in large_set
+print(f"Множество: {time.time() - start:.6f} сек")
+
+# Хеширование пользовательских объектов
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __hash__(self):
+        return hash((self.x, self.y))
+    
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+    
+    def __repr__(self):
+        return f"Point({self.x}, {self.y})"
+
+# Теперь Point можно использовать в множестве
+points = {Point(0, 0), Point(1, 1), Point(0, 0)}
+print(points)  # {Point(0, 0), Point(1, 1)} - дубликат удален
+```
+
+#### 2. Frozenset - неизменяемое множество
+```python
+# frozenset можно использовать как ключ словаря или элемент множества
+fs = frozenset([1, 2, 3])
+# fs.add(4)  # AttributeError - нельзя изменить
+
+# Множество frozenset'ов
+set_of_sets = {
+    frozenset([1, 2]),
+    frozenset([3, 4]),
+    frozenset([1, 2])  # Дубликат - будет удален
+}
+print(set_of_sets)  # {frozenset({1, 2}), frozenset({3, 4})}
+
+# Использование в качестве ключа словаря
+graph = {
+    frozenset(['A', 'B']): 5,
+    frozenset(['B', 'C']): 3,
+    frozenset(['A', 'C']): 7
+}
+print(graph[frozenset(['B', 'A'])])  # 5 (порядок не важен)
+
+# Преобразования
+regular_set = {1, 2, 3}
+frozen = frozenset(regular_set)
+back_to_set = set(frozen)
+```
+
+#### 3. Продвинутые операции с множествами
+```python
+# Симметричная разность через ^
+set1 = {1, 2, 3, 4}
+set2 = {3, 4, 5, 6}
+print(set1 ^ set2)  # {1, 2, 5, 6} - элементы только в одном из множеств
+
+# Проверка на непересекающиеся множества
+a = {1, 2, 3}
+b = {4, 5, 6}
+c = {3, 4, 5}
+print(a.isdisjoint(b))  # True - нет общих элементов
+print(a.isdisjoint(c))  # False - есть общий элемент 3
+
+# Множественные операции за раз
+sets = [
+    {1, 2, 3},
+    {2, 3, 4},
+    {3, 4, 5}
+]
+
+# Объединение всех множеств
+union_all = set.union(*sets)
+print(union_all)  # {1, 2, 3, 4, 5}
+
+# Пересечение всех множеств
+intersection_all = set.intersection(*sets)
+print(intersection_all)  # {3}
+
+# Update с несколькими итерируемыми
+s = {1, 2}
+s.update([3, 4], {5, 6}, (7, 8))
+print(s)  # {1, 2, 3, 4, 5, 6, 7, 8}
+```
+
+#### 4. Set comprehensions
+```python
+# Создание множества через comprehension
+squares = {x**2 for x in range(10)}
+print(squares)  # {0, 1, 64, 4, 36, 9, 16, 49, 81, 25}
+
+# С условием
+even_squares = {x**2 for x in range(10) if x % 2 == 0}
+print(even_squares)  # {0, 64, 16, 36, 4}
+
+# Извлечение уникальных символов
+text = "Hello World"
+unique_chars = {char.lower() for char in text if char.isalpha()}
+print(unique_chars)  # {'e', 'd', 'h', 'l', 'o', 'r', 'w'}
+
+# Комбинирование множеств
+set1 = {1, 2, 3}
+set2 = {3, 4, 5}
+combined = {x + y for x in set1 for y in set2}
+print(combined)  # {4, 5, 6, 7, 8, 9}
+```
+
+### 💡 Практические примеры
+
+#### Пример 1: Удаление дубликатов с сохранением типов
+```python
+def remove_duplicates_preserve_order(lst):
+    """Удаляет дубликаты, сохраняя порядок"""
+    seen = set()
+    result = []
+    for item in lst:
+        if item not in seen:
+            seen.add(item)
+            result.append(item)
+    return result
+
+numbers = [1, 2, 3, 2, 4, 1, 5, 3]
+unique = remove_duplicates_preserve_order(numbers)
+print(unique)  # [1, 2, 3, 4, 5]
+
+# Для хешируемых объектов можно использовать dict.fromkeys()
+unique = list(dict.fromkeys(numbers))
+print(unique)  # [1, 2, 3, 4, 5]
+```
+
+#### Пример 2: Анализ текста - уникальные слова
+```python
+def analyze_text(text):
+    """Анализирует текст и возвращает статистику"""
+    words = text.lower().split()
+    
+    # Очистка от пунктуации
+    import string
+    words = [word.strip(string.punctuation) for word in words]
+    
+    unique_words = set(words)
+    word_count = len(words)
+    unique_count = len(unique_words)
+    
+    return {
+        'total_words': word_count,
+        'unique_words': unique_count,
+        'vocabulary': unique_words,
+        'repetition_rate': (word_count - unique_count) / word_count if word_count > 0 else 0
+    }
+
+text = "Python is great. Python is powerful. Python is easy to learn."
+stats = analyze_text(text)
+print(f"Всего слов: {stats['total_words']}")
+print(f"Уникальных: {stats['unique_words']}")
+print(f"Коэффициент повторений: {stats['repetition_rate']:.2%}")
+```
+
+#### Пример 3: Поиск общих друзей в социальной сети
+```python
+class SocialNetwork:
+    def __init__(self):
+        self.friendships = {}
+    
+    def add_friendship(self, person, friend):
+        """Добавляет дружбу (двустороннюю)"""
+        if person not in self.friendships:
+            self.friendships[person] = set()
+        if friend not in self.friendships:
+            self.friendships[friend] = set()
+        
+        self.friendships[person].add(friend)
+        self.friendships[friend].add(person)
+    
+    def common_friends(self, person1, person2):
+        """Находит общих друзей"""
+        friends1 = self.friendships.get(person1, set())
+        friends2 = self.friendships.get(person2, set())
+        return friends1 & friends2
+    
+    def suggest_friends(self, person):
+        """Предлагает друзей (друзья друзей, исключая уже друзей)"""
+        friends = self.friendships.get(person, set())
+        friends_of_friends = set()
+        
+        for friend in friends:
+            friends_of_friends.update(self.friendships.get(friend, set()))
+        
+        # Исключаем самого человека и уже существующих друзей
+        suggestions = friends_of_friends - friends - {person}
+        return suggestions
+
+# Использование
+sn = SocialNetwork()
+sn.add_friendship("Алиса", "Боб")
+sn.add_friendship("Алиса", "Виктор")
+sn.add_friendship("Боб", "Дмитрий")
+sn.add_friendship("Виктор", "Дмитрий")
+
+print(sn.common_friends("Алиса", "Дмитрий"))  # {'Боб', 'Виктор'}
+print(sn.suggest_friends("Алиса"))  # {'Дмитрий'}
+```
+
+#### Пример 4: Проверка прав доступа
+```python
+class AccessControl:
+    def __init__(self):
+        self.user_permissions = {}
+        self.role_permissions = {
+            'admin': {'read', 'write', 'delete', 'manage'},
+            'editor': {'read', 'write'},
+            'viewer': {'read'}
+        }
+    
+    def assign_role(self, user, role):
+        """Назначает роль пользователю"""
+        if user not in self.user_permissions:
+            self.user_permissions[user] = set()
+        self.user_permissions[user].update(self.role_permissions.get(role, set()))
+    
+    def grant_permission(self, user, permission):
+        """Дает отдельное разрешение"""
+        if user not in self.user_permissions:
+            self.user_permissions[user] = set()
+        self.user_permissions[user].add(permission)
+    
+    def has_permission(self, user, permission):
+        """Проверяет наличие разрешения"""
+        return permission in self.user_permissions.get(user, set())
+    
+    def get_users_with_permission(self, permission):
+        """Находит всех пользователей с данным разрешением"""
+        return {user for user, perms in self.user_permissions.items() 
+                if permission in perms}
+
+# Использование
+ac = AccessControl()
+ac.assign_role("Алиса", "admin")
+ac.assign_role("Боб", "editor")
+ac.assign_role("Виктор", "viewer")
+
+print(ac.has_permission("Боб", "write"))  # True
+print(ac.has_permission("Виктор", "delete"))  # False
+print(ac.get_users_with_permission("read"))  # {'Алиса', 'Боб', 'Виктор'}
+```
+
+### 🚨 Частые ошибки
+
+**Ошибка 1: Попытка добавить нехешируемый объект**
+```python
+# ❌ НЕПРАВИЛЬНО - списки нельзя добавить в множество
+# s = {[1, 2], [3, 4]}  # TypeError: unhashable type: 'list'
+
+# ✅ ПРАВИЛЬНО - используем кортежи или frozenset
+s = {(1, 2), (3, 4)}
+print(s)  # {(1, 2), (3, 4)}
+
+# Или frozenset для множеств
+s = {frozenset([1, 2]), frozenset([3, 4])}
+print(s)  # {frozenset({1, 2}), frozenset({3, 4})}
+```
+
+**Ошибка 2: Изменение множества во время итерации**
+```python
+# ❌ НЕПРАВИЛЬНО - RuntimeError
+s = {1, 2, 3, 4, 5}
+# for item in s:
+#     if item % 2 == 0:
+#         s.remove(item)  # RuntimeError!
+
+# ✅ ПРАВИЛЬНО - итерация по копии
+s = {1, 2, 3, 4, 5}
+for item in s.copy():
+    if item % 2 == 0:
+        s.remove(item)
+print(s)  # {1, 3, 5}
+
+# ✅ ИЛИ создать новое множество
+s = {1, 2, 3, 4, 5}
+s = {item for item in s if item % 2 != 0}
+print(s)  # {1, 3, 5}
+```
+
+**Ошибка 3: Путаница между & и intersection()**
+```python
+set1 = {1, 2, 3}
+set2 = {2, 3, 4}
+
+# Оба способа работают для множеств
+result1 = set1 & set2
+result2 = set1.intersection(set2)
+print(result1 == result2)  # True
+
+# НО & требует множество с обеих сторон
+# result = set1 & [2, 3, 4]  # TypeError!
+
+# ✅ intersection() работает с любым итерируемым
+result = set1.intersection([2, 3, 4])
+print(result)  # {2, 3}
+```
+
+**Ошибка 4: Забыли, что множества неупорядочены**
+```python
+# ❌ ПРОБЛЕМА - нельзя полагаться на порядок
+s = {3, 1, 4, 1, 5, 9, 2, 6}
+# first = list(s)[0]  # Непредсказуемый результат!
+
+# ✅ ПРАВИЛЬНО - используем min/max или sorted
+s = {3, 1, 4, 1, 5, 9, 2, 6}
+first = min(s)  # 1
+last = max(s)   # 9
+sorted_list = sorted(s)  # [1, 2, 3, 4, 5, 6, 9]
+
+# Или используйте list/tuple если нужен порядок
+ordered_data = [3, 1, 4, 1, 5, 9, 2, 6]  # Список вместо множества
+```
+
+### 📌 Полезные ресурсы
+- [Документация: set](https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset)
+- [Документация: frozenset](https://docs.python.org/3/library/stdtypes.html#frozenset)
+- [Документация: hash()](https://docs.python.org/3/library/functions.html#hash)
+- [Set Theory Operations](https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset)
+- [Time Complexity of Set Operations](https://wiki.python.org/moin/TimeComplexity)

@@ -1,11 +1,218 @@
 # Итераторы iter() next() itertools
-
 ## 📖 Быстрая навигация по операторам и функциям
 
 - [[#0) План занятия]](#0-план-занятия)
-- [[#1) Термины: iterable vs iterator]](#1-термины-iterable-vs-iterator)
+### Важные концепции для изучения
+
+#### 1. Протокол итераторов: iter(), next(), StopIteration
+```python
+data = [1, 2, 3]
+
+it = iter(data)          # Получаем итератор
+print(next(it))          # 1
+print(next(it))          # 2
+print(next(it))          # 3
+# next(it) -> StopIteration
+
+# iter(callable, sentinel) - до появления сигнала
+import random
+
+def roll():
+    return random.randint(1, 6)
+
+for value in iter(roll, 6):  # останавливаемся на sentinel=6
+    print(value)
+
+# Собственный итератор
+class Countdown:
+    def __init__(self, start):
+        self.current = start
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.current < 0:
+            raise StopIteration
+        val = self.current
+        self.current -= 1
+        return val
+
+for n in Countdown(3):
+    print(n)  # 3 2 1 0
+```
+
+#### 2. Ленивость и одноразовость итераторов
+```python
+# Итераторы одноразовые: после полного обхода они «пустые»
 - [[#2) Магические методы итерации и аналоги]](#2-магические-методы-итерации-и-аналоги)
+print(list(it))  # [10, 20, 30]
+print(list(it))  # [] - уже исчерпан
+
+# Генераторы и iterables vs итераторы
+numbers = [1, 2, 3]       # iterable
+it = iter(numbers)        # iterator
+
+def gen():                # generator (iterator)
+    yield 1; yield 2
+
+print(hasattr(numbers, '__iter__'))  # True
+print(hasattr(it, '__next__'))       # True
+print(hasattr(gen(), '__next__'))    # True
+```
+
+#### 3. itertools — эффективные строительные блоки
+```python
+import itertools as it
+
+print(list(it.islice(range(100), 5)))          # [0, 1, 2, 3, 4]
+print(list(it.chain([1, 2], (3, 4))))          # [1, 2, 3, 4]
+print(list(it.cycle('ab')[:4]))                # TypeError, slice нельзя!
+print(list(it.islice(it.cycle('ab'), 4)))      # ['a', 'b', 'a', 'b']
+
+print(list(it.accumulate([1, 2, 3, 4])))       # [1, 3, 6, 10]
+print(list(it.permutations([1, 2, 3], 2)))     # [(1, 2), (1, 3), ...]
+print(list(it.combinations('abc', 2)))         # [('a', 'b'), ('a', 'c'), ('b', 'c')]
+
+# groupby требует отсортированных данных по ключу
+data = [{'cat': 'A', 'v': 1}, {'cat': 'A', 'v': 2}, {'cat': 'B', 'v': 3}]
+for key, group in it.groupby(data, key=lambda x: x['cat']):
+    print(key, list(group))
+```
+
+#### 4. Функции, принимающие iterables (ленивые операции)
+```python
+# sum, any, all, max, min работают с любыми iterables
+nums = (n for n in range(1, 6))  # generator (ленивый)
+print(sum(nums))  # 15
+
+# enumerate и zip создают итераторы
+letters = ['a', 'b', 'c']
+for idx, letter in enumerate(letters, start=1):
+    print(idx, letter)
+
+a = [1, 2, 3]
 - [[#3) StopIteration и как его избегать]](#3-stopiteration-и-как-его-избегать)
+for x, y in zip(a, b):  # остановится по самому короткому
+    print(x, y)
+
+# map и filter ленивые, результат — итераторы
+nums = [1, 2, 3, 4]
+double = map(lambda x: x * 2, nums)
+evens = filter(lambda x: x % 2 == 0, nums)
+print(list(double))  # [2, 4, 6, 8]
+print(list(evens))   # [2, 4]
+```
+
+### 💡 Практические примеры
+
+#### Пример 1: Скользящее окно (moving window)
+```python
+from collections import deque
+from typing import Iterable, List
+
+def sliding_window(seq: Iterable[int], size: int) -> List[List[int]]:
+    it = iter(seq)
+    window = deque(maxlen=size)
+    result = []
+    for x in it:
+        window.append(x)
+        if len(window) == size:
+            result.append(list(window))
+    return result
+
+print(sliding_window([1, 2, 3, 4, 5], 3))
+# [[1, 2, 3], [2, 3, 4], [3, 4, 5]]
+```
+
+#### Пример 2: Пагинация ленивым чтением файла
+```python
+import itertools as it
+
+def read_page(path: str, page: int, page_size: int = 5):
+    start = (page - 1) * page_size
+    stop = start + page_size
+    with open(path, encoding='utf-8') as f:
+        lines = it.islice(f, start, stop)
+        return [line.rstrip('\n') for line in lines]
+
+print(read_page('log.txt', page=2, page_size=3))
+```
+
+#### Пример 3: Ограничение бесконечного итератора
+```python
+import itertools as it
+
+def first_primes(n):
+    primes = []
+    for num in it.count(2):  # бесконечный счетчик
+        if all(num % p for p in primes):
+            primes.append(num)
+            if len(primes) == n:
+                return primes
+
+print(first_primes(5))  # [2, 3, 5, 7, 11]
+```
+
+#### Пример 4: merge нескольких отсортированных потоков
+```python
+import heapq
+from typing import Iterable
+
+def merge_sorted(*iterables: Iterable[int]):
+    for value in heapq.merge(*iterables):
+        yield value
+
+print(list(merge_sorted([1, 4, 7], [2, 5], [3, 6, 9])))
+# [1, 2, 3, 4, 5, 6, 7, 9]
+```
+
+### 🚨 Частые ошибки
+
+**Ошибка 1: Попытка переиспользовать исчерпанный итератор**
+```python
+it = iter([1, 2, 3])
+list(it)  # [1, 2, 3]
+list(it)  # [] — уже пусто
+```
+
+**Ошибка 2: groupby без предварительной сортировки по ключу**
+```python
+import itertools as it
+data = [{'k': 2}, {'k': 1}, {'k': 2}]
+# ❌ Разобьет только на последовательные группы
+print([(k, list(g)) for k, g in it.groupby(data, key=lambda x: x['k'])])
+
+# ✅ Сначала сортируем по ключу
+data = sorted(data, key=lambda x: x['k'])
+print([(k, list(g)) for k, g in it.groupby(data, key=lambda x: x['k'])])
+```
+
+**Ошибка 3: Изменение итерируемого объекта во время обхода**
+```python
+items = [1, 2, 3]
+# ❌ Меняем длину списка — могут потеряться элементы
+# for x in items:
+#     items.append(x)
+
+# ✅ Создаем копию или собираем в новый список
+for x in items[:]:
+    pass
+```
+
+**Ошибка 4: Игнорирование StopIteration в ручном next()**
+```python
+it = iter([1])
+print(next(it))
+try:
+    print(next(it))
+except StopIteration:
+    print("Достигнут конец")
+```
+
+### 📌 Полезные ресурсы
+- [Документация: iterator protocol](https://docs.python.org/3/library/stdtypes.html#typeiter)
+- [Документация: itertools](https://docs.python.org/3/library/itertools.html)
+- [PEP 234 - Iterators](https://peps.python.org/pep-0234/)
+- [itertools recipes](https://docs.python.org/3/library/itertools.html#itertools-recipes)
 - [[#4) Как работает `for` внутри]](#4-как-работает-for-внутри)
 - [[#5) Итераторы и память (`sys.getsizeof`)]](#5-итераторы-и-память-sysgetsizeof)
 - [[#6) Iterable vs Iterator — краткое сравнение]](#6-iterable-vs-iterator-—-краткое-сравнение)
@@ -17,9 +224,8 @@
 - [[#ДЗ 2) Объединение списков продуктов → генератор (нижний регистр)]](#дз-2-объединение-списков-продуктов-→-генератор-нижний-регистр)
 - [[#ДЗ 3) Комбинации одежды (clothes × colors × sizes)]](#дз-3-комбинации-одежды-clothes-×-colors-×-sizes)
 - [[#Мини-шпаргалка]](#мини-шпаргалка)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
 ---
 
@@ -384,6 +590,6 @@ Generator expression:
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
 _Этот раздел будет дополнен практическими примерами и дополнительной информацией._

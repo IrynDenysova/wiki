@@ -17,9 +17,8 @@
 - [[#ДЗ 1) Объединение данных в строку через `" | "`]](#дз-1-объединение-данных-в-строку-через)
 - [[#ДЗ 2) Сумма вложенных чисел в списке словарей]](#дз-2-сумма-вложенных-чисел-в-списке-словарей)
 - [[#Мини-шпаргалка]](#мини-шпаргалка)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
 ---
 
@@ -398,6 +397,459 @@ Mutable vs immutable:
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
-_Этот раздел будет дополнен практическими примерами и дополнительной информацией._
+### Важные концепции для изучения
+
+#### 1. Docstring форматы и стандарты
+```python
+# Google стиль docstring
+def add(a, b):
+    """Складывает два числа и возвращает результат.
+    
+    Args:
+        a: Первое число
+        b: Второе число
+    
+    Returns:
+        Сумма a и b
+    
+    Raises:
+        TypeError: Если a или b не числа
+    
+    Example:
+        >>> add(2, 3)
+        5
+    """
+    if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
+        raise TypeError("Оба аргумента должны быть числами")
+    return a + b
+
+# NumPy стиль docstring
+def multiply(x, y):
+    """Умножает два числа.
+    
+    Parameters
+    ----------
+    x : int or float
+        Первое число
+    y : int or float
+        Второе число
+    
+    Returns
+    -------
+    int or float
+        Произведение x и y
+    
+    See Also
+    --------
+    add : Функция сложения
+    
+    Examples
+    --------
+    >>> multiply(3, 4)
+    12
+    """
+    return x * y
+
+# reStructuredText (Sphinx) стиль
+def divide(a, b):
+    """Делит a на b.
+    
+    :param a: Делимое
+    :type a: float
+    :param b: Делитель
+    :type b: float
+    :returns: Результат деления
+    :rtype: float
+    :raises ZeroDivisionError: Если b равен нулю
+    """
+    if b == 0:
+        raise ZeroDivisionError("Деление на ноль")
+    return a / b
+
+# PEP 257 - минимальный стиль
+def greet(name):
+    """Return a greeting for name."""
+    return f"Hello, {name}!"
+
+print(greet.__doc__)  # Доступ к docstring
+help(greet)  # Встроенная справка
+```
+
+#### 2. Type hints и аннотации типов
+```python
+from typing import List, Dict, Tuple, Optional, Union, Callable
+
+# Базовые аннотации
+def greet(name: str) -> str:
+    """Приветствует человека."""
+    return f"Привет, {name}!"
+
+# Сложные типы
+def process_numbers(numbers: List[int]) -> Dict[str, float]:
+    """Обрабатывает список чисел."""
+    return {
+        'sum': sum(numbers),
+        'avg': sum(numbers) / len(numbers) if numbers else 0
+    }
+
+# Optional - может быть None
+def find_user(user_id: int) -> Optional[Dict]:
+    """Находит пользователя или возвращает None."""
+    users = {1: {'name': 'Alice'}, 2: {'name': 'Bob'}}
+    return users.get(user_id)
+
+# Union - несколько возможных типов
+def convert_to_number(value: Union[str, int, float]) -> float:
+    """Конвертирует значение в число."""
+    return float(value)
+
+# Tuple с конкретными типами
+def get_user_info() -> Tuple[str, int, str]:
+    """Возвращает (имя, возраст, email)."""
+    return "Alice", 30, "alice@example.com"
+
+# Callable - функция как аргумент
+def apply_operation(a: int, b: int, operation: Callable[[int, int], int]) -> int:
+    """Применяет операцию к двум числам."""
+    return operation(a, b)
+
+# Использование
+result = apply_operation(5, 3, lambda x, y: x + y)
+print(result)  # 8
+
+# TypeVar - общие типы (дженерики)
+from typing import TypeVar
+
+T = TypeVar('T')  # Может быть любой тип
+
+def get_first(items: List[T]) -> T:
+    """Возвращает первый элемент списка."""
+    return items[0]
+
+# Использование
+print(get_first([1, 2, 3]))  # 1
+print(get_first(['a', 'b']))  # 'a'
+```
+
+#### 3. Встроенная функция help()
+```python
+# help() показывает документацию
+def calculate(x: int, y: int) -> int:
+    """Складывает два числа.
+    
+    Args:
+        x: Первое число
+        y: Второе число
+    
+    Returns:
+        Сумма x и y
+    """
+    return x + y
+
+# Разные способы вызова help()
+help(calculate)  # Справка о функции
+help(list.append)  # Справка о методе
+help(int)  # Справка о типе
+help()  # Интерактивная справка
+
+# Доступ к атрибутам документации
+print(calculate.__doc__)  # Docstring
+print(calculate.__name__)  # Имя функции
+print(calculate.__module__)  # Модуль
+print(calculate.__annotations__)  # Типы параметров
+
+# Интроспекция функции
+import inspect
+
+sig = inspect.signature(calculate)
+print(sig)  # (x: int, y: int) -> int
+
+for param_name, param in sig.parameters.items():
+    print(f"{param_name}: {param.annotation}")
+```
+
+#### 4. Проверка типов с mypy
+```python
+# Type checking может выполняться статически инструментом mypy
+# Установка: pip install mypy
+# Использование: mypy script.py
+
+def process(numbers: List[int]) -> int:
+    return sum(numbers)
+
+# ✅ Правильно
+result = process([1, 2, 3])
+
+# ❌ mypy предупредит об ошибке типа
+# result = process(["1", "2", "3"])  # Error: List[str] incompatible with List[int]
+
+# Cast - явное приведение типа для mypy
+from typing import cast
+
+value = "123"
+num = cast(int, int(value))  # Говорит mypy что это int
+```
+
+### 💡 Практические примеры
+
+#### Пример 1: Самодокументируемый класс
+```python
+from typing import List, Optional
+
+class Person:
+    """Представляет человека с личной информацией.
+    
+    Attributes:
+        name: Имя человека
+        age: Возраст в годах
+        email: Email адрес
+        skills: Список навыков
+    """
+    
+    def __init__(self, name: str, age: int, email: str) -> None:
+        """Инициализирует новую персону.
+        
+        Args:
+            name: Полное имя
+            age: Возраст (должен быть положительным)
+            email: Email адрес
+        
+        Raises:
+            ValueError: Если age отрицательный
+        """
+        if age < 0:
+            raise ValueError("Возраст не может быть отрицательным")
+        
+        self.name = name
+        self.age = age
+        self.email = email
+        self.skills: List[str] = []
+    
+    def add_skill(self, skill: str) -> None:
+        """Добавляет навык к списку."""
+        if skill not in self.skills:
+            self.skills.append(skill)
+    
+    def get_info(self) -> str:
+        """Возвращает информацию о персоне."""
+        return f"{self.name}, {self.age} лет, {self.email}"
+    
+    def years_until_retirement(self, retirement_age: int = 65) -> int:
+        """Вычисляет годы до пенсии.
+        
+        Args:
+            retirement_age: Возраст выхода на пенсию (по умолчанию 65)
+        
+        Returns:
+            Количество лет до пенсии (может быть отрицательным)
+        """
+        return retirement_age - self.age
+
+# Использование
+person = Person("Alice", 30, "alice@example.com")
+person.add_skill("Python")
+person.add_skill("SQL")
+
+print(person.get_info())
+print(f"Годы до пенсии: {person.years_until_retirement()}")
+```
+
+#### Пример 2: Функция с подробной документацией
+```python
+from typing import List, Dict, Tuple
+import re
+
+def analyze_text(text: str) -> Dict[str, any]:
+    """Анализирует текст и возвращает статистику.
+    
+    Функция подсчитывает различные метрики текста включая
+    количество слов, предложений, символов и частоту слов.
+    
+    Args:
+        text: Входной текст для анализа
+    
+    Returns:
+        Словарь с ключами:
+            - 'characters': Количество символов (без пробелов)
+            - 'words': Количество слов
+            - 'sentences': Количество предложений
+            - 'avg_word_length': Средняя длина слова
+            - 'word_frequency': Counter самых частых слов
+    
+    Raises:
+        ValueError: Если text пустой или None
+    
+    Examples:
+        >>> result = analyze_text("Hello. World!")
+        >>> result['words']
+        2
+        >>> result['sentences']
+        2
+    """
+    if not text or not isinstance(text, str):
+        raise ValueError("Text должен быть непустой строкой")
+    
+    # Подсчет метрик
+    chars = len(text.replace(' ', ''))
+    words = len(text.split())
+    sentences = len(re.split(r'[.!?]+', text))
+    
+    word_list = text.lower().split()
+    avg_length = sum(len(w) for w in word_list) / len(word_list) if word_list else 0
+    
+    from collections import Counter
+    word_freq = Counter(word_list).most_common(5)
+    
+    return {
+        'characters': chars,
+        'words': words,
+        'sentences': sentences,
+        'avg_word_length': round(avg_length, 2),
+        'word_frequency': word_freq
+    }
+
+# Использование с help
+help(analyze_text)
+```
+
+#### Пример 3: Документирование сложной функции с примерами
+```python
+def binary_search(sorted_list: List[int], target: int) -> Optional[int]:
+    """Бинарный поиск в отсортированном списке.
+    
+    Использует алгоритм бинарного поиска для эффективного
+    поиска элемента в отсортированном списке.
+    
+    Time Complexity: O(log n)
+    Space Complexity: O(1)
+    
+    Args:
+        sorted_list: Отсортированный в возрастающем порядке список
+        target: Значение для поиска
+    
+    Returns:
+        Индекс найденного элемента или None если не найден
+    
+    Raises:
+        ValueError: Если список не отсортирован
+    
+    Examples:
+        >>> binary_search([1, 3, 5, 7, 9, 11], 7)
+        3
+        >>> binary_search([1, 3, 5, 7, 9, 11], 4)
+        None
+        >>> binary_search([], 5)
+        None
+    """
+    # Проверка сортировки
+    if sorted_list != sorted(sorted_list):
+        raise ValueError("Список должен быть отсортирован")
+    
+    left, right = 0, len(sorted_list) - 1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        if sorted_list[mid] == target:
+            return mid
+        elif sorted_list[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return None
+
+# Примеры из docstring можно тестировать
+import doctest
+doctest.testmod()  # Проверяет примеры в docstring
+```
+
+### 🚨 Частые ошибки
+
+**Ошибка 1: Неправильный формат docstring**
+```python
+# ❌ НЕПРАВИЛЬНО - неполная информация
+def calculate(a, b):
+    """Что-то считает."""
+    return a + b
+
+# ✅ ПРАВИЛЬНО - подробная документация
+def calculate(a: int, b: int) -> int:
+    """Складывает два целых числа.
+    
+    Args:
+        a: Первое число
+        b: Второе число
+    
+    Returns:
+        Сумма a и b
+    """
+    return a + b
+```
+
+**Ошибка 2: Type hints не проверяются во время выполнения
+```python
+def add(a: int, b: int) -> int:
+    return a + b
+
+# ✅ Type hints не блокируют ошибочный вызов
+result = add("5", "3")  # Работает! Возвращает "53"
+print(result)  # "53"
+
+# Для проверки типов используйте:
+from typing import get_type_hints
+hints = get_type_hints(add)
+print(hints)  # {'a': <class 'int'>, 'b': <class 'int'>, 'return': <class 'int'>}
+```
+
+**Ошибка 3: Забыли описать исключения**
+```python
+# ❌ НЕПРАВИЛЬНО
+def divide(a, b):
+    """Делит a на b."""
+    return a / b  # Может вызвать ZeroDivisionError!
+
+# ✅ ПРАВИЛЬНО
+def divide(a: float, b: float) -> float:
+    """Делит a на b.
+    
+    Args:
+        a: Делимое
+        b: Делитель
+    
+    Returns:
+        Результат деления
+    
+    Raises:
+        ZeroDivisionError: Если b равен нулю
+    """
+    if b == 0:
+        raise ZeroDivisionError("Деление на ноль")
+    return a / b
+```
+
+**Ошибка 4: Type hints создают циклические импорты**
+```python
+# ❌ ПРОБЛЕМА - циклический импорт
+# from typing import List
+# def func(items: List['MyClass']) -> None:
+#     pass
+# class MyClass: ...
+
+# ✅ РЕШЕНИЕ - использовать строковый форвард-рефе
+from typing import List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from my_module import MyClass
+
+def func(items: List['MyClass']) -> None:
+    pass
+```
+
+### 📌 Полезные ресурсы
+- [PEP 257 - Docstring Conventions](https://www.python.org/dev/peps/pep-0257/)
+- [PEP 484 - Type Hints](https://www.python.org/dev/peps/pep-0484/)
+- [Модуль typing](https://docs.python.org/3/library/typing.html)
+- [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
+- [mypy - Static Type Checker](https://www.mypy-lang.org/)

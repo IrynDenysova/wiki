@@ -13,15 +13,203 @@
 - [[#8) Практика (примеры решений)]](#8-практика-примеры-решений)
 - [[#9) Домашка — идеи решений]](#9-домашка-—-идеи-решений)
 - [[#10) Мини‑шпаргалка по уроку]](#10-мини‑шпаргалка-по-уроку)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
----
 
 ## 1) Файловая система и структура каталогов
 
-**Файловая система** — способ хранения и организации данных на диске.  
+### Важные концепции для изучения
+
+#### 1. Путь и os.path
+```python
+import os
+
+path = r"C:\\Projects\\app\\config.yaml"
+print(os.path.basename(path))  # config.yaml
+print(os.path.dirname(path))   # C:\Projects\app
+print(os.path.splitext(path))  # ('C:\\Projects\\app\\config', '.yaml')
+print(os.path.join("/tmp", "logs", "app.log"))  # /tmp/logs/app.log
+
+# Нормализация и проверка
+print(os.path.abspath(".."))
+print(os.path.exists(path))
+print(os.path.isfile(path))
+print(os.path.isdir(path))
+print(os.path.isabs(path))
+```
+
+#### 2. Работа с окружением и текущей директорией
+```python
+import os
+
+print(os.getcwd())  # Текущая директория
+os.chdir("..")      # Смена директории
+
+# Переменные окружения
+db_url = os.getenv("DATABASE_URL", "sqlite:///local.db")
+os.environ["APP_ENV"] = "dev"
+print(os.environ.get("APP_ENV"))
+
+# Безопасное чтение переменных
+def get_env(name: str, default=None):
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value
+
+print(get_env("HOME", "not-set"))
+```
+
+#### 3. os.walk и glob - обход файловой системы
+```python
+import os
+import glob
+
+# Рекурсивный обход
+for root, dirs, files in os.walk("." ):
+    print(root, files)
+
+# Поиск по маске
+print(glob.glob("**/*.py", recursive=True))
+print(glob.glob("*.md"))
+```
+
+#### 4. sys.argv и аргументы командной строки
+```python
+import sys
+
+# sys.argv[0] - имя скрипта
+# sys.argv[1:] - переданные аргументы
+
+def main():
+    args = sys.argv[1:]
+    if not args:
+        print("Использование: script.py <имя>")
+        return
+    name = args[0]
+    print(f"Привет, {name}!")
+
+if __name__ == "__main__":
+    main()
+```
+
+### 💡 Практические примеры
+
+#### Пример 1: Копирование файла с проверками
+```python
+import os
+import shutil
+
+def safe_copy(src: str, dst: str):
+    if not os.path.exists(src):
+        raise FileNotFoundError(src)
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    shutil.copy2(src, dst)  # сохраняет метаданные
+
+safe_copy("data.txt", "backup/data.txt")
+```
+
+#### Пример 2: Очистка временных файлов
+```python
+import os
+import tempfile
+
+tmp_dir = tempfile.mkdtemp()
+print("Создано:", tmp_dir)
+
+for i in range(3):
+    with tempfile.NamedTemporaryFile(dir=tmp_dir, delete=False) as f:
+        f.write(b"test")
+        print("Файл:", f.name)
+
+# Удаление
+for root, dirs, files in os.walk(tmp_dir, topdown=False):
+    for name in files:
+        os.remove(os.path.join(root, name))
+    os.rmdir(root)
+```
+
+#### Пример 3: Подсчет размера директории
+```python
+import os
+
+def dir_size(path: str) -> int:
+    total = 0
+    for root, _, files in os.walk(path):
+        for f in files:
+            fp = os.path.join(root, f)
+            if os.path.isfile(fp):
+                total += os.path.getsize(fp)
+    return total
+
+print(dir_size("."))
+```
+
+#### Пример 4: Простая CLI с sys.argv
+```python
+import sys
+
+def cli():
+    if len(sys.argv) < 3:
+        print("Использование: cli.py <cmd> <path>")
+        sys.exit(1)
+    cmd, path = sys.argv[1], sys.argv[2]
+    if cmd == "exists":
+        print("YES" if os.path.exists(path) else "NO")
+    elif cmd == "ls":
+        print(os.listdir(path))
+    else:
+        print("Неизвестная команда")
+
+if __name__ == "__main__":
+    cli()
+```
+
+### 🚨 Частые ошибки
+
+**Ошибка 1: Жестко прописанные слэши**
+```python
+# ❌ НЕПРАВИЛЬНО
+path = "folder\\file.txt"
+
+# ✅ ПРАВИЛЬНО - os.path.join
+import os
+path = os.path.join("folder", "file.txt")
+```
+
+**Ошибка 2: Отсутствие проверки существования**
+```python
+# ❌ FileNotFoundError
+open("missing.txt")
+
+# ✅ Проверяем
+if os.path.exists("missing.txt"):
+    open("missing.txt")
+```
+
+**Ошибка 3: Неправильная работа с sys.argv**
+```python
+# ❌ IndexError если нет аргументов
+# name = sys.argv[1]
+
+# ✅ Проверяем длину
+import sys
+if len(sys.argv) > 1:
+    name = sys.argv[1]
+```
+
+**Ошибка 4: os.chdir влияет на все относительные пути**
+```python
+# После os.chdir относительные пути меняются — используйте абсолютные пути
+```
+
+### 📌 Полезные ресурсы
+- [Документация: os](https://docs.python.org/3/library/os.html)
+- [Документация: os.path](https://docs.python.org/3/library/os.path.html)
+- [Документация: sys](https://docs.python.org/3/library/sys.html)
+- [Документация: glob](https://docs.python.org/3/library/glob.html)
+- [Документация: tempfile](https://docs.python.org/3/library/tempfile.html)
 Состоит из **файлов** и **папок (директорий)**, которые можно:
 
 - читать;
@@ -630,6 +818,6 @@ sys.argv:
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
 _Этот раздел будет дополнен практическими примерами и дополнительной информацией._

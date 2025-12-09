@@ -21,9 +21,8 @@
 - [[#ДЗ 2) Расширяемый логгер событий (замыкание + время)]](#дз-2-расширяемый-логгер-событий-замыкание-время)
 - [[#ДЗ 3) Декоратор “рамка” вокруг вывода]](#дз-3-декоратор-“рамка”-вокруг-вывода)
 - [[#Мини-шпаргалка]](#мини-шпаргалка)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
 ---
 
@@ -236,20 +235,214 @@ print(greet.__doc__)   # Функция приветствия
 def outer():
     def inner():
         """Вложенная функция"""
-        pass
     return inner
 
 func = outer()
-print(func.__name__)  # inner
+        ### Важные концепции для изучения
+
+        #### 1. Замыкания и область видимости (LEGB)
+        ```python
+        # LEGB: Local, Enclosing, Global, Built-in
+
+        def outer(msg):
+            def inner():
+                print(msg)  # msg из enclosing
+            return inner
+
+        hello = outer("Привет")
+        hello()  # Привет
+
+        # Замыкание хранит свободные переменные
+        print(hello.__closure__[0].cell_contents)  # 'Привет'
+        ```
+
+        #### 2. nonlocal для изменения enclosing переменных
+        ```python
+        def counter():
+            count = 0
+            def inc():
+                nonlocal count  # без этого будет UnboundLocalError
+                count += 1
+                return count
+            return inc
+
+        c = counter()
+        print(c())  # 1
+        print(c())  # 2
+        ```
+
+        #### 3. Фабрики функций (function factories)
+        ```python
+        def make_multiplier(k: int):
+            def mul(x: int) -> int:
+                return x * k
+            return mul
+
+        times2 = make_multiplier(2)
 print(func.__doc__)   # Вложенная функция
+        print(times2(10))  # 20
+        print(times3(10))  # 30
+        ```
+
+        #### 4. Декораторы как пример замыканий
+        ```python
+        import functools
+
+        def timing(func):
+            @functools.wraps(func)
+            def wrapper(*args, **kwargs):
+                import time
+                start = time.perf_counter()
+                result = func(*args, **kwargs)
+                elapsed = time.perf_counter() - start
+                print(f"{func.__name__} заняла {elapsed:.4f} сек")
+                return result
+            return wrapper
+
+        @timing
+        def slow(n):
+            import time
+            time.sleep(n)
+            return n
+
+        slow(0.2)
+        ```
+
+        ### 💡 Практические примеры
+
+        #### Пример 1: Кэширование через замыкание
+        ```python
 ```
+            cache = {}
+            def wrapper(*args):
+                if args in cache:
+                    return cache[args]
+                result = func(*args)
+                cache[args] = result
+                return result
+            return wrapper
 
+        @memoize
+
+            if n < 2:
+                return n
+            return fib(n-1) + fib(n-2)
+
+        print(fib(30))  # быстро благодаря кэшу
+        ```
+
+        #### Пример 2: Валидатор с конфигурируемыми правилами
+        ```python
 ---
+            must_have = must_have or []
+            def validate(text: str) -> bool:
+                if len(text) < min_len:
+                    return False
+                return all(ch in text for ch in must_have)
+            return validate
 
+        validator = make_validator(min_len=5, must_have=['@', '.'])
+        print(validator('test'))         # False
+        print(validator('mail@test'))    # True
+        ```
+
+        #### Пример 3: Stateful генератор ID
+        ```python
+
+            current = 0
+            def gen():
+                nonlocal current
+                current += 1
+                return f"{prefix}{current:04d}"
+            return gen
+
+        gen_id = id_generator("USR")
+        print(gen_id())  # USR0001
+        print(gen_id())  # USR0002
+        ```
+
+        #### Пример 4: Частичное применение без functools.partial
+        ```python
 ## 6) Декораторы: идея и шаблон
-**Декоратор** — функция, которая принимает функцию, добавляет к ней логику и возвращает “обёртку”, **не меняя тело исходной функции**.
+            def wrapper(*args, **kwargs):
+                return func(first, *args, **kwargs)
+            return wrapper
 
+        def power(base, exp):
+            return base ** exp
+
+        square = bind_first(power, 2)
+        print(square(8))  # 256
+        ```
+
+        ### 🚨 Частые ошибки
+
+        **Ошибка 1: UnboundLocalError без nonlocal**
+        ```python
+**Декоратор** — функция, которая принимает функцию, добавляет к ней логику и возвращает “обёртку”, **не меняя тело исходной функции**.
+            x = 0
+            def inner():
+                # x += 1  # UnboundLocalError
+                pass
+        ```
+
+        **Ошибка 2: Замыкание захватывает изменяемый объект**
+        ```python
+
+            funcs = []
+            for i in range(3):
+                def adder(x, i=i):  # фиксируем i значением по умолчанию
+                    return x + i
+                funcs.append(adder)
+            return funcs
+
+        f1, f2, f3 = make_adders()
+        print(f1(10), f2(10), f3(10))  # 10 11 12
+        ```
+
+        **Ошибка 3: Забытый functools.wraps в декораторе**
+        ```python
+        import functools
+
+        def deco(fn):
+            def wrapper(*a, **k):
+                return fn(*a, **k)
+            return wrapper
+
+        @deco
+        def func():
+            pass
+
+        print(func.__name__)  # wrapper (метаданные потеряны)
+
+        # ✅ Добавляем wraps
+        def deco(fn):
+            @functools.wraps(fn)
+            def wrapper(*a, **k):
+                return fn(*a, **k)
+            return wrapper
+        ```
+
+        **Ошибка 4: Утечка состояния между вызовами**
+        ```python
 Шаблон:
+            items = []
+            def add(item):
+                items.append(item)
+                return items
+            return add
+
+        add1 = collector()
+        add2 = collector()
+        add1('a'); add1('b')
+        print(add2('x'))  # ['x'] — у каждого свое состояние
+        ```
+
+        ### 📌 Полезные ресурсы
+        - [Документация: nonlocal](https://docs.python.org/3/reference/simple_stmts.html#the-nonlocal-statement)
+        - [Документация: LEGB](https://docs.python.org/3/tutorial/classes.html#python-scopes-and-namespaces)
+        - [functools.wraps](https://docs.python.org/3/library/functools.html#functools.wraps)
+        - [Closures in Python](https://docs.python.org/3/reference/executionmodel.html#naming-and-binding)
 ```py
 def decorator(func):
     def wrapper():
@@ -508,6 +701,6 @@ Decorator: def deco(func): def wrapper(...): ...; return wrapper
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
 _Этот раздел будет дополнен практическими примерами и дополнительной информацией._

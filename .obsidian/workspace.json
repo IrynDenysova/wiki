@@ -1,24 +1,24 @@
 {
   "main": {
-    "id": "62419e48d2f6891f",
+    "id": "9249a962b34f0adc",
     "type": "split",
     "children": [
       {
-        "id": "dfdb12ee8f9cd3d8",
+        "id": "0069ea41efc62293",
         "type": "tabs",
         "children": [
           {
-            "id": "391b057737ee5b52",
+            "id": "b016bee0e1848c80",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "lesson/python/12 Форматирование строк % format() f-строки.md",
+                "file": "lesson/python/13 Кортежи упаковка enumerate методы.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "12 Форматирование строк % format() f-строки"
+              "title": "13 Кортежи упаковка enumerate методы"
             }
           }
         ]
@@ -27,15 +27,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "e47e441d2aa11fea",
+    "id": "a9fbd921b282d026",
     "type": "split",
     "children": [
       {
-        "id": "21f925b9ad215c6b",
+        "id": "988fc0287df8b8b3",
         "type": "tabs",
         "children": [
           {
-            "id": "fc993898698480f2",
+            "id": "59028847700430d6",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -48,7 +48,7 @@
             }
           },
           {
-            "id": "804a69decd7283dc",
+            "id": "164a598e9093d4a8",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -65,7 +65,7 @@
             }
           },
           {
-            "id": "65507a269b297f61",
+            "id": "43f0b659b2077bdf",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -78,22 +78,23 @@
       }
     ],
     "direction": "horizontal",
-    "width": 756.5
+    "width": 300
   },
   "right": {
-    "id": "59a4822905b0d7c9",
+    "id": "8d40bf13d8b183f2",
     "type": "split",
     "children": [
       {
-        "id": "f96e9854775e7e71",
+        "id": "b34c216ef87db3c2",
         "type": "tabs",
         "children": [
           {
-            "id": "b7b2ef8b3c20f13a",
+            "id": "44fab66de712ba3b",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
+                "file": "lesson/python/17 Множества set hash() операции отношения.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,24 +104,25 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Обратные ссылки"
+              "title": "Обратные ссылки для 17 Множества set hash() операции отношения"
             }
           },
           {
-            "id": "1c8935c2d8d3199a",
+            "id": "99a44593621b8597",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "lesson/python/17 Множества set hash() операции отношения.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Исходящие ссылки"
+              "title": "Исходящие ссылки из 17 Множества set hash() операции отношения"
             }
           },
           {
-            "id": "908e868117b7dc5f",
+            "id": "83dfb1979ff3793d",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -135,7 +137,7 @@
             }
           },
           {
-            "id": "fcf894c9e8ffd566",
+            "id": "4715c28f5c0bbeb9",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -149,17 +151,18 @@
             }
           },
           {
-            "id": "53b7e722c2fdd02a",
+            "id": "6e9f21b927b3caa2",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
+                "file": "lesson/python/17 Множества set hash() операции отношения.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Структура"
+              "title": "Структура 17 Множества set hash() операции отношения"
             }
           }
         ]
@@ -180,46 +183,10 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "391b057737ee5b52",
+  "active": "b016bee0e1848c80",
   "lastOpenFiles": [
-    "lesson/python/14 Методы списков добавление поиск сортировка.md",
-    "lesson/python/11 методы строк (str).md",
-    "lesson/python/10 коллекции и списки (list).md",
-    "lesson/python/9 Цикл for range вложенные break continue.md",
-    "lesson/python/8 Строки кодировки индексы срезы.md",
-    "lesson/python/7 Цикл while break continue random.md",
-    "lesson/python/6 Математика модули точность Decimal округление.md",
-    "lesson/python/6 Math modules float precision Decimal rounding bits bytes.md",
-    "lesson/python/5 Ветвление if-elif-else тернарный match-case.md",
-    "lesson/python/__pycache__/apply_nav_hybrid.cpython-313.pyc",
-    "lesson/python/__pycache__",
-    "lesson/python/1 Основы работы с Python.md",
-    "lesson/python/2 Типы данных объекты строки type() print().md",
-    "lesson/python/3 Арифметические операторы приоритет типы.md",
-    "lesson/python/4 Bool, сравнения и логические операторы.md",
-    "📚 Дополнительная информация и примеры.md",
-    "lesson/python/apply_nav_hybrid.py",
-    "lesson/python/19-9 dicts fromkeys.md",
-    "Без названия.md",
-    "Без названия 1.md",
-    "lesson/python/PythonFund_L03_arithmetic_operators_precedence_type_casting_errors.md",
-    "lesson/python/ОТЧЁТ_ПО_ПРОВЕРКЕ.md",
-    "lesson/python/remove_templates.py",
-    "lesson/python/check_result.txt",
-    "lesson/python/check_lessons.py",
-    "lesson/python/24 Рекурсия base case isinstance copy deepcopy.md",
-    "lesson/python/33 Декораторы args kwargs return wraps фабрика.md",
-    "lesson/python/27 Работа с файлами open режимы encoding with.md",
-    "lesson/python/enhance_lessons.py",
-    "lesson/python/34 Основы ООП классы объекты методы.md",
-    "lesson/python/PythonFund_L34_OOP_basics_classes_objects_init_self_attributes_methods_practice_homework.md",
-    "lesson/python/Не подтвержден 672889.crdownload",
-    "lesson/python/40 Магические методы сравнение __call__.md",
-    "lesson/python/39 Абстрактные классы исключения магия.md",
-    "lesson/python/04-Урок 4",
-    "lesson/python/03-Урок 3",
-    "at/Pasted image 20251201230058.png",
-    "at/Pasted image 20251201225721.png",
-    "at/Pasted image 20251130223645.png"
+    "lesson/python/12 Форматирование строк % format() f-строки.md",
+    "lesson/python/17 Множества set hash() операции отношения.md",
+    "lesson/python/ОТЧЁТ_ПО_ПРОВЕРКЕ.md"
   ]
 }

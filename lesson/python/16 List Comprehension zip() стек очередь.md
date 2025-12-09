@@ -15,9 +15,8 @@
 - [[#10) Практические задания (решения)]](#10-практические-задания-решения)
 - [[#11) Домашнее задание (решения)]](#11-домашнее-задание-решения)
 - [[#12) Мини-шпаргалка]](#12-мини-шпаргалка)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
 ---
 
@@ -401,6 +400,327 @@ sorted / .sort устойчивые (равные key сохраняют пор�
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
-_Этот раздел будет дополнен практическими примерами и дополнительной информацией._
+### Важные концепции для изучения
+
+#### 1. Вложенные list comprehensions
+```python
+# Создание матрицы
+matrix = [[i*j for j in range(5)] for i in range(5)]
+print(matrix)
+# [[0, 0, 0, 0, 0],
+#  [0, 1, 2, 3, 4],
+#  [0, 2, 4, 6, 8],
+#  [0, 3, 6, 9, 12],
+#  [0, 4, 8, 12, 16]]
+
+# Flatten (развертывание вложенного списка)
+nested = [[1, 2], [3, 4], [5, 6]]
+flat = [item for sublist in nested for item in sublist]
+print(flat)  # [1, 2, 3, 4, 5, 6]
+
+# С условием
+nested = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+evens = [item for sublist in nested for item in sublist if item % 2 == 0]
+print(evens)  # [2, 4, 6, 8]
+
+# Транспонирование матрицы
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+transposed = [[row[i] for row in matrix] for i in range(len(matrix[0]))]
+print(transposed)
+# [[1, 4, 7],
+#  [2, 5, 8],
+#  [3, 6, 9]]
+```
+
+#### 2. Dictionary и Set Comprehensions
+```python
+# Dictionary comprehension
+squares_dict = {x: x**2 for x in range(5)}
+print(squares_dict)  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# Инвертирование словаря
+original = {'a': 1, 'b': 2, 'c': 3}
+inverted = {v: k for k, v in original.items()}
+print(inverted)  # {1: 'a', 2: 'b', 3: 'c'}
+
+# С условием
+words = ['apple', 'banana', 'cherry', 'date']
+lengths = {word: len(word) for word in words if len(word) > 5}
+print(lengths)  # {'banana': 6, 'cherry': 6}
+
+# Set comprehension
+numbers = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+unique_squares = {x**2 for x in numbers}
+print(unique_squares)  # {16, 1, 4, 9}
+
+# Фильтрация уникальных букв
+text = "Hello World"
+unique_chars = {char.lower() for char in text if char.isalpha()}
+print(unique_chars)  # {'e', 'd', 'h', 'l', 'o', 'r', 'w'}
+```
+
+#### 3. Продвинутое использование zip()
+```python
+# zip с разной длиной - останавливается на кратчайшем
+list1 = [1, 2, 3, 4, 5]
+list2 = ['a', 'b', 'c']
+result = list(zip(list1, list2))
+print(result)  # [(1, 'a'), (2, 'b'), (3, 'c')]
+
+# zip_longest для обработки всех элементов
+from itertools import zip_longest
+result = list(zip_longest(list1, list2, fillvalue='X'))
+print(result)  # [(1, 'a'), (2, 'b'), (3, 'c'), (4, 'X'), (5, 'X')]
+
+# Распаковка zip для транспонирования
+pairs = [(1, 'a'), (2, 'b'), (3, 'c')]
+numbers, letters = zip(*pairs)
+print(numbers)  # (1, 2, 3)
+print(letters)  # ('a', 'b', 'c')
+
+# Создание словаря из двух списков
+keys = ['name', 'age', 'city']
+values = ['Алиса', 25, 'Москва']
+person = dict(zip(keys, values))
+print(person)  # {'name': 'Алиса', 'age': 25, 'city': 'Москва'}
+
+# Параллельная итерация трех списков
+names = ['Алиса', 'Боб', 'Виктор']
+ages = [25, 30, 28]
+cities = ['Москва', 'СПб', 'Казань']
+for name, age, city in zip(names, ages, cities):
+    print(f"{name}, {age} лет, {city}")
+```
+
+#### 4. Стек и очередь - продвинутые операции
+```python
+from collections import deque
+
+# Двусторонняя очередь (deque)
+dq = deque([1, 2, 3])
+
+# Операции с обеих сторон O(1)
+dq.append(4)       # [1, 2, 3, 4]
+dq.appendleft(0)   # [0, 1, 2, 3, 4]
+dq.pop()           # [0, 1, 2, 3]
+dq.popleft()       # [1, 2, 3]
+
+# Rotate - циклический сдвиг
+dq = deque([1, 2, 3, 4, 5])
+dq.rotate(2)       # [4, 5, 1, 2, 3]
+dq.rotate(-1)      # [5, 1, 2, 3, 4]
+
+# Ограниченная очередь (FIFO с максимальным размером)
+limited_queue = deque(maxlen=3)
+for i in range(5):
+    limited_queue.append(i)
+    print(list(limited_queue))
+# [0]
+# [0, 1]
+# [0, 1, 2]
+# [1, 2, 3]  # 0 вытеснен
+# [2, 3, 4]  # 1 вытеснен
+
+# Реализация LRU cache на deque
+class LRUCache:
+    def __init__(self, capacity):
+        self.cache = {}
+        self.capacity = capacity
+        self.order = deque()
+    
+    def get(self, key):
+        if key in self.cache:
+            self.order.remove(key)
+            self.order.append(key)
+            return self.cache[key]
+        return None
+    
+    def put(self, key, value):
+        if key in self.cache:
+            self.order.remove(key)
+        elif len(self.cache) >= self.capacity:
+            oldest = self.order.popleft()
+            del self.cache[oldest]
+        
+        self.cache[key] = value
+        self.order.append(key)
+```
+
+### 💡 Практические примеры
+
+#### Пример 1: Создание таблицы умножения
+```python
+# Таблица Пифагора
+multiplication_table = [
+    [i * j for j in range(1, 11)]
+    for i in range(1, 11)
+]
+
+# Красивый вывод
+for row in multiplication_table:
+    print(' '.join(f'{x:3}' for x in row))
+```
+
+#### Пример 2: Группировка элементов по условию
+```python
+# Разделение на четные и нечетные
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+even_odd = {
+    'even': [x for x in numbers if x % 2 == 0],
+    'odd': [x for x in numbers if x % 2 != 0]
+}
+print(even_odd)
+# {'even': [2, 4, 6, 8, 10], 'odd': [1, 3, 5, 7, 9]}
+
+# Категоризация по диапазонам
+scores = [45, 67, 89, 92, 56, 78, 34, 91]
+categories = {
+    'A': [s for s in scores if s >= 90],
+    'B': [s for s in scores if 80 <= s < 90],
+    'C': [s for s in scores if 70 <= s < 80],
+    'D': [s for s in scores if 60 <= s < 70],
+    'F': [s for s in scores if s < 60]
+}
+```
+
+#### Пример 3: Реализация истории браузера (стек)
+```python
+class BrowserHistory:
+    def __init__(self):
+        self.history = []
+        self.forward_stack = []
+    
+    def visit(self, url):
+        """Посетить новую страницу"""
+        self.history.append(url)
+        self.forward_stack.clear()  # Очищаем forward при новом визите
+    
+    def back(self):
+        """Вернуться назад"""
+        if len(self.history) > 1:
+            current = self.history.pop()
+            self.forward_stack.append(current)
+            return self.history[-1]
+        return None
+    
+    def forward(self):
+        """Вперед"""
+        if self.forward_stack:
+            page = self.forward_stack.pop()
+            self.history.append(page)
+            return page
+        return None
+
+# Использование
+browser = BrowserHistory()
+browser.visit("google.com")
+browser.visit("python.org")
+browser.visit("github.com")
+print(browser.back())     # python.org
+print(browser.back())     # google.com
+print(browser.forward())  # python.org
+```
+
+#### Пример 4: Система задач с приоритетами
+```python
+import heapq
+
+class PriorityQueue:
+    def __init__(self):
+        self.queue = []
+        self.counter = 0
+    
+    def add_task(self, priority, task):
+        """Добавить задачу (меньшее число = выше приоритет)"""
+        heapq.heappush(self.queue, (priority, self.counter, task))
+        self.counter += 1
+    
+    def get_task(self):
+        """Получить задачу с наивысшим приоритетом"""
+        if self.queue:
+            _, _, task = heapq.heappop(self.queue)
+            return task
+        return None
+
+# Использование
+pq = PriorityQueue()
+pq.add_task(3, "Низкий приоритет")
+pq.add_task(1, "Высокий приоритет")
+pq.add_task(2, "Средний приоритет")
+
+print(pq.get_task())  # Высокий приоритет
+print(pq.get_task())  # Средний приоритет
+print(pq.get_task())  # Низкий приоритет
+```
+
+### 🚨 Частые ошибки
+
+**Ошибка 1: Слишком сложные list comprehensions**
+```python
+# ❌ ПЛОХО - трудно читать
+result = [x*y for x in range(10) if x % 2 == 0 for y in range(10) if y % 3 == 0 if x*y > 20]
+
+# ✅ ЛУЧШЕ - разбить на части или использовать циклы
+evens = [x for x in range(10) if x % 2 == 0]
+threes = [y for y in range(10) if y % 3 == 0]
+result = [x*y for x in evens for y in threes if x*y > 20]
+
+# ИЛИ обычный цикл для сложной логики
+result = []
+for x in range(10):
+    if x % 2 == 0:
+        for y in range(10):
+            if y % 3 == 0:
+                product = x * y
+                if product > 20:
+                    result.append(product)
+```
+
+**Ошибка 2: Использование списка вместо deque для очереди**
+```python
+# ❌ НЕЭФФЕКТИВНО - O(n) для удаления с начала
+queue = [1, 2, 3]
+queue.append(4)     # O(1)
+first = queue.pop(0)  # O(n) - медленно!
+
+# ✅ ЭФФЕКТИВНО - deque с O(1) для обеих операций
+from collections import deque
+queue = deque([1, 2, 3])
+queue.append(4)       # O(1)
+first = queue.popleft()  # O(1) - быстро!
+```
+
+**Ошибка 3: Изменение списка в comprehension**
+```python
+# ❌ НЕПРАВИЛЬНО - побочные эффекты в comprehension
+data = [1, 2, 3]
+[data.append(x*2) for x in data]  # Плохая практика!
+
+# ✅ ПРАВИЛЬНО - создаем новый список
+data = [1, 2, 3]
+doubled = [x*2 for x in data]
+data.extend(doubled)
+```
+
+**Ошибка 4: Неправильное понимание zip() с разными длинами**
+```python
+# ❌ ПРОБЛЕМА - теряются данные
+list1 = [1, 2, 3, 4, 5]
+list2 = ['a', 'b']
+result = list(zip(list1, list2))
+print(result)  # [(1, 'a'), (2, 'b')] - потеряли 3, 4, 5!
+
+# ✅ РЕШЕНИЕ - используем zip_longest если нужны все данные
+from itertools import zip_longest
+result = list(zip_longest(list1, list2, fillvalue=None))
+print(result)  # [(1, 'a'), (2, 'b'), (3, None), (4, None), (5, None)]
+```
+
+### 📌 Полезные ресурсы
+- [Документация: List Comprehensions](https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions)
+- [Документация: zip()](https://docs.python.org/3/library/functions.html#zip)
+- [Документация: collections.deque](https://docs.python.org/3/library/collections.html#collections.deque)
+- [PEP 289: Generator Expressions](https://www.python.org/dev/peps/pep-0289/)
+- [itertools recipes](https://docs.python.org/3/library/itertools.html#itertools-recipes)

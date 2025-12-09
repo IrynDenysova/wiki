@@ -16,15 +16,236 @@
 - [[#Требования]](#требования)
 - [[#Решение]](#решение)
 - [[#Мини-шпаргалка]](#мини-шпаргалка)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
----
 
 ## 1) JSON — что это
 **JSON (JavaScript Object Notation)** — текстовый формат для хранения и передачи структурированных данных.
+### Важные концепции для изучения
 
+#### 1. json.dumps/json.loads — ключевые параметры
+```python
+import json
+
+data = {"name": "Алиса", "age": 30, "skills": ["python", "sql"]}
+
+text = json.dumps(
+    data,
+    ensure_ascii=False,  # не экранировать кириллицу
+    indent=2,            # форматирование
+    sort_keys=True       # сортировать ключи
+)
+print(text)
+
+restored = json.loads(text)
+print(restored["name"])
+
+# Работа с файлами
+with open("data.json", "w", encoding="utf-8") as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
+
+with open("data.json", encoding="utf-8") as f:
+    loaded = json.load(f)
+```
+
+#### 2. Сериализация нестандартных типов (datetime, Decimal, set)
+```python
+from datetime import datetime, timezone
+from decimal import Decimal
+import json
+
+def default(obj):
+    if isinstance(obj, datetime):
+        return obj.isoformat()
+    if isinstance(obj, Decimal):
+        return float(obj)
+    if isinstance(obj, set):
+        return list(obj)
+    raise TypeError(f"Не сериализуемый тип: {type(obj)}")
+
+payload = {
+    "ts": datetime(2024, 1, 1, 12, 0, tzinfo=timezone.utc),
+    "price": Decimal("10.5"),
+    "tags": {"python", "json"},
+}
+
+text = json.dumps(payload, default=default, ensure_ascii=False)
+print(text)
+```
+
+#### 3. datetime: aware vs naive, форматирование и парсинг
+```python
+from datetime import datetime, timedelta, timezone
+
+now_naive = datetime.now()               # naive (без TZ)
+now_utc = datetime.now(timezone.utc)     # aware (с TZ)
+
+# Форматирование и парсинг
+fmt = "%Y-%m-%d %H:%M:%S%z"
+text = now_utc.strftime(fmt)
+parsed = datetime.strptime(text, fmt)
+print(parsed.tzinfo)  # UTC
+
+# ISO 8601
+iso = now_utc.isoformat()  # 2024-01-01T12:00:00+00:00
+parsed_iso = datetime.fromisoformat(iso)
+
+# Операции со временем
+future = now_utc + timedelta(days=3, hours=2)
+delta = future - now_utc
+print(delta.total_seconds())
+
+# Перевод в timestamp и обратно
+ts = now_utc.timestamp()
+print(datetime.fromtimestamp(ts, tz=timezone.utc))
+```
+
+#### 4. Безопасный парсинг и валидация JSON
+```python
+import json
+from typing import Any, Dict
+
+def load_json_safe(text: str) -> Dict[str, Any]:
+    try:
+        obj = json.loads(text)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Невалидный JSON: {e}")
+    if not isinstance(obj, dict):
+        raise ValueError("Ожидался объект JSON")
+    return obj
+
+bad = "{name: 123}"  # невалидный JSON
+try:
+    load_json_safe(bad)
+except ValueError as e:
+    print(e)
+```
+
+### 💡 Практические примеры
+
+#### Пример 1: JSON Lines обработка больших логов
+```python
+import json
+from typing import Iterable
+
+def read_jsonl(path: str) -> Iterable[dict]:
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            if line.strip():
+                yield json.loads(line)
+
+def write_jsonl(path: str, records: Iterable[dict]):
+    with open(path, "w", encoding="utf-8") as f:
+        for rec in records:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+# Применение
+records = [{"id": 1}, {"id": 2}]
+write_jsonl("out.jsonl", records)
+print(list(read_jsonl("out.jsonl")))
+```
+
+#### Пример 2: Человекочитаемые даты и time zones
+```python
+from datetime import datetime, timezone, timedelta
+
+def format_human(dt: datetime) -> str:
+    return dt.strftime("%d.%m.%Y %H:%M")
+
+dt_local = datetime.now()  # naive локальное
+dt_utc = datetime.now(timezone.utc)
+
+print(format_human(dt_local))
+print(format_human(dt_utc.astimezone(timezone(timedelta(hours=3)))))
+```
+
+#### Пример 3: Кэширование ответов с датой истечения
+```python
+from datetime import datetime, timedelta, timezone
+
+cache = {}
+
+def set_cache(key, value, ttl_seconds=60):
+    expires = datetime.now(timezone.utc) + timedelta(seconds=ttl_seconds)
+    cache[key] = {"value": value, "expires": expires}
+
+def get_cache(key):
+    item = cache.get(key)
+    if not item:
+        return None
+    if datetime.now(timezone.utc) > item["expires"]:
+        cache.pop(key, None)
+        return None
+    return item["value"]
+
+set_cache("user:1", {"name": "Алиса"}, ttl_seconds=2)
+print(get_cache("user:1"))
+```
+
+#### Пример 4: Валидация и нормализация дат
+```python
+from datetime import datetime
+
+def parse_date(value: str) -> datetime:
+    formats = ["%Y-%m-%d", "%d.%m.%Y", "%Y/%m/%d"]
+    for fmt in formats:
+        try:
+            return datetime.strptime(value, fmt)
+        except ValueError:
+            continue
+    raise ValueError("Не удалось распарсить дату")
+
+print(parse_date("2024-01-10"))
+print(parse_date("10.01.2024"))
+```
+
+### 🚨 Частые ошибки
+
+**Ошибка 1: Потеря кириллицы при JSON-сериализации**
+```python
+# ❌ По умолчанию ensure_ascii=True
+json.dumps({"text": "Привет"})  # "\u041f..."
+
+# ✅
+json.dumps({"text": "Привет"}, ensure_ascii=False)
+```
+
+**Ошибка 2: Использование datetime.now() без TZ для хранения**
+```python
+# ❌ naive время, непереносимо между зонами
+dt = datetime.now()
+
+# ✅ всегда храните в UTC
+dt = datetime.now(timezone.utc)
+```
+
+**Ошибка 3: json.loads на огромных строках в память**
+```python
+# ❌ загрузка всего файла в память
+data = json.loads(open("huge.json").read())
+
+# ✅ потоковое чтение JSONL или парсер с потоковой обработкой
+```
+
+**Ошибка 4: Ошибка при сериализации нестандартных типов**
+```python
+from datetime import datetime
+import json
+
+obj = {"ts": datetime.now()}
+# ❌ TypeError: Object of type datetime is not JSON serializable
+
+# ✅ default или свой encoder
+json.dumps(obj, default=lambda o: o.isoformat())
+```
+
+### 📌 Полезные ресурсы
+- [Документация: json](https://docs.python.org/3/library/json.html)
+- [Документация: datetime](https://docs.python.org/3/library/datetime.html)
+- [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+- [json.JSONDecodeError](https://docs.python.org/3/library/json.html#json.JSONDecodeError)
+- [Работа с часовыми поясами](https://docs.python.org/3/library/datetime.html#timezone-objects)
 Пример JSON-объекта:
 ```json
 {
@@ -501,6 +722,6 @@ datetime:
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
 _Этот раздел будет дополнен практическими примерами и дополнительной информацией._

@@ -19,15 +19,230 @@
 - [[#ДЗ 1) Деление без ошибок (ввод пользователем)]](#дз-1-деление-без-ошибок-ввод-пользователем)
 - [[#ДЗ 2) Логирование ошибок в `errors.log` (формат как в примере)]](#дз-2-логирование-ошибок-в-errorslog-формат-как-в-примере)
 - [[#Мини-шпаргалка]](#мини-шпаргалка)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
----
 
 ## 1) Что такое исключения
 **Исключения (Exceptions)** — события/ошибочные ситуации во время выполнения программы, которые:
-- сигнализируют о проблеме,
+### Важные концепции для изучения
+
+#### 1. Иерархия исключений и best practices
+```python
+# Базовая иерархия
+# BaseException -> Exception -> (ValueError, TypeError, IOError, ...)
+
+try:
+    x = int("abc")
+except ValueError as e:  # Ловим конкретное исключение
+    print(f"Проблема конверсии: {e}")
+except Exception as e:  # Общий обработчик на самый конец
+    print(f"Неожиданная ошибка: {e}")
+
+# Не перехватывайте BaseException (KeyboardInterrupt, SystemExit)
+
+# Правильный порядок: от более специфичных к общим
+try:
+    open("missing.txt")
+except FileNotFoundError:
+    print("Файл не найден")
+except OSError:
+    print("Другая ошибка ОС")
+```
+
+#### 2. Создание пользовательских исключений
+```python
+class AppError(Exception):
+    """Базовое исключение приложения"""
+
+class ConfigError(AppError):
+    """Ошибка конфигурации"""
+
+class ValidationError(AppError):
+    """Ошибка валидации данных"""
+
+def load_config(path: str) -> dict:
+    if not path:
+        raise ConfigError("Путь к конфигу пуст")
+    return {"ok": True}
+
+try:
+    load_config("")
+except ConfigError as e:
+    print(f"Конфиг ошибка: {e}")
+```
+
+#### 3. raise и re-raise исключений
+```python
+def read_number(text: str) -> int:
+    try:
+        return int(text)
+    except ValueError as e:
+        # Добавляем контекст и пробрасываем дальше
+        raise ValueError(f"Не удалось преобразовать '{text}' в число") from e
+
+try:
+    read_number("abc")
+except ValueError as e:
+    print(e)  # Покажет цепочку исключений
+```
+
+#### 4. logging: уровни и настройка
+```python
+import logging
+
+# Базовая настройка
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
+
+logger = logging.getLogger(__name__)
+
+logger.debug("Отладочная информация")  # Не выведется при level=INFO
+logger.info("Приложение стартовало")
+logger.warning("Низкое место на диске")
+logger.error("Ошибка при обработке запроса")
+logger.critical("Критическая проблема!")
+
+# Потокобезопасный логгер, поддерживает handlers (FileHandler, StreamHandler)
+file_handler = logging.FileHandler("app.log", encoding="utf-8")
+file_handler.setLevel(logging.WARNING)
+file_handler.setFormatter(logging.Formatter("%(levelname)s:%(message)s"))
+logger.addHandler(file_handler)
+
+logger.warning("Запишется и в файл, и в stdout")
+```
+
+### 💡 Практические примеры
+
+#### Пример 1: Повтор запроса с обработкой исключений
+```python
+import time
+import random
+
+def unreliable_request() -> str:
+    if random.random() < 0.7:
+        raise ConnectionError("Временная ошибка сети")
+    return "OK"
+
+def request_with_retry(max_attempts=3, delay=1):
+    for attempt in range(1, max_attempts + 1):
+        try:
+            return unreliable_request()
+        except ConnectionError as e:
+            if attempt == max_attempts:
+                raise
+            print(f"Попытка {attempt} не удалась: {e}. Повтор через {delay}s")
+            time.sleep(delay)
+
+print(request_with_retry())
+```
+
+#### Пример 2: Валидация входных данных
+```python
+class ValidationError(Exception):
+    pass
+
+def validate_user(data: dict):
+    if 'email' not in data:
+        raise ValidationError("email обязателен")
+    if 'age' in data and data['age'] < 0:
+        raise ValidationError("age должен быть >= 0")
+    return True
+
+try:
+    validate_user({'age': -5})
+except ValidationError as e:
+    print(f"Ошибка валидации: {e}")
+```
+
+#### Пример 3: Безопасная работа с файлами
+```python
+def read_file(path: str) -> str:
+    try:
+        with open(path, encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        return "Файл не найден"
+    except UnicodeDecodeError:
+        return "Ошибка кодировки"
+
+print(read_file("missing.txt"))
+```
+
+#### Пример 4: Логирование в файл + консоль
+```python
+import logging
+
+logger = logging.getLogger("app")
+logger.setLevel(logging.DEBUG)
+
+fmt = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+console.setFormatter(fmt)
+
+file = logging.FileHandler("app.log", encoding="utf-8")
+file.setLevel(logging.DEBUG)
+file.setFormatter(fmt)
+
+logger.addHandler(console)
+logger.addHandler(file)
+
+logger.info("Старт")
+logger.debug("Отладочная запись в файл")
+logger.error("Ошибка")
+```
+
+### 🚨 Частые ошибки
+
+**Ошибка 1: except Exception без логирования**
+```python
+# ❌ Ошибка скрывается
+try:
+    1 / 0
+except Exception:
+    pass
+
+# ✅ Логировать и/или пробрасывать
+import logging
+logging.exception("Ошибка деления")
+```
+
+**Ошибка 2: Ловля BaseException**
+```python
+# ❌ Не ловите BaseException - перехватит SystemExit/KeyboardInterrupt
+# except BaseException: ...
+
+# ✅ Ловите Exception или конкретные типы
+```
+
+**Ошибка 3: Потеря исходного стека при raise**
+```python
+try:
+    int("abc")
+except ValueError as e:
+    # ❌ потеря контекста
+    # raise ValueError("Неверные данные")
+
+    # ✅ сохранить контекст
+    raise ValueError("Неверные данные") from e
+```
+
+**Ошибка 4: Глобальная настройка logging.basicConfig повторно**
+```python
+# logging.basicConfig действует только при первом вызове
+# Повторные вызовы могут игнорироваться
+```
+
+### 📌 Полезные ресурсы
+- [Документация: exceptions](https://docs.python.org/3/library/exceptions.html)
+- [Документация: logging](https://docs.python.org/3/library/logging.html)
+- [Logging HOWTO](https://docs.python.org/3/howto/logging.html)
+- [Logging Cookbook](https://docs.python.org/3/howto/logging-cookbook.html)
+- [PEP 3134 - Exception Chaining](https://peps.python.org/pep-3134/)
 - могут быть **обработаны**, чтобы программа продолжила работу.
 
 Примеры типичных исключений:
@@ -451,6 +666,6 @@ logging.error("...")
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
 _Этот раздел будет дополнен практическими примерами и дополнительной информацией._

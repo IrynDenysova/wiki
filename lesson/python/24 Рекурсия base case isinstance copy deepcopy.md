@@ -17,9 +17,8 @@
 - [[#(Доп.) Обратный вывод строки (рекурсивно)]](#доп-обратный-вывод-строки-рекурсивно)
 - [[#(Доп.) Подсчёт слова во вложенной структуре (списки/строки)]](#доп-подсчёт-слова-во-вложенной-структуре-спискистроки)
 - [[#Мини-шпаргалка]](#мини-шпаргалка)
-- [[#📚 Дополнительная информация]](#📚-дополнительная-информация)
+- [[#Дополнительная информация]](#дополнительная-информация)
 
-**[[#📚 Дополнительная информация]](#дополнительная-информация)**
 
 ---
 
@@ -380,6 +379,430 @@ isinstance(obj, (type1, type2, ...)):
 
 ---
 
-## 📚 Дополнительная информация
+## Дополнительная информация
 
-_Этот раздел будет дополнен практическими примерами и дополнительной информацией._
+### Важные концепции для изучения
+
+#### 1. Углубленное изучение рекурсии и base case
+```python
+# Фибоначчи - классический пример рекурсии
+def fibonacci_naive(n: int) -> int:
+    """Вычисляет n-ое число Фибоначчи (неэффективно)"""
+    # BASE CASES - критичны для останова рекурсии
+    if n <= 0:
+        return 0
+    if n == 1:
+        return 1
+    
+    # RECURSIVE CASE
+    return fibonacci_naive(n - 1) + fibonacci_naive(n - 2)
+
+print(fibonacci_naive(5))  # 5
+
+# Проблема: экспоненциальная сложность O(2^n)
+# fibonacci_naive(35) займет много времени!
+
+# Решение: мемоизация
+from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fibonacci_cached(n: int) -> int:
+    """Вычисляет Фибоначчи эффективно - O(n)"""
+    if n <= 0:
+        return 0
+    if n == 1:
+        return 1
+    return fibonacci_cached(n - 1) + fibonacci_cached(n - 2)
+
+print(fibonacci_cached(35))  # Моментально!
+
+# Правильная структура рекурсии:
+# 1. BASE CASE - условие остановки
+# 2. RECURSIVE CASE - вызов с более простым аргументом
+# 3. Гарантировать что базовый случай будет достигнут
+
+def countdown(n: int) -> None:
+    """Отсчет от n до 0 (демонстрация базового случая)"""
+    # BASE CASE - обязателен!
+    if n < 0:
+        return
+    
+    print(n)
+    # RECURSIVE CASE - переход к более простому аргументу
+    countdown(n - 1)
+
+countdown(3)
+# Вывод: 3, 2, 1, 0
+```
+
+#### 2. Функция isinstance() - проверка типа
+```python
+# isinstance(object, classinfo) - проверяет тип объекта
+
+value = 42
+print(isinstance(value, int))  # True
+print(isinstance(value, str))  # False
+print(isinstance(value, (int, float)))  # True - проверка нескольких типов
+
+# Практическое применение
+def process_value(value):
+    """Обрабатывает значение в зависимости от типа"""
+    if isinstance(value, int):
+        return value * 2
+    elif isinstance(value, str):
+        return value.upper()
+    elif isinstance(value, list):
+        return sum(value) if all(isinstance(x, (int, float)) for x in value) else None
+    else:
+        return None
+
+print(process_value(5))  # 10
+print(process_value("hello"))  # HELLO
+print(process_value([1, 2, 3]))  # 6
+
+# isinstance с наследованием
+class Animal:
+    pass
+
+class Dog(Animal):
+    pass
+
+dog = Dog()
+print(isinstance(dog, Dog))  # True
+print(isinstance(dog, Animal))  # True - проверяет наследование!
+print(isinstance(dog, str))  # False
+
+# type() vs isinstance()
+print(type(dog) == Dog)  # True
+print(type(dog) == Animal)  # False - type не учитывает наследование
+
+# isinstance предпочтительнее, т.к. работает с наследованием
+```
+
+#### 3. copy vs deepcopy - глубокое и поверхностное копирование
+```python
+import copy
+
+# ПОВЕРХНОСТНОЕ КОПИРОВАНИЕ (shallow copy)
+original_list = [[1, 2], [3, 4]]
+shallow = original_list.copy()  # или list(original_list)
+
+print("До изменения:")
+print(f"original: {original_list}")
+print(f"shallow: {shallow}")
+
+# Изменяем вложенный список
+original_list[0][0] = 999
+
+print("\nПосле изменения original_list[0][0] = 999:")
+print(f"original: {original_list}")  # [[999, 2], [3, 4]]
+print(f"shallow: {shallow}")  # [[999, 2], [3, 4]] - ТОЖе изменился!
+
+# Проблема: shallow copy копирует только ссылки!
+print(f"\nСсылаются ли на один список? {original_list[0] is shallow[0]}")  # True
+
+# ГЛУБОКОЕ КОПИРОВАНИЕ (deep copy)
+original_list = [[1, 2], [3, 4]]
+deep = copy.deepcopy(original_list)
+
+original_list[0][0] = 999
+
+print("\nДосле deepcopy:")
+print(f"original: {original_list}")  # [[999, 2], [3, 4]]
+print(f"deep: {deep}")  # [[1, 2], [3, 4]] - не изменился!
+print(f"Разные объекты? {original_list[0] is not deep[0]}")  # True
+
+# Сравнение методов копирования
+original = {'a': [1, 2, 3], 'b': {'x': 10}}
+
+# Поверхностное
+shallow = original.copy()
+original['a'].append(4)
+print(f"Shallow: {shallow}")  # {'a': [1, 2, 3, 4], ...} - изменился!
+
+# Глубокое
+original = {'a': [1, 2, 3], 'b': {'x': 10}}
+deep = copy.deepcopy(original)
+original['a'].append(4)
+print(f"Deep: {deep}")  # {'a': [1, 2, 3], ...} - не изменился
+```
+
+#### 4. Рекурсия с копированием состояния
+```python
+from typing import List
+
+def permutations(arr: List[int], current: List[int] = None, result: List[List[int]] = None) -> List[List[int]]:
+    """Генерирует все перестановки массива"""
+    if current is None:
+        current = []
+    if result is None:
+        result = []
+    
+    # BASE CASE
+    if len(arr) == 0:
+        # ВАЖНО: сохраняем копию, а не ссылку!
+        result.append(current.copy())
+        return result
+    
+    # RECURSIVE CASE
+    for i in range(len(arr)):
+        # Берем элемент
+        num = arr[i]
+        # Рекурсивно генерируем перестановки оставшихся элементов
+        permutations(
+            arr[:i] + arr[i+1:],  # Все кроме текущего
+            current + [num],  # Добавляем текущий
+            result
+        )
+    
+    return result
+
+print(permutations([1, 2, 3]))
+# [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]
+
+# ВАЖНО: current.copy() это критично!
+# Если просто append(current), все результаты будут ссылаться на одну список
+```
+
+### 💡 Практические примеры
+
+#### Пример 1: Обход дерева структуры
+```python
+from typing import List, Optional
+
+class Node:
+    def __init__(self, value: int):
+        self.value = value
+        self.children: List['Node'] = []
+    
+    def add_child(self, child: 'Node') -> None:
+        self.children.append(child)
+
+def sum_tree(node: Optional[Node]) -> int:
+    """Суммирует все значения в дереве"""
+    # BASE CASE
+    if node is None:
+        return 0
+    
+    # RECURSIVE CASE
+    total = node.value
+    for child in node.children:
+        total += sum_tree(child)
+    
+    return total
+
+def print_tree(node: Optional[Node], depth: int = 0) -> None:
+    """Выводит дерево с отступом"""
+    # BASE CASE
+    if node is None:
+        return
+    
+    # RECURSIVE CASE
+    print("  " * depth + str(node.value))
+    for child in node.children:
+        print_tree(child, depth + 1)
+
+# Использование
+root = Node(1)
+root.add_child(Node(2))
+root.add_child(Node(3))
+root.children[0].add_child(Node(4))
+root.children[0].add_child(Node(5))
+
+print(f"Сумма: {sum_tree(root)}")  # 15
+print_tree(root)
+# 1
+#   2
+#     4
+#     5
+#   3
+```
+
+#### Пример 2: Поиск в лабиринте (DFS)
+```python
+from typing import Tuple, Set, List
+
+def find_path(maze: List[List[int]], start: Tuple[int, int], 
+              end: Tuple[int, int], visited: Set = None) -> bool:
+    """Находит путь в лабиринте (0 - проход, 1 - стена)"""
+    if visited is None:
+        visited = set()
+    
+    # BASE CASES
+    if start == end:
+        return True
+    
+    if start in visited:
+        return False
+    
+    row, col = start
+    if (row < 0 or row >= len(maze) or col < 0 or col >= len(maze[0]) or
+        maze[row][col] == 1):
+        return False
+    
+    # Отмечаем как посещенную
+    visited.add(start)
+    
+    # RECURSIVE CASE - пробуем все направления
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # вправо, вниз, влево, вверх
+    for dr, dc in directions:
+        new_pos = (row + dr, col + dc)
+        if find_path(maze, new_pos, end, visited):
+            return True
+    
+    return False
+
+# Использование
+maze = [
+    [0, 1, 0, 0],
+    [0, 1, 0, 1],
+    [0, 0, 0, 0],
+    [1, 1, 1, 0]
+]
+
+start = (0, 0)
+end = (3, 3)
+print(find_path(maze, start, end))  # True
+```
+
+#### Пример 3: Сортировка с проверкой типов
+```python
+from typing import List, Union
+
+def sort_mixed_list(items: List) -> List:
+    """Сортирует список, разделяя элементы по типам"""
+    result = []
+    
+    # Разделяем по типам
+    ints = []
+    strs = []
+    others = []
+    
+    for item in items:
+        if isinstance(item, int) and not isinstance(item, bool):
+            ints.append(item)
+        elif isinstance(item, str):
+            strs.append(item)
+        elif isinstance(item, float):
+            ints.append(item)  # Рассматриваем вместе с int
+        else:
+            others.append(item)
+    
+    # Сортируем каждую группу
+    result.extend(sorted(ints))
+    result.extend(sorted(strs))
+    result.extend(others)
+    
+    return result
+
+print(sort_mixed_list([3, "hello", 1, "apple", 2.5]))
+# [1, 2.5, 3, 'apple', 'hello']
+```
+
+#### Пример 4: Глубокое слияние словарей
+```python
+from typing import Dict, Any
+import copy
+
+def deep_merge(dict1: Dict, dict2: Dict) -> Dict:
+    """Глубоко слияет два словаря рекурсивно"""
+    # Используем deepcopy чтобы не изменять исходные
+    result = copy.deepcopy(dict1)
+    
+    for key, value in dict2.items():
+        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+            # RECURSIVE CASE - оба значения это словари
+            result[key] = deep_merge(result[key], value)
+        else:
+            # BASE CASE - простое значение
+            result[key] = copy.deepcopy(value)
+    
+    return result
+
+# Использование
+dict1 = {'a': 1, 'b': {'x': 10, 'y': 20}}
+dict2 = {'b': {'y': 30, 'z': 40}, 'c': 3}
+
+merged = deep_merge(dict1, dict2)
+print(merged)
+# {'a': 1, 'b': {'x': 10, 'y': 30, 'z': 40}, 'c': 3}
+
+print(dict1)  # Исходный не изменился
+```
+
+### 🚨 Частые ошибки
+
+**Ошибка 1: Бесконечная рекурсия из-за отсутствия базового случая**
+```python
+# ❌ ОШИБКА - нет base case!
+# def infinite():
+#     return infinite()  # RecursionError: maximum recursion depth exceeded
+
+# ✅ ПРАВИЛЬНО
+def countdown(n: int) -> None:
+    if n < 0:  # BASE CASE!
+        return
+    print(n)
+    countdown(n - 1)
+
+countdown(3)
+```
+
+**Ошибка 2: Shallow copy вместо deepcopy при сложных структурах**
+```python
+# ❌ НЕПРАВИЛЬНО
+original = {'nested': [1, 2, 3]}
+copy_shallow = original.copy()
+original['nested'].append(4)
+print(copy_shallow)  # {'nested': [1, 2, 3, 4]} - изменился!
+
+# ✅ ПРАВИЛЬНО
+import copy
+original = {'nested': [1, 2, 3]}
+copy_deep = copy.deepcopy(original)
+original['nested'].append(4)
+print(copy_deep)  # {'nested': [1, 2, 3]} - не изменился
+```
+
+**Ошибка 3: type() вместо isinstance() при наследовании**
+```python
+class Animal:
+    pass
+
+class Dog(Animal):
+    pass
+
+dog = Dog()
+
+# ❌ НЕПРАВИЛЬНО - не работает с наследованием
+if type(dog) == Animal:  # False!
+    pass
+
+# ✅ ПРАВИЛЬНО
+if isinstance(dog, Animal):  # True!
+    pass
+```
+
+**Ошибка 4: Забыли скопировать значение в рекурсии**
+```python
+# ❌ НЕПРАВИЛЬНО - all result элементы указывают на one list
+def generate_combinations(arr, current=[]):
+    if len(arr) == 0:
+        result.append(current)  # Ошибка!
+        return
+    # ...
+
+# ✅ ПРАВИЛЬНО
+def generate_combinations(arr, current=[]):
+    if len(arr) == 0:
+        result.append(current.copy())  # Копируем!
+        return
+    # ...
+```
+
+### 📌 Полезные ресурсы
+- [Документация: isinstance()](https://docs.python.org/3/library/functions.html#isinstance)
+- [Документация: copy](https://docs.python.org/3/library/copy.html)
+- [Рекурсия в Python](https://docs.python.org/3/faq/programming.html#what-is-tail-recursion)
+- [Big O сложность рекурсии](https://en.wikipedia.org/wiki/Time_complexity)
+- [Динамическое программирование](https://en.wikipedia.org/wiki/Dynamic_programming)
