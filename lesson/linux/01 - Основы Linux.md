@@ -62,3 +62,50 @@
 - `b` блочное устройство
 - `p` именованный канал (pipe)
 - `s` сокет
+
+---
+
+## Дополнительные материалы
+
+### Пакетные менеджеры в разных дистрибутивах
+
+**Debian/Ubuntu (apt)**
+```bash
+sudo apt update && sudo apt upgrade    # Обновление системы
+sudo apt install package_name          # Установка пакета
+sudo apt remove package_name           # Удаление пакета
+apt search keyword                     # Поиск пакета
+```
+
+**Red Hat/CentOS (yum/dnf)**
+```bash
+sudo yum update                        # Обновление системы  
+sudo dnf install package_name          # Установка (dnf в новых версиях)
+```
+
+### Жесткие и символические ссылки
+
+```bash
+ln -s /path/to/file /path/to/symlink  # Символическая ссылка
+ln /path/to/file /path/to/hardlink    # Жесткая ссылка
+readlink -f symlink                    # Узнать куда указывает ссылка
+```
+
+**Разница:** Символические ссылки — это указатели на путь, жесткие — дополнительное имя для того же inode.
+
+### Полезные инструменты мониторинга
+
+```bash
+htop          # Интерактивный монитор процессов (нужно установить)
+iotop         # Мониторинг I/O
+netstat -tulpn # Открытые порты
+lsblk         # Список блочных устройств
+journalctl -f  # Просмотр системных логов
+```
+
+### Ресурсы для изучения
+
+- [Linux Journey](https://linuxjourney.com/) — структурированный курс для начинающих
+- [Arch Wiki](https://wiki.archlinux.org/) — отличная база знаний
+- [ExplainShell](https://explainshell.com/) — объяснение команд в браузере
+- [TLDR Pages](https://tldr.sh/) — упрощенные примеры команд

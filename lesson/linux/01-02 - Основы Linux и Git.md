@@ -1261,3 +1261,33 @@ Alt+B                       # Слово назад
 - [Advanced Bash-Scripting Guide](https://tldp.org/LDP/abs/html/)
 - [Bash Hackers Wiki](https://wiki.bash-hackers.org/)
 - [Greg's Wiki - Bash Guide](https://mywiki.wooledge.org/BashGuide)
+
+
+---
+
+## Дополнительные материалы
+
+### Полезные ресурсы
+
+**Официальная документация:**
+- [Linux Documentation Project](https://tldp.org/)
+- [Arch Wiki](https://wiki.archlinux.org/)
+- [Pro Git Book](https://git-scm.com/book/ru/v2) — бесплатная книга на русском
+
+**Интерактивное обучение:**
+- [Linux Journey](https://linuxjourney.com/)
+- [Learn Git Branching](https://learngitbranching.js.org/?locale=ru_RU)
+- [OverTheWire: Bandit](https://overthewire.org/wargames/bandit/)
+
+**Инструменты:**
+- [ExplainShell](https://explainshell.com/) — объяснение команд
+- [TLDR Pages](https://tldr.sh/) — упрощенные примеры
+- [ShellCheck](https://www.shellcheck.net/) — проверка скриптов
+- [Crontab Guru](https://crontab.guru/) — генератор cron выражений
+
+**Практические советы:**
+1. Используйте `man` и `--help` для изучения команд
+2. Экспериментируйте в виртуальной машине или контейнере
+3. Изучайте чужие скрипты на GitHub
+4. Практикуйтесь ежедневно
+5. Используйте алиасы для часто используемых команд

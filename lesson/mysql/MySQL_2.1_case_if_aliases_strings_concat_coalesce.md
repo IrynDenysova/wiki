@@ -7,15 +7,14 @@
 - Новые столбцы на основе имеющихся (математика)
 - Строковые функции: `LEFT`, `RIGHT`, `SUBSTRING`
 - Конкатенация: `CONCAT`
-- Замена NULL: `COALESCE` fileciteturn13file0turn13file1
-
+- Замена NULL: `COALESCE` 
 ---
 
 ## 1) CASE — условная логика в SQL
 
 ### 1.1. Что делает CASE
 `CASE` работает как `if / else if / else`: возвращает разные значения в зависимости от условий.  
-**Важно:** `CASE` создаёт **новый столбец в выборке**, **не меняя** данные в таблице. fileciteturn13file0turn13file1
+**Важно:** `CASE` создаёт **новый столбец в выборке**, **не меняя** данные в таблице. 
 
 ### 1.2. Синтаксис
 ```sql
@@ -26,7 +25,7 @@ CASE
   ELSE resultN
 END
 ```
-- `ELSE` **необязателен**: если его нет и ни одно условие не подошло → будет `NULL`. fileciteturn13file1
+- `ELSE` **необязателен**: если его нет и ни одно условие не подошло → будет `NULL`. 
 
 ### 1.3. Пример 1 — категория цены товара (products.standard_cost)
 **Полный вариант (с явными интервалами):**
@@ -41,7 +40,7 @@ SELECT
   END AS price_category
 FROM products;
 ```
-fileciteturn13file0turn13file1
+
 
 **Оптимизация:** SQL читает `WHEN` сверху вниз, поэтому интервалы можно упростить:
 ```sql
@@ -55,7 +54,7 @@ SELECT
   END AS price_category
 FROM products;
 ```
-fileciteturn13file0turn13file1
+
 
 ### 1.4. Пример 2 — скидка по региону (customers.state_province)
 ```sql
@@ -69,7 +68,7 @@ SELECT
   END AS discount
 FROM customers;
 ```
-fileciteturn13file0turn13file1
+
 
 ### 1.5. Пример 3 — статус заказа (orders) с проверкой NULL
 ```sql
@@ -84,7 +83,7 @@ SELECT
   END AS order_status
 FROM orders;
 ```
-fileciteturn13file0turn13file1
+
 
 ---
 
@@ -92,7 +91,7 @@ FROM orders;
 
 ### 2.1. Зачем нужны
 Если вы создаёте вычисляемый столбец или используете функцию, без алиаса имя будет “кривым” (формула/функция).  
-Алиас делает результат читаемым. fileciteturn13file0turn13file1
+Алиас делает результат читаемым. 
 
 ### 2.2. Синтаксис
 ```sql
@@ -101,7 +100,7 @@ SELECT
   expression2 AS name2
 FROM table;
 ```
-`AS` можно **не писать**, но лучше оставлять для читабельности. fileciteturn13file1
+`AS` можно **не писать**, но лучше оставлять для читабельности. 
 
 ---
 
@@ -109,7 +108,7 @@ FROM table;
 
 ### 3.1. Что это
 `IF(condition, true_result, false_result)` — короткий способ условной логики, **поддерживается только MySQL**.  
-Для переносимых запросов чаще используют `CASE` (это стандарт SQL и поддерживается в большинстве СУБД). fileciteturn13file0turn13file1
+Для переносимых запросов чаще используют `CASE` (это стандарт SQL и поддерживается в большинстве СУБД).
 
 ### 3.2. Пример
 ```sql
@@ -118,7 +117,7 @@ SELECT
   IF(standard_cost > 20, 'Expensive', 'Affordable') AS PriceCategory
 FROM products;
 ```
-fileciteturn13file0turn13file1
+
 
 ---
 
@@ -134,7 +133,7 @@ SELECT
   (unit_price * quantity) AS total_price
 FROM order_details;
 ```
-fileciteturn13file0turn13file1
+
 
 ---
 
@@ -142,7 +141,7 @@ FROM order_details;
 
 ### 5.1. LEFT / RIGHT
 - `LEFT(str, n)` — взять `n` символов **с начала**
-- `RIGHT(str, n)` — взять `n` символов **с конца** fileciteturn13file0turn13file1
+- `RIGHT(str, n)` — взять `n` символов **с конца**
 
 Пример:
 ```sql
@@ -151,10 +150,10 @@ SELECT
   RIGHT(company, 2) AS ShortName
 FROM customers;
 ```
-fileciteturn13file0turn13file1
+
 
 ### 5.2. SUBSTRING (SUBSTR)
-`SUBSTRING(str, start, len)` — извлечь подстроку с позиции `start` длиной `len`. fileciteturn13file0turn13file1
+`SUBSTRING(str, start, len)` — извлечь подстроку с позиции `start` длиной `len`. 
 
 Пример (вытянуть 3 цифры из business_phone):
 ```sql
@@ -163,13 +162,13 @@ SELECT
   SUBSTRING(business_phone, 6, 3) AS phone_part
 FROM customers;
 ```
-fileciteturn13file0turn13file1
+
 
 ---
 
 ## 6) CONCAT — склеивание строк
 
-`CONCAT(a, b, c...)` объединяет строки в одно значение. fileciteturn13file0turn13file1
+`CONCAT(a, b, c...)` объединяет строки в одно значение. 
 
 Пример: полное имя сотрудника:
 ```sql
@@ -177,15 +176,14 @@ SELECT
   CONCAT(first_name, ' ', last_name) AS full_name
 FROM employees;
 ```
-fileciteturn13file0turn13file1
+
 
 ---
 
 ## 7) COALESCE — замена NULL
 
 `COALESCE(x, y, z...)` возвращает **первое НЕ-NULL** значение из списка.  
-Полезно, чтобы заменить пропуски в выводе. fileciteturn13file0turn13file1
-
+Полезно, чтобы заменить пропуски в выводе. 
 Пример: заменить NULL в `notes` на `'Not filled'`:
 ```sql
 SELECT
@@ -204,7 +202,7 @@ FROM employees;
 - `LENGTH(str)` — длина строки (в байтах)  
 - `TRIM(str)` / `LTRIM(str)` / `RTRIM(str)` — убрать пробелы
 - `REPLACE(str, from, to)` — заменить подстроку
-- `UPPER(str)` / `LOWER(str)` — регистр fileciteturn13file0turn13file1
+- `UPPER(str)` / `LOWER(str)` — регистр 
 
 ---
 

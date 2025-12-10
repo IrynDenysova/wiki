@@ -273,3 +273,133 @@ tail -f /tmp/output2.log
 - Структура: минуты часы день_месяца месяц день_недели команда
 - Управление: `crontab -e` (редактирование), `crontab -l` (просмотр), `crontab -r` (удаление)
 - Полезный инструмент для проверки синтаксиса: https://crontab.guru/
+
+
+---
+
+## Дополнительные материалы
+
+### Примеры реальных cron задач
+
+```bash
+# Резервное копирование каждый день в 2:00
+0 2 * * * /home/user/backup.sh
+
+# Очистка временных файлов каждый час
+0 * * * * find /tmp -mtime +7 -delete
+
+# Перезапуск сервиса каждый понедельник в 3:00
+0 3 * * 1 systemctl restart myservice
+
+# Проверка дискового пространства каждые 15 минут
+*/15 * * * * df -h | grep -q '9[0-9]%' && echo "Disk almost full" | mail -s "Alert" admin@example.com
+
+# Запуск только по рабочим дням
+0 9 * * 1-5 /path/to/script.sh
+```
+
+### Логирование cron задач
+
+```bash
+# В crontab
+*/5 * * * * /path/script.sh >> /var/log/myscript.log 2>&1
+
+# Или в самом скрипте
+#!/bin/bash
+exec 1>> /var/log/myscript.log
+exec 2>&1
+
+echo "[$(date)] Script started"
+# ваши команды
+echo "[$(date)] Script finished"
+```
+
+### Anacron — для систем которые не работают 24/7
+
+```bash
+# /etc/anacrontab
+1  5  cron.daily   run-parts /etc/cron.daily
+7  10 cron.weekly  run-parts /etc/cron.weekly
+30 15 cron.monthly run-parts /etc/cron.monthly
+```
+
+### Продвинутые возможности tar
+
+#### Исключение файлов
+```bash
+tar -czf backup.tar.gz --exclude='*.log' --exclude='node_modules' /path/to/dir
+```
+
+#### Инкрементное резервное копирование
+```bash
+# Полное резервное копирование
+tar -czf full-backup.tar.gz -g snapshot.file /path
+
+# Инкрементное (только изменения)
+tar -czf incremental-backup.tar.gz -g snapshot.file /path
+```
+
+#### Извлечение конкретных файлов
+```bash
+# Список содержимого
+tar -tzf archive.tar.gz
+
+# Извлечь конкретный файл
+tar -xzf archive.tar.gz path/to/file
+
+# Извлечь файлы с определенным паттерном
+tar -xzf archive.tar.gz --wildcards '*.txt'
+```
+
+#### Pipe с tar
+```bash
+# Копирование директорий с сохранением прав
+tar -czf - /source | ssh user@host "cd /dest && tar -xzf -"
+
+# Резервное копирование на удаленный сервер
+tar -czf - /data | ssh user@backup "cat > backup-$(date +%F).tar.gz"
+```
+
+### Комбинация tar и cron
+
+```bash
+#!/bin/bash
+# backup-script.sh
+
+DATE=$(date +%Y-%m-%d)
+BACKUP_DIR="/backups"
+SOURCE="/var/www"
+
+# Создать backup
+tar -czf $BACKUP_DIR/backup-$DATE.tar.gz $SOURCE
+
+# Удалить старые backup (старше 30 дней)
+find $BACKUP_DIR -name "backup-*.tar.gz" -mtime +30 -delete
+
+# Отправить на удаленный сервер
+scp $BACKUP_DIR/backup-$DATE.tar.gz user@remote:/backups/
+
+echo "Backup completed: backup-$DATE.tar.gz"
+```
+
+```bash
+# В crontab
+0 2 * * * /path/to/backup-script.sh >> /var/log/backup.log 2>&1
+```
+
+### Monitoring cron
+
+```bash
+# Просмотр логов cron
+sudo tail -f /var/log/syslog | grep CRON
+sudo journalctl -u cron -f
+
+# Проверить статус crond
+systemctl status cron
+```
+
+### Ресурсы
+
+- [Crontab Guru](https://crontab.guru/) — объяснение cron выражений
+- [Crontab Generator](https://crontab-generator.org/)
+- [GNU Tar Manual](https://www.gnu.org/software/tar/manual/)

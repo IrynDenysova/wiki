@@ -128,3 +128,75 @@ scp -i ~/.ssh/id_rsa ec2-user@linux.itcareerhub.de:///opt/ИМЯ_ВАШЕЙ_ГР
 2) Создать рабочую папку по пути:
    `/opt/ВАША_ГРУППА/ВАШЕ_ИМЯ`
 3) Отправить скриншот или список директорий из `/opt`, чтобы было видно созданную директорию. 
+
+
+---
+
+## Дополнительные материалы
+
+### SSH config файл
+
+Файл `~/.ssh/config` позволяет создавать алиасы:
+
+```bash
+Host myserver
+    HostName linux.itcareerhub.de
+    User ec2-user
+    IdentityFile ~/.ssh/id_rsa
+    ServerAliveInterval 60
+```
+
+Теперь: `ssh myserver`
+
+### SSH туннелирование (Port Forwarding)
+
+#### Local Port Forwarding
+```bash
+ssh -L 8080:localhost:80 user@remote
+# localhost:8080 будет доступен как remote:80
+```
+
+#### Remote Port Forwarding
+```bash
+ssh -R 8080:localhost:3000 user@remote
+# Ваш локальный :3000 станет доступен на remote:8080
+```
+
+### rsync — мощная альтернатива scp
+
+```bash
+rsync -avz /local/ user@remote:/remote/
+# -a: archive mode, -v: verbose, -z: сжатие
+
+rsync -avzP /local/ user@remote:/remote/
+# -P: показать прогресс + возможность возобновления
+
+rsync -avz --delete /local/ user@remote:/remote/
+# --delete: удалить файлы на целевом хосте
+```
+
+### Безопасность SSH
+
+```bash
+# /etc/ssh/sshd_config
+PermitRootLogin no
+PasswordAuthentication no  
+PubkeyAuthentication yes
+Port 2222  # Изменить порт
+
+# После изменений
+sudo systemctl restart sshd
+```
+
+### Troubleshooting
+
+```bash
+ssh -vvv user@host        # Детальный вывод для отладки
+ssh-keygen -R hostname    # Удалить ключ хоста из known_hosts
+```
+
+### Ресурсы
+
+- [OpenSSH Manual](https://www.openssh.com/manual.html)
+- [mosh](https://mosh.org/) — mobile shell (SSH через UDP)
+- [tmux](https://github.com/tmux/tmux) — терминальный мультиплексор

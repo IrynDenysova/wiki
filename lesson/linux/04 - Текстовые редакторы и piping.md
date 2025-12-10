@@ -213,3 +213,74 @@ cat /etc/group | tail -3 | wc -m >> /root/test3/myfile.txt
 - **vi**: режимы (`i` / `Esc`), выход (`ZZ` / `:wq` / `:q!`), правки (`dd`, `yy`, `p`, `u`, `/`). 
 - **nano**: редактирование сразу, выход `Ctrl+X`
 - **pipe**: `команда1 | команда2` (stdout → stdin), частая связка `df | grep | awk | sed`. 
+
+
+---
+
+## Дополнительные материалы
+
+### Продвинутые возможности Vim
+
+#### Макросы в Vim
+```vim
+qa              " Начать запись макроса в регистр 'a'
+" Выполнить действия
+q               " Закончить запись
+@a              " Воспроизвести макрос
+5@a             " Выполнить макрос 5 раз
+```
+
+#### Визуальный режим
+```vim
+v               " Визуальный режим (посимвольный)
+V               " Визуальный режим (построчный)
+Ctrl+v          " Блочный визуальный режим
+```
+
+#### Работа с несколькими файлами
+```vim
+:split file     " Открыть в горизонтальном сплите
+:vsplit file    " Открыть в вертикальном сплите
+Ctrl+w w        " Переключение между окнами
+:tabnew file    " Открыть в новой вкладке
+gt              " Следующая вкладка
+```
+
+### Альтернативные редакторы
+
+**micro** (современный, простой)
+```bash
+sudo apt install micro  # Debian/Ubuntu
+micro file.txt
+# Ctrl+S — сохранить, Ctrl+Q — выйти
+```
+
+### Продвинутые техники grep
+
+```bash
+grep -E 'pattern1|pattern2' file  # OR условие
+grep -A 3 pattern file            # +3 строки после
+grep -B 3 pattern file            # 3 строки до
+grep -C 3 pattern file            # 3 строки до и после
+grep -v pattern file              # Строки БЕЗ pattern
+```
+
+### Продвинутый awk
+
+```bash
+# Условия
+awk '{if ($3 > 100) print $0}' file
+
+# Суммирование
+awk '{sum += $1} END {print sum}' file
+
+# Форматированный вывод
+awk '{printf "%-10s %5d\n", $1, $2}' file
+```
+
+### Ресурсы
+
+- [Vim Adventures](https://vim-adventures.com/) — игра для изучения Vim
+- [OpenVim](https://www.openvim.com/) — интерактивный туториал
+- [Awk Tutorial](https://www.grymoire.com/Unix/Awk.html)
+- [Sed Tutorial](https://www.grymoire.com/Unix/Sed.html)

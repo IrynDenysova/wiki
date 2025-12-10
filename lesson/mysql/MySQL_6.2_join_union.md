@@ -3,28 +3,28 @@
 ## План занятия
 - `UNION` и `UNION ALL`
 - `JOIN`: `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `CROSS JOIN`
-- Общий синтаксис JOIN, примеры на northwind fileciteturn21file0turn21file1
+- Общий синтаксис JOIN, примеры на northwind 
 
 ---
 
 ## 1) UNION и UNION ALL (вертикальное объединение строк)
-`UNION` / `UNION ALL` объединяют результаты **двух и более SELECT** в **один набор строк**. fileciteturn21file0turn21file1
+`UNION` / `UNION ALL` объединяют результаты **двух и более SELECT** в **один набор строк**. 
 
 ### 1.1. UNION
 - объединяет строки
 - **удаляет полные дубликаты строк**
-- требует больше ресурсов/памяти (по сравнению с UNION ALL) fileciteturn21file0turn21file1
+- требует больше ресурсов/памяти (по сравнению с UNION ALL) 
 
 ```sql
 SELECT * FROM table1
 UNION
 SELECT * FROM table2;
 ```
-fileciteturn21file0turn21file1
+
 
 ### 1.2. UNION ALL
 - объединяет строки
-- **сохраняет все строки**, включая дубликаты (быстрее) fileciteturn21file0turn21file1
+- **сохраняет все строки**, включая дубликаты (быстрее) 
 
 ```sql
 SELECT * FROM table1
@@ -33,8 +33,8 @@ SELECT * FROM table2;
 ```
 
 ### 1.3. Главные правила UNION
-1) В каждом SELECT должно быть **одинаковое количество столбцов**. fileciteturn21file0turn21file1  
-2) Соответствующие столбцы должны иметь **совместимые типы данных**. fileciteturn21file0turn21file1  
+1) В каждом SELECT должно быть **одинаковое количество столбцов**.   
+2) Соответствующие столбцы должны иметь **совместимые типы данных**.   
 3) Имена столбцов в результате берутся из **первого SELECT**.
 
 ---
@@ -51,7 +51,7 @@ UNION ALL
 SELECT first_name, last_name
 FROM customers;
 ```
-fileciteturn21file0turn21file1
+
 
 ### 2.2. Добавить столбец “кто это” (employee / customer)
 ```sql
@@ -63,33 +63,33 @@ UNION ALL
 SELECT first_name, last_name, 'customer' AS status
 FROM customers;
 ```
-fileciteturn21file0turn21file1
+
 
 ---
 
 ## 3) JOIN (горизонтальное объединение столбцов)
-`JOIN` используют, когда нужно объединить строки из двух (или более) таблиц по логической связи, обычно по общему полю (ключу). fileciteturn21file0turn21file1
+`JOIN` используют, когда нужно объединить строки из двух (или более) таблиц по логической связи, обычно по общему полю (ключу). 
 
 ---
 
 ## 4) Виды JOIN (что возвращают)
 
 ### 4.1. INNER JOIN (внутреннее соединение)
-Возвращает только строки, у которых есть совпадения **в обеих таблицах**. fileciteturn21file0turn21file1
+Возвращает только строки, у которых есть совпадения **в обеих таблицах**. 
 
 ### 4.2. LEFT JOIN (левое внешнее)
 Возвращает **все** строки из левой таблицы + совпавшие из правой.  
-Если совпадений нет — поля правой таблицы будут `NULL`. fileciteturn21file0turn21file1
+Если совпадений нет — поля правой таблицы будут `NULL`. 
 
 ### 4.3. RIGHT JOIN (правое внешнее)
 Возвращает **все** строки из правой таблицы + совпавшие из левой.  
-Если совпадений нет — поля левой таблицы будут `NULL`. fileciteturn21file0turn21file1
+Если совпадений нет — поля левой таблицы будут `NULL`. 
 
 > На практике часто RIGHT JOIN не используют, потому что его легко заменить LEFT JOIN, просто поменяв таблицы местами. fileciteturn21file1
 
 ### 4.4. CROSS JOIN (декартово произведение)
 Каждая строка из первой таблицы соединяется с каждой строкой из второй.  
-Редко используется: очень быстро “взрывает” количество строк. fileciteturn21file0turn21file1
+Редко используется: очень быстро “взрывает” количество строк. 
 
 ### 4.5. FULL JOIN
 В MySQL **не реализован** как отдельный оператор. fileciteturn21file1  
@@ -104,7 +104,7 @@ FROM таблица1
 INNER/LEFT/RIGHT JOIN таблица2
   ON таблица1.колонка = таблица2.колонка;
 ```
-fileciteturn21file0turn21file1
+
 
 ---
 
@@ -127,7 +127,7 @@ RIGHT JOIN employee_privileges AS ep;
 Как понимать результат:
 - `JOIN` (INNER) покажет только сотрудников, у которых найдены привилегии, и наоборот — только совпавшие пары.
 - `LEFT JOIN` сохранит **всех сотрудников**; если привилегий нет → поля `ep.*` будут `NULL`.
-- `RIGHT JOIN` сохранит **все привилегии**; если сотрудник “не найден” → поля `e.*` будут `NULL`. fileciteturn21file0turn21file1
+- `RIGHT JOIN` сохранит **все привилегии**; если сотрудник “не найден” → поля `e.*` будут `NULL`. 
 
 ### 6.2. order_details + products: вместо product_id показать product_name
 ```sql
@@ -136,7 +136,7 @@ FROM order_details AS od
 JOIN products AS p
   ON od.product_id = p.id;
 ```
-fileciteturn21file0turn21file1
+
 
 ### 6.3. Сколько заказов для каждого товара (GROUP BY после JOIN)
 ```sql
@@ -146,7 +146,7 @@ JOIN products AS p
   ON od.product_id = p.id
 GROUP BY p.product_name;
 ```
-fileciteturn21file0turn21file1
+
 
 ### 6.4. order_details + products + purchase_orders (оставить все строки order_details)
 ```sql
@@ -157,16 +157,16 @@ LEFT JOIN products AS p
 LEFT JOIN purchase_orders AS po
   ON od.purchase_order_id = po.id;
 ```
-fileciteturn21file0turn21file1
+
 
 ---
 
 ## 7) Домашнее задание (по слайдам)
-1) `UNION`: `orders.id, orders.employee_id` + `purchase_orders.id, purchase_orders.created_by` (как employee_id). fileciteturn21file0turn21file1  
-2) В прошлом запросе убрать строки, где employee_id = NULL, и добавить столбец “source_table”. fileciteturn21file0turn21file1  
-3) `order_details.*` + `purchase_orders.payment_method`, оставить только где payment_method известен. fileciteturn21file0turn21file1  
-4) Вывести `orders` и фамилии клиентов `customers` для тех заказов, по которым есть инвойсы `invoices`. fileciteturn21file0turn21file1  
-5) Подсчитать количество инвойсов для каждого клиента из п.4. fileciteturn21file0turn21file1  
+1) `UNION`: `orders.id, orders.employee_id` + `purchase_orders.id, purchase_orders.created_by` (как employee_id).   
+2) В прошлом запросе убрать строки, где employee_id = NULL, и добавить столбец “source_table”.   
+3) `order_details.*` + `purchase_orders.payment_method`, оставить только где payment_method известен.   
+4) Вывести `orders` и фамилии клиентов `customers` для тех заказов, по которым есть инвойсы `invoices`.   
+5) Подсчитать количество инвойсов для каждого клиента из п.4.   
 
 ---
 

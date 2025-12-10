@@ -191,3 +191,84 @@ git pull
 - ветки: `git branch`, `git checkout -b name`, `git merge name`
 - откат: `git revert`, `git reset`
 - очистка: `git clean -xdf -n` (сначала посмотреть)
+
+
+---
+
+## Дополнительные материалы
+
+### Настройка Git
+
+```bash
+# Основные настройки
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+git config --global init.defaultBranch main
+
+# Редактор по умолчанию
+git config --global core.editor "vim"
+
+# Цветной вывод
+git config --global color.ui auto
+
+# Просмотр настроек
+git config --list
+git config --global --list
+```
+
+### Полезные алиасы
+
+```bash
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.unstage 'reset HEAD --'
+git config --global alias.last 'log -1 HEAD'
+git config --global alias.lg "log --oneline --graph --all --decorate"
+```
+
+### Работа с .gitignore
+
+```bash
+# Примеры .gitignore
+*.log              # Все лог-файлы
+node_modules/      # Директория
+!important.log     # Исключение из правила
+temp*              # Файлы начинающиеся с temp
+/config.local      # Только в корне репозитория
+```
+
+**Шаблоны для разных языков:** [gitignore.io](https://www.toptal.com/developers/gitignore)
+
+### Просмотр истории
+
+```bash
+git log --oneline --graph --all --decorate    # Красивый граф
+git log --author="Name"                        # Коммиты автора
+git log --since="2 weeks ago"                  # За период
+git log --grep="keyword"                       # Поиск по сообщениям
+git log file.txt                               # История файла
+git show commit_hash                           # Детали коммита
+git diff                                       # Изменения не в stage
+git diff --staged                              # Изменения в stage
+```
+
+### Отмена изменений
+
+```bash
+git checkout -- file.txt       # Отменить изменения в файле
+git restore file.txt           # То же (новый синтаксис)
+git reset HEAD file.txt        # Убрать файл из stage
+git restore --staged file.txt  # То же (новый синтаксис)
+git revert commit_hash         # Отменить коммит (создать новый)
+git reset --soft HEAD~1        # Отменить последний коммит (изменения остаются)
+git reset --hard HEAD~1        # Отменить коммит и изменения (опасно!)
+```
+
+### Ресурсы
+
+- [Pro Git Book](https://git-scm.com/book/ru/v2) — бесплатная книга на русском
+- [Learn Git Branching](https://learngitbranching.js.org/?locale=ru_RU) — интерактивное обучение
+- [Oh My Git!](https://ohmygit.org/) — игра для изучения Git
+- [Git Cheat Sheet](https://education.github.com/git-cheat-sheet-education.pdf)

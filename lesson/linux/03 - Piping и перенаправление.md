@@ -245,3 +245,65 @@ history | tail -3 >> /tmp/file
 1. слово `Start`,
 2. текущая дата,
 3. четыре строки из конца вывода `ls -la /`.
+
+
+---
+
+## Дополнительные материалы
+
+### Продвинутое перенаправление
+
+```bash
+command 1> output.txt 2> errors.txt    # Разделить вывод и ошибки
+command &> all.txt                     # Объединить stdout и stderr
+command | tee file.txt                 # Записать в файл и показать на экране
+command 2>&1 | tee log.txt            # Записать всё в файл
+```
+
+### Here Document (heredoc)
+
+```bash
+cat << EOF > file.txt
+Многострочный
+текст для записи
+в файл
+EOF
+```
+
+### Полезные комбинации команд
+
+```bash
+# Топ 10 самых больших файлов
+du -ah /path | sort -rh | head -10
+
+# Топ 10 команд из истории  
+history | awk '{print $2}' | sort | uniq -c | sort -rn | head -10
+
+# Найти и удалить файлы старше 30 дней
+find /path -type f -mtime +30 -delete
+
+# Мониторинг лог-файла с фильтрацией
+tail -f /var/log/syslog | grep --line-buffered "ERROR"
+```
+
+### Работа с текстом
+
+#### sort — сортировка
+```bash
+sort file.txt                  # По алфавиту
+sort -n file.txt              # Числовая сортировка
+sort -r file.txt              # Обратная сортировка
+sort -u file.txt              # Уникальные строки
+```
+
+#### uniq — уникальные строки
+```bash
+sort file.txt | uniq          # Удалить дубликаты
+uniq -c file.txt              # Подсчитать количество
+uniq -d file.txt              # Показать только дубликаты
+```
+
+### Ресурсы
+
+- [GNU Coreutils Manual](https://www.gnu.org/software/coreutils/manual/)
+- [Regex101](https://regex101.com/) — тестирование регулярных выражений

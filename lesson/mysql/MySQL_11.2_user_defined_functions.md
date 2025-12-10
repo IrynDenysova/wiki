@@ -5,7 +5,7 @@
 - `MYSQL_USER`: `ich1`
 - `MYSQL_PASSWORD`: `ich1_password_ilovedbs`
 
-fileciteturn29file0 fileciteturn29file1
+
 
 ---
 
@@ -13,7 +13,7 @@
 **Пользовательская функция** — это функция, которую вы создаёте сами командой `CREATE FUNCTION`.  
 После создания её можно использовать в запросах так же, как встроенные функции MySQL.
 
-fileciteturn29file0 fileciteturn29file1
+
 
 ---
 
@@ -30,7 +30,7 @@ BEGIN
 END;
 ```
 
-fileciteturn29file0 fileciteturn29file1
+
 
 ### Зачем нужен `DELIMITER`
 Внутри тела функции используются `;`, поэтому перед созданием функции обычно меняют разделитель команд:
@@ -41,7 +41,7 @@ DELIMITER //
 DELIMITER ;
 ```
 
-fileciteturn29file0 fileciteturn29file1
+
 
 ---
 
@@ -49,7 +49,7 @@ DELIMITER ;
 - **DETERMINISTIC** — функция для одинаковых входных данных всегда возвращает одинаковый результат.
 - **NON-DETERMINISTIC** — функция может возвращать разные результаты при одинаковых входных данных (например, если внутри используется `NOW()`).
 
-fileciteturn29file0 fileciteturn29file1
+
 
 ---
 
@@ -67,7 +67,7 @@ END //
 DELIMITER ;
 ```
 
-fileciteturn29file0 fileciteturn29file1
+
 
 ### 4.2. Возраст по дате рождения
 ```sql
@@ -81,7 +81,7 @@ END //
 DELIMITER ;
 ```
 
-fileciteturn29file0 fileciteturn29file1
+
 
 ### 4.3. Приветствие
 ```sql
@@ -95,7 +95,7 @@ END //
 DELIMITER ;
 ```
 
-fileciteturn29file0 fileciteturn29file1
+
 
 ---
 
@@ -108,7 +108,7 @@ SELECT calculate_age('1990-01-01');
 SELECT greet_user('Alice');
 ```
 
-fileciteturn29file0 fileciteturn29file1
+
 
 ---
 

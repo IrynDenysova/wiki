@@ -225,3 +225,147 @@ git merge <branch>
 - Позволяет рецензировать изменения перед слиянием
 - Способствует качественной коллаборации в команде
 - Поддерживает различные стратегии слияния (merge, rebase, squash)
+
+
+---
+
+## Дополнительные материалы
+
+### Синхронизация форка с оригиналом
+
+```bash
+# Добавить оригинальный репозиторий как upstream
+git remote add upstream https://github.com/original/repo.git
+
+# Получить изменения из upstream
+git fetch upstream
+
+# Слить изменения в свою ветку
+git checkout main
+git merge upstream/main
+
+# Или rebase
+git rebase upstream/main
+
+# Отправить обновления в свой fork
+git push origin main
+```
+
+### Работа с Draft Pull Request
+
+GitHub позволяет создавать черновики PR:
+- Помечены как "Work in Progress"
+- Не могут быть смержены до готовности
+- Полезны для раннего обсуждения
+
+```bash
+# Создать через GitHub CLI
+gh pr create --draft --title "WIP: New feature"
+```
+
+### Code Review Best Practices
+
+**Для автора PR:**
+- Небольшие PR (до 400 строк) легче ревьюить
+- Четкое описание изменений
+- Ссылка на issue
+- Скриншоты/демо если применимо
+- Самостоятельная проверка перед созданием PR
+
+**Для ревьюера:**
+- Конструктивная критика
+- Проверка не только кода, но и тестов
+- Предложение улучшений, а не требование
+- Быстрый feedback (в течение дня)
+
+### GitHub Actions для PR
+
+```yaml
+# .github/workflows/pr-check.yml
+name: PR Checks
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: npm test
+      - name: Lint
+        run: npm run lint
+```
+
+### Автоматизация с GitHub CLI
+
+```bash
+# Установка GitHub CLI
+# Ubuntu/Debian
+sudo apt install gh
+
+# Аутентификация
+gh auth login
+
+# Создать PR
+gh pr create --title "Fix bug" --body "Description"
+
+# Список PR
+gh pr list
+
+# Просмотр PR
+gh pr view 123
+
+# Checkout PR локально
+gh pr checkout 123
+
+# Merge PR
+gh pr merge 123 --squash
+
+# Комментировать PR
+gh pr comment 123 --body "Looks good!"
+```
+
+### Шаблоны для PR и Issue
+
+**`.github/pull_request_template.md`**
+```markdown
+## Description
+Brief description of changes
+
+## Type of change
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Breaking change
+
+## Checklist
+- [ ] Tests added
+- [ ] Documentation updated
+- [ ] Code follows style guide
+```
+
+**`.github/ISSUE_TEMPLATE/bug_report.md`**
+```markdown
+---
+name: Bug report
+about: Create a report to help us improve
+---
+
+**Describe the bug**
+A clear description
+
+**To Reproduce**
+Steps to reproduce
+
+**Expected behavior**
+What you expected
+
+**Screenshots**
+If applicable
+```
+
+### Ресурсы
+
+- [GitHub Docs: Pull Requests](https://docs.github.com/en/pull-requests)
+- [GitHub CLI](https://cli.github.com/)
+- [Conventional Commits](https://www.conventionalcommits.org/) — стандарт сообщений коммитов
+- [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/)

@@ -207,3 +207,94 @@ git revert <commit>
 # опасно
 git push --force
 ```
+
+
+---
+
+## Дополнительные материалы
+
+### Стратегии слияния
+
+#### Fast-Forward Merge
+```bash
+git checkout main
+git merge feature --ff-only      # Только fast-forward
+```
+Используется когда нет расхождения веток (линейная история).
+
+#### Three-Way Merge
+```bash
+git merge feature --no-ff        # Создать merge-коммит всегда
+```
+Сохраняет историю веток.
+
+#### Squash Merge
+```bash
+git merge feature --squash       # Все коммиты в один
+git commit -m "Feature completed"
+```
+
+### Interactive Rebase
+
+```bash
+git rebase -i HEAD~3            # Интерактивный rebase последних 3 коммитов
+
+# Команды в редакторе:
+# pick   - оставить коммит
+# reword - изменить сообщение
+# edit   - остановиться для изменения
+# squash - объединить с предыдущим
+# fixup  # - как squash, но без сообщения
+# drop   - удалить коммит
+```
+
+### Reflog — история всех изменений
+
+```bash
+git reflog                      # Показать историю HEAD
+git reflog show branch-name     # История конкретной ветки
+
+# Восстановить удаленный коммит
+git reset --hard commit_hash
+
+# Восстановить удаленную ветку
+git checkout -b branch-name commit_hash
+```
+
+### Разрешение конфликтов
+
+```bash
+# При конфликте
+git status                      # Посмотреть конфликтующие файлы
+
+# Выбрать версию
+git checkout --ours file.txt    # Оставить нашу версию
+git checkout --theirs file.txt  # Взять их версию
+
+# Инструменты для разрешения
+git mergetool                   # Запустить GUI инструмент
+
+# После разрешения
+git add file.txt
+git commit
+```
+
+### Bisect — поиск проблемного коммита
+
+```bash
+git bisect start
+git bisect bad                  # Текущая версия плохая
+git bisect good commit_hash     # Известная хорошая версия
+
+# Git будет переключать коммиты
+git bisect good                 # Если тест прошел
+git bisect bad                  # Если тест failed
+
+git bisect reset                # Закончить bisect
+```
+
+### Ресурсы
+
+- [Atlassian Git Tutorials](https://www.atlassian.com/git/tutorials)
+- [Git Merge vs Rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing)
+- [Oh Shit, Git!?!](https://ohshitgit.com/ru) — как исправить ошибки в Git

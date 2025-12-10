@@ -245,3 +245,107 @@ git stash
 git stash list
 git stash pop
 ```
+
+
+---
+
+## Дополнительные материалы
+
+### Стратегии работы с ветками
+
+#### Git Flow
+```
+main (production)
+├── develop (integration)
+│   ├── feature/new-feature
+│   ├── feature/another-feature
+│   └── bugfix/fix-issue
+└── hotfix/critical-bug
+```
+
+#### GitHub Flow (упрощенный)
+```
+main (always deployable)
+├── feature/new-feature
+└── bugfix/fix-issue
+```
+
+### Продвинутая работа с ветками
+
+```bash
+# Создать ветку от конкретного коммита
+git checkout -b new-branch commit_hash
+
+# Переименовать ветку
+git branch -m old-name new-name
+
+# Удалить удаленную ветку
+git push origin --delete branch-name
+
+# Просмотр информации о ветках
+git branch -v                    # С последним коммитом
+git branch -vv                   # С информацией о tracking
+git branch --merged              # Слитые ветки
+git branch --no-merged           # Не слитые ветки
+
+# Сравнить ветки
+git diff branch1..branch2
+git log branch1..branch2         # Коммиты в branch2, но не в branch1
+```
+
+### Cherry-pick
+
+```bash
+# Применить конкретный коммит из другой ветки
+git cherry-pick commit_hash
+
+# Применить несколько коммитов
+git cherry-pick commit1 commit2
+
+# Применить без коммита (только изменения)
+git cherry-pick -n commit_hash
+```
+
+### Шаблоны .gitignore для популярных стеков
+
+**Node.js**
+```
+node_modules/
+npm-debug.log
+.env
+dist/
+```
+
+**Python**
+```
+__pycache__/
+*.pyc
+.env
+venv/
+*.egg-info/
+```
+
+**Java**
+```
+*.class
+target/
+*.jar
+*.war
+```
+
+### Git stash (расширенное)
+
+```bash
+git stash save "description"     # Сохранить с описанием
+git stash list                   # Список всех stash
+git stash show stash@{0}         # Показать изменения
+git stash apply stash@{0}        # Применить конкретный stash
+git stash drop stash@{0}         # Удалить конкретный stash
+git stash branch new-branch      # Создать ветку из stash
+```
+
+### Ресурсы
+
+- [Git Branching Model](https://nvie.com/posts/a-successful-git-branching-model/)
+- [GitHub Flow](https://docs.github.com/en/get-started/quickstart/github-flow)
+- [gitignore.io](https://www.toptal.com/developers/gitignore) — генератор .gitignore

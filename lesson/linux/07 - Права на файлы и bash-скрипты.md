@@ -244,3 +244,106 @@ cat myfirstbashscript.sh >> /tmp/file.txt
 # 10) история команд
 history >> /tmp/file.txt
 ```
+
+
+---
+
+## Дополнительные материалы
+
+### Специальные права
+
+#### SUID (Set User ID)
+```bash
+chmod u+s file          # Файл выполняется с правами владельца
+chmod 4755 file         # То же самое числом
+```
+
+**Пример:** `/usr/bin/passwd` имеет SUID, чтобы пользователи могли менять свой пароль.
+
+#### SGID (Set Group ID)
+```bash
+chmod g+s directory     # Файлы в директории наследуют группу
+chmod 2755 directory
+```
+
+#### Sticky Bit
+```bash
+chmod +t /tmp           # Только владелец может удалять свои файлы
+chmod 1777 /tmp
+```
+
+### ACL (Access Control Lists)
+
+```bash
+# Установить ACL
+setfacl -m u:username:rwx file     # Дать права пользователю
+setfacl -m g:groupname:rx file     # Дать права группе
+setfacl -m d:u:username:rwx dir    # ACL по умолчанию для директории
+
+# Просмотр ACL
+getfacl file
+
+# Удаление ACL
+setfacl -b file                     # Удалить все ACL
+setfacl -x u:username file          # Удалить ACL для пользователя
+```
+
+### Продвинутые bash-скрипты
+
+#### Условные операторы
+```bash
+if [ $var -eq 10 ]; then
+    echo "Равно 10"
+elif [ $var -lt 10 ]; then
+    echo "Меньше 10"
+else
+    echo "Больше 10"
+fi
+
+# Проверка файлов
+if [ -f file ]; then echo "Файл существует"; fi
+if [ -d dir ]; then echo "Директория существует"; fi
+if [ -x file ]; then echo "Файл исполняемый"; fi
+```
+
+#### Циклы
+```bash
+# For цикл
+for i in {1..5}; do
+    echo "Iteration $i"
+done
+
+# While цикл
+count=0
+while [ $count -lt 5 ]; do
+    echo $count
+    ((count++))
+done
+```
+
+#### Функции
+```bash
+function hello() {
+    echo "Hello, $1!"
+}
+
+hello "World"
+```
+
+### Debugging скриптов
+
+```bash
+bash -x script.sh       # Показать выполнение каждой команды
+bash -n script.sh       # Проверить синтаксис без выполнения
+
+# В скрипте
+set -e                  # Выйти при ошибке
+set -x                  # Включить отладку
+set -u                  # Ошибка при использовании неопределенных переменных
+```
+
+### Ресурсы
+
+- [ShellCheck](https://www.shellcheck.net/) — проверка скриптов онлайн
+- [Bash Pitfalls](https://mywiki.wooledge.org/BashPitfalls)
+- [Advanced Bash-Scripting Guide](https://tldp.org/LDP/abs/html/)

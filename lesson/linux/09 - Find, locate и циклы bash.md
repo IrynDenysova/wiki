@@ -206,3 +206,97 @@ ls -l /etc/passwd | awk '{print $1}'
 ```
 
 Затем экспортировать итоговый файл (как в JSLinux): `export_file ...` (как требует платформа).
+
+
+---
+
+## Дополнительные материалы
+
+### Продвинутые примеры find
+
+```bash
+# Найти файлы по размеру
+find / -type f -size +100M          # Больше 100MB
+find / -type f -size -1k            # Меньше 1KB
+
+# Найти по времени
+find / -mtime -7                    # Изменены за последние 7 дней
+find / -atime +30                   # Не использовались более 30 дней
+
+# Комбинированный поиск
+find / -type f -name "*.log" -size +10M -mtime +30 -delete
+
+# Выполнить команду для найденных файлов
+find / -name "*.tmp" -exec rm {} \;
+find / -name "*.txt" -exec grep "pattern" {} \;
+
+# Найти и скопировать
+find /source -name "*.jpg" -exec cp {} /dest/ \;
+
+# Пустые файлы и директории
+find / -type f -empty               # Пустые файлы
+find / -type d -empty               # Пустые директории
+```
+
+### Оптимизация locate
+
+```bash
+# Обновить базу
+sudo updatedb
+
+# Ограничить поиск директорией
+locate -d /path/to/database pattern
+
+# Игнорировать регистр
+locate -i pattern
+
+# Показать только существующие файлы
+locate -e pattern
+```
+
+### Циклы в bash (расширенное)
+
+#### Case statement
+```bash
+case $variable in
+    pattern1)
+        commands1
+        ;;
+    pattern2)
+        commands2
+        ;;
+    *)
+        default_commands
+        ;;
+esac
+```
+
+#### Until цикл
+```bash
+count=0
+until [ $count -gt 5 ]; do
+    echo $count
+    ((count++))
+done
+```
+
+#### Чтение файла построчно
+```bash
+while IFS= read -r line; do
+    echo "Line: $line"
+done < file.txt
+```
+
+#### Цикл по массиву
+```bash
+arr=("apple" "banana" "cherry")
+for fruit in "${arr[@]}"; do
+    echo $fruit
+done
+```
+
+### Ресурсы
+
+- [Find Command in Linux](https://www.tecmint.com/35-practical-examples-of-linux-find-command/)
+- [Bash Loops Tutorial](https://www.cyberciti.biz/faq/bash-for-loop/)
+- [ShellCheck](https://www.shellcheck.net/) — проверка скриптов

@@ -389,3 +389,145 @@ git push
 - Использовать четкую организацию директорий
 - Документировать структуру проекта
 - Установить правила для работы с monorepo
+
+
+---
+
+## Дополнительные материалы
+
+### Инструменты для разрешения конфликтов
+
+#### VS Code (встроенный)
+- Открыть конфликтующий файл
+- Интерфейс показывает варианты: "Accept Current", "Accept Incoming", "Accept Both"
+
+#### Vimdiff
+```bash
+git config --global merge.tool vimdiff
+git mergetool
+```
+
+#### Meld (GUI)
+```bash
+sudo apt install meld
+git config --global merge.tool meld
+git mergetool
+```
+
+### Стратегии слияния в конфликтных ситуациях
+
+```bash
+# Theirs стратегия (принять их изменения)
+git merge -X theirs branch-name
+
+# Ours стратегия (оставить наши изменения)
+git merge -X ours branch-name
+
+# Для конкретного файла
+git checkout --theirs file.txt
+git checkout --ours file.txt
+```
+
+### Предотвращение конфликтов
+
+1. **Частые коммиты и pull/push**
+2. **Небольшие feature ветки**
+3. **Регулярная синхронизация с main**
+```bash
+git checkout feature
+git pull origin main --rebase
+```
+4. **Избегать изменений одних и тех же файлов**
+
+### Monorepo инструменты
+
+#### Nx (для JavaScript/TypeScript)
+```bash
+npx create-nx-workspace@latest
+
+# Структура
+monorepo/
+├── apps/
+│   ├── web/
+│   └── mobile/
+├── libs/
+│   ├── shared/
+│   └── utils/
+└── nx.json
+```
+
+#### Turborepo
+```bash
+npx create-turbo@latest
+
+# Конфигурация turbo.json
+{
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    }
+  }
+}
+```
+
+#### Bazel (для больших проектов)
+- Используется в Google
+- Поддержка множества языков
+- Инкрементальные сборки
+
+### Git Worktree для monorepo
+
+```bash
+# Работа с несколькими ветками одновременно
+git worktree add ../feature-1 feature-1
+git worktree add ../feature-2 feature-2
+
+# Список worktrees
+git worktree list
+
+# Удалить worktree
+git worktree remove ../feature-1
+```
+
+### Sparse Checkout для больших репозиториев
+
+```bash
+# Клонировать только metadata
+git clone --no-checkout repo.git
+cd repo
+
+# Включить sparse checkout
+git sparse-checkout init --cone
+
+# Указать директории для checkout
+git sparse-checkout set folder1 folder2
+
+git checkout main
+```
+
+### Практические советы для monorepo
+
+**Преимущества:**
+- Единая версия зависимостей
+- Легче рефакторинг across проектов
+- Одна CI/CD pipeline
+- Проще code sharing
+
+**Недостатки:**
+- Большой размер репозитория
+- Медленные git операции
+- Сложность прав доступа
+
+**Решения:**
+- Использовать Git LFS для больших файлов
+- Настроить CI для изменённых модулей
+- Использовать специализированные инструменты (Nx, Turborepo)
+
+### Ресурсы
+
+- [Monorepo Tools](https://monorepo.tools/) — сравнение инструментов
+- [Nx Documentation](https://nx.dev/)
+- [Turborepo Documentation](https://turbo.build/)
+- [Git Worktree Tutorial](https://git-scm.com/docs/git-worktree)
+- [Atlassian: Monorepos](https://www.atlassian.com/git/tutorials/monorepos)
