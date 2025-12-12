@@ -1,0 +1,9 @@
+views:
+  - type: table
+    name: Таблица
+    groupBy:
+      property: file.folder
+      direction: ASC
+    sort:
+      - property: tags
+        direction: ASC

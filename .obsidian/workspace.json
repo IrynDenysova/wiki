@@ -4,17 +4,20 @@
     "type": "split",
     "children": [
       {
-        "id": "0069ea41efc62293",
+        "id": "fcf7a508203337ac",
         "type": "tabs",
         "children": [
           {
-            "id": "b016bee0e1848c80",
+            "id": "d68c420d77c43d05",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "Новая вкладка"
+              "type": "bases",
+              "state": {
+                "file": "Без названия.base",
+                "viewName": "Таблица"
+              },
+              "icon": "lucide-table",
+              "title": "Без названия"
             }
           }
         ]
@@ -179,43 +182,43 @@
       "bases:Создать новую базу": false
     }
   },
-  "active": "b016bee0e1848c80",
+  "active": "d68c420d77c43d05",
   "lastOpenFiles": [
+    "lesson/mysql/3.2_Дата и время функции.md",
+    "Без названия.base",
+    "lesson/mysql/1.1_Введение в БД SELECT FROM.md",
+    "notes/vpn_wire_guard/wire_guad_s1.md",
+    "notes/vpn_wire_guard/vpn-install.sh.md",
+    "notes/vpn_wire_guard/wg-add-client.sh_s1.md",
     "lesson/mysql/Дата_время_шпаргалка.md",
     "lesson/mysql/12.2_Параметры процедур IN OUT.md",
+    "lesson/mysql/12.1_Хранимые процедуры.md",
     "lesson/mysql/11.2_Пользовательские функции.md",
     "lesson/mysql/11.1_Оптимизация индексы EXPLAIN.md",
     "lesson/mysql/10.2_Функции смещения выбора.md",
     "lesson/mysql/10.1_Ранжирующие оконные функции.md",
     "lesson/mysql/9.2_Оконные агрегирующие функции.md",
     "lesson/mysql/9.1_Оконные функции концепции.md",
-    "lesson/mysql/7.1_Подзапросы Subqueries.md",
-    "lesson/mysql/5.1_Агрегаты GROUP BY.md",
-    "lesson/mysql/3.2_Дата и время функции.md",
-    "lesson/mysql/1.1_Введение в БД SELECT FROM.md",
-    "lesson/mysql/rename_files.py",
-    "lesson/mysql/12.2_араметры процедур IN OUT.md",
-    "lesson/mysql/11.2_ользовательские функции.md",
-    "lesson/mysql/11.1_птимизация индексы EXPLAIN.md",
-    "lesson/mysql/10.2_ункции смещения выбора.md",
-    "lesson/mysql/10.1_анжирующие оконные функции.md",
-    "lesson/mysql/9.2_конные агрегирующие функции.md",
-    "lesson/mysql/9.1_конные функции концепции.md",
-    "lesson/mysql/7.1_одзапросы Subqueries.md",
-    "lesson/mysql/5.1_грегаты GROUP BY.md",
-    "lesson/mysql/3.2_ата и время функции.md",
-    "lesson/mysql/2.2_Сортировка LIMIT OFFSET DISTINCT.md",
-    "lesson/mysql/1.1_ведение в  SELECT FROM.md",
-    "lesson/mysql/12.2_араметры_процедур_IN_OUT.md",
-    "lesson/mysql/11.2_ользовательские_функции.md",
-    "lesson/linux/add_final_sections.py",
-    "lesson/linux/check_sections.py",
-    "lesson/linux/add_sections_3.py",
-    "lesson/linux/add_sections_2.py",
-    "lesson/linux/add_additional_sections.py",
-    "lesson/linux/extracted_lesson_15.txt",
-    "lesson/linux/extracted_lesson_14.txt",
-    "lesson/linux/extracted_lesson_13.txt",
-    "lesson/linux/extract_pdf.py"
+    "lesson/mysql/7.2_CTE Табличные выражения.md",
+    "lesson/python/1 Основы работы с Python.md",
+    "lesson/python/36 Наследование полиморфизм super() isinstance.md",
+    "notes/traider/10 URL.md",
+    "notes/traider/screemshots/v.3.1.md",
+    "notes/traider/screemshots/install_screenshot.md",
+    "notes/traider/screemshots/Promt_auto_screenshots.md",
+    "notes/traider/Порядок отправки скринов.md",
+    "notes/traider/CoinGlass.md",
+    "notes/traider/промт нового чата на английском.md",
+    "notes/traider/промт нового чата.md",
+    "notes/traider/Адреса собранные вручную.md",
+    "notes/traider",
+    "notes/traider/screemshots/chrome_tabs_screenshot.py",
+    "notes/traider/screemshots/auto_screenshot.py",
+    "notes/traider/screemshots/manual.lnk",
+    "notes/traider/screemshots/auto.lnk",
+    "notes/traider/screemshots/chrome_debug.lnk",
+    "notes/traider/screemshots",
+    "notes/windows/Новая папка",
+    "lesson/mysql/rename_files.py"
   ]
 }
